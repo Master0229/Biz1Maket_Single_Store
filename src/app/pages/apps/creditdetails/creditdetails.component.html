@@ -1,0 +1,63 @@
+<div class="form-group row">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                data-feather="archive"></i></span></span> Credit - Details</h4>
+      </div>
+          </div>
+
+<div class="card-body" >
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="baseFullname" style="font-weight: bold;"> Contact</label>
+        <div class="col-md-3">
+            <input type="text" class="form-control" [(ngModel)]="trans.contact" name="example_name" value="" style="width: 50%"
+            placeholder="Enter Contact..." />
+         </div> 
+         <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Payment</label>
+         <div class="col-md-3 pt-2">
+             <input type="text" class="form-control" [(ngModel)]="trans.amount" name="example_name" value="" style="width: 50%"
+                 placeholder="Enter Payment..." />
+         </div>
+    </div>
+
+    <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;"> Payment Mode</label>
+        <div  class="col-md-3 pt-2">
+            <input type="text" class="form-control" disabled [(ngModel)]="trans.paymentTypeId" name="example_name" value="" style="width: 50%"
+            placeholder="Enter Actual Repay..." />
+          </div> 
+
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Location</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" disabled [(ngModel)]="trans.supplier" name="example_name" value=""  style="width: 50%"
+                placeholder="Enter Location..." />
+        </div>    
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control"  name="example_name" value="" style="width: 50%"
+                placeholder=" Responsible By..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;"> IsCommission</label>
+    <div class="col-md-3 pt-2">
+        <input type="checkbox" class="form-control" disabled  name="example_name" value="" style="width:10%"
+            placeholder="Enter Commission..." />
+    </div>
+    </div>
+    <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Commission%</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" disabled  name="example_name" value="" style="width: 50%"
+            placeholder="Commission..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="trans.description"  style="width: 50%"
+            placeholder=" Reference..." />
+    </div>
+
+</div>
+    <button type="button" routerLink="/apps/credit" class="btn btn-secondary px-5"  >Go
+        Back</button>
+</div>
+

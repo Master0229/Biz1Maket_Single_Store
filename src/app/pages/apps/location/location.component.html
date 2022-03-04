@@ -1,0 +1,397 @@
+<div>
+    <div class="cui__utils__heading">
+        <strong>Location - Index</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex" *ngIf="isShown">
+            <button style="width:105px;height: 34px;margin-top: 18px;" class="btn btn-success " (click)="locback()">
+                Create New
+            </button>
+            <div style="width: 200px;margin-left: 700px;margin-top: 10px">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                        (input)="filtersearch()" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+            </div>
+        </div>
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+            <thead>
+                <tr>
+                    <th><strong>Location Id</strong></th>
+                    <th><strong>Location</strong> </th>
+                    <th><strong> Responsible By</strong> </th>
+                    <th><strong>Status</strong> </th>
+                    <th><strong>Actions</strong> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ord of basicTable.data">
+                    <td>
+                        {{ord.id}}
+                    </td>
+                    <td>
+                        {{ord.name}}
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <span *ngIf="ord.isactive == true">Active</span>
+                        <span *ngIf="ord.isactive == false">InActive</span>
+                    </td>
+                    <td>
+                        <a (click)="upddata(ord.id)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript: void(0);" (click)="DeActivate(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="far fa-toggle-on"></i>
+                        </a>
+                        <a href="javascript: void(0);" (click)="Detailstore(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="fad fa-info"></i>
+                        </a>
+                    </td>
+                </tr>
+                <!-- <button (click)="locback()" *ngIf="isShown">Go Back</button> -->
+                <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Create Location</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Name" name="example_name" value=""
+               placeholder="Enter Location Name..."
+                [ngClass]="{'is-invalid': submitted && locate.Name == ''}" />
+            <span *ngIf="submitted && locate.Name == ''" class="text-danger">Name cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Phone No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.ContactNo" name="example_name" value=""
+               placeholder="Enter ContactNo..."
+                [ngClass]="{'is-invalid': submitted && locate.ContactNo == ''}" />
+            <span *ngIf="submitted && locate.ContactNo == ''" class="text-danger">ContactNo cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Email</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Email" name="example_name" value=""
+               placeholder="Enter Email..."
+                [ngClass]="{'is-invalid': submitted && locate.Email == ''}" />
+            <span *ngIf="submitted && locate.Email == ''" class="text-danger">Email cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Address <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Address" name="example_name" value=""
+               placeholder="Enter Address..."
+                [ngClass]="{'is-invalid': submitted && locate.Address == ''}" />
+            <span *ngIf="submitted && locate.Address == ''" class="text-danger">Address cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">City </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.City" name="example_name" value=""
+               placeholder="Enter City..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">PinCode</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.PostalCode" name="example_name" value=""
+               placeholder="Enter PostalCode..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Country</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Country" name="example_name" value=""
+               placeholder="Enter Country..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Gst No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.GSTno" name="example_name" value=""
+               placeholder="Enter GSTno..."
+                [ngClass]="{'is-invalid': submitted && locate.GSTno == ''}" />
+            <span *ngIf="submitted && locate.GSTno == ''" class="text-danger">GSTno cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Opening Time <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.OpeningTime" name="example_name" value=""
+               placeholder="Enter OpeningTime..."
+                [ngClass]="{'is-invalid': submitted && locate.OpeningTime == ''}" />
+            <span *ngIf="submitted && locate.OpeningTime == ''" class="text-danger">OpeningTime cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Closing Time <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.ClosingTime" name="example_name" value=""
+               placeholder=" ClosingTime..."
+                [ngClass]="{'is-invalid': submitted && locate.ClosingTime == ''}" />
+            <span *ngIf="submitted && locate.ClosingTime == ''" class="text-danger">ClosingTime cannot be empty*</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete  #instance="ngbTypeahead"
+                type="text" class="form-control" placeholder="Search ..." [ngbTypeahead]="searchcontact"
+                [inputFormatter]="formattercontact" [resultTemplate]="rt"
+                (selectItem)="selectedcontactitem($event.item)" />
+        </div>
+
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is Active</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="locate.isactive" name="example_name" value=""
+               style="width: 15px;"
+                [ngClass]="{'is-invalid': submitted && locate.isactive == ''}" />
+            <span *ngIf="submitted && locate.isactive == ''" class="text-danger">isactive cannot be empty*</span>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success px-5" (click)="Create()">Create</button>
+</div>
+<button type="button" *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+<div class="form-group row" *ngIf="isEditTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Edit Location Details</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isEditTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Name" name="example_name" value=""
+               placeholder="Enter Location Name..."
+                [ngClass]="{'is-invalid': submitted && locate.Name == ''}" />
+            <span *ngIf="submitted && locate.Name == ''" class="text-danger">Name cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Phone No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.ContactNo" name="example_name" value=""
+               placeholder="Enter ContactNo..."
+                [ngClass]="{'is-invalid': submitted && locate.ContactNo == ''}" />
+            <span *ngIf="submitted && locate.ContactNo == ''" class="text-danger">ContactNo cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Email</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Email" name="example_name" value=""
+               placeholder="Enter Email..."
+                [ngClass]="{'is-invalid': submitted && locate.Email == ''}" />
+            <span *ngIf="submitted && locate.Email == ''" class="text-danger">Email cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Address <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Address" name="example_name" value=""
+               placeholder="Enter Address..."
+                [ngClass]="{'is-invalid': submitted && locate.Address == ''}" />
+            <span *ngIf="submitted && locate.Address == ''" class="text-danger">Address cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">City </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.City" name="example_name" value=""
+               placeholder="Enter City..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">PinCode</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.PostalCode" name="example_name" value=""
+               placeholder="Enter PostalCode..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Country </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Country" name="example_name" value=""
+               placeholder="Enter Country..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Gst No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.GSTno" name="example_name" value=""
+               placeholder="Enter GSTno..."
+                [ngClass]="{'is-invalid': submitted && locate.GSTno == ''}" />
+            <span *ngIf="submitted && locate.GSTno == ''" class="text-danger">GSTno cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Opening Time <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.OpeningTime" name="example_name" value=""
+               placeholder="Enter OpeningTime..."
+                [ngClass]="{'is-invalid': submitted && locate.OpeningTime == ''}" />
+            <span *ngIf="submitted && locate.OpeningTime == ''" class="text-danger">OpeningTime cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Closing Time <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.ClosingTime" name="example_name" value=""
+               placeholder=" ClosingTime..."
+                [ngClass]="{'is-invalid': submitted && locate.ClosingTime == ''}" />
+            <span *ngIf="submitted && locate.ClosingTime == ''" class="text-danger">ClosingTime cannot be empty*</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ct let-c="result" let-t="term">
+                <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete style="height: 70%;width: 100px;border-color: black;" #instance="ngbTypeahead"
+                type="text" class="form-control" placeholder="Search ..." [ngbTypeahead]="searchcontact"
+                [inputFormatter]="formattercontact" [resultTemplate]="ct"
+                (selectItem)="selectedcontactitem($event.item)" />
+        </div>
+
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Status</label>
+        <div class="col-md-3 pt-2">
+            <!-- <span *ngIf="asset.isActive == true" >   Active </span>
+            <span *ngIf="asset.isActive == false">  InActive</span> -->
+
+            <input type="checkbox" class="form-control" [(ngModel)]="locate.IsActive" name="example_name" value=""
+                style="width: 10%;border-color: black;" />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success px-5" (click)="Update()">Update</button>
+</div>
+<button type="button" *ngIf="isEditTable" class="btn btn-secondary " style="width: 80px;height: 30px;"
+    (click)="goback()">Go
+    Back</button>
+
+<div class="card-body" *ngIf="isDetailTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Name" name="example_name" value=""
+               placeholder="Enter Location Name..."
+                [ngClass]="{'is-invalid': submitted && locate.Name == ''}" />
+            <span *ngIf="submitted && locate.Name == ''" class="text-danger">Name cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Phone No</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.ContactNo" name="example_name" value=""
+               placeholder="Enter ContactNo..."
+                [ngClass]="{'is-invalid': submitted && locate.ContactNo == ''}" />
+            <span *ngIf="submitted && locate.ContactNo == ''" class="text-danger">ContactNo cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Email</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Email" name="example_name" value=""
+               placeholder="Enter Email..."
+                [ngClass]="{'is-invalid': submitted && locate.Email == ''}" />
+            <span *ngIf="submitted && locate.Email == ''" class="text-danger">Email cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Address </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Address" name="example_name" value=""
+               placeholder="Enter Address..."
+                [ngClass]="{'is-invalid': submitted && locate.Address == ''}" />
+            <span *ngIf="submitted && locate.Address == ''" class="text-danger">Address cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">City </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.City" name="example_name" value=""
+               placeholder="Enter City..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">PinCode</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.PostalCode" name="example_name" value=""
+               placeholder="Enter PostalCode..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Country</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.Country" name="example_name" value=""
+               placeholder="Enter Country..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Gst No</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="locate.GSTno" name="example_name" value=""
+               placeholder="Enter GSTno..."
+                [ngClass]="{'is-invalid': submitted && locate.GSTno == ''}" />
+            <span *ngIf="submitted && locate.GSTno == ''" class="text-danger">GSTno cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Opening Time </label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.OpeningTime" name="example_name" value=""
+               placeholder="Enter OpeningTime..."
+                [ngClass]="{'is-invalid': submitted && locate.OpeningTime == ''}" />
+            <span *ngIf="submitted && locate.OpeningTime == ''" class="text-danger">OpeningTime cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Closing Time</label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="locate.ClosingTime" name="example_name" value=""
+               placeholder=" ClosingTime..."
+                [ngClass]="{'is-invalid': submitted && locate.ClosingTime == ''}" />
+            <span *ngIf="submitted && locate.ClosingTime == ''" class="text-danger">ClosingTime cannot be empty*</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ct let-c="result" let-t="term">
+                <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete style="height: 70%;width: 100px;border-color: black;" #instance="ngbTypeahead"
+                type="text" class="form-control" placeholder="Search ..." [ngbTypeahead]="searchcontact"
+                [inputFormatter]="formattercontact" [resultTemplate]="ct"
+                (selectItem)="selectedcontactitem($event.item)" />
+        </div>
+
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Status</label>
+        <div class="col-md-3 pt-2">
+            <!-- <span *ngIf="asset.isActive == true" >   Active </span>
+               <span *ngIf="asset.isActive == false">  InActive</span> -->
+
+            <input type="checkbox" class="form-control" [(ngModel)]="locate.IsActive" name="example_name" value=""
+                style="width: 10%;border-color: black;" />
+        </div>
+    </div>
+</div>
+<button *ngIf="isDetailTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback3()">Go
+    Back</button>

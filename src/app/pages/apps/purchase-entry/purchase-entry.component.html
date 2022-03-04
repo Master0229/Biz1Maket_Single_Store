@@ -1,0 +1,148 @@
+<div class=" col-xl-12">
+    <div class="row">
+        <nz-card style="height: 90% ;width:25%;" nzTitle="Select Product" [nzExtra]="extraTemplate">
+            <div>
+                <ng-template class="w-100" #rt let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.product" [term]="t"></ngb-highlight>
+                </ng-template>
+                <input id="typeahead-template" [ngClass]="{'is-invalid':submitted &&temporaryItem.product == ''}"  [(ngModel)]="temporaryItem.product" #productautocomplete
+                    style="height: 84%;" #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model"
+                    placeholder="Search Product..." [ngbTypeahead]="search" [resultTemplate]="rt"
+                    [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+            </div>
+            <br>
+            <div>
+                <input #quantityel type="number" [ngClass]="{'is-invalid':submitted &&temporaryItem.quantity <= 0}" [(ngModel)]="temporaryItem.quantity" onfocus="this.select()"
+                    placeholder="Qty" class="form-control" (keyup.enter)="temporaryItem.quantity>0&&price.focus();"
+                    min="1" />
+            </div>
+            <br>
+            <div>
+                <input #price placeholder="price..." [ngClass]="{'is-invalid':submitted &&temporaryItem.price <= 0}" onfocus="this.select()" [(ngModel)]="temporaryItem.price" min="1"
+                    type="number" class="form-control" (keyup.enter)="discel.focus()" />
+            </div>
+            <br>
+            <div>
+                <input #discel [(ngModel)]="temporaryItem.disc" onfocus="this.select()" placeholder="Disc..."
+                    type="number" class="form-control" (keyup.enter)="addItem()" />
+            </div>
+            <br>
+        </nz-card>
+        <ng-template #extraTemplate>
+            <!-- <a>
+                <button nz-button [disabled]="temporaryItem.quantity<1" nzType="primary" nzSize="small"
+                    (click)="addItem()">ADD</button>
+            </a> -->
+            <a href="javascript: void(0);" class="btn btn-sm btn-primary" (click)="addItem()">
+                <i class="fe fe-plus fa-lg"></i>
+            </a>
+        </ng-template>
+        <div class="col-xs-12 col-md-9 ">
+            <div class="card">
+                <!-- <h2 class="badge-example">
+                    Purchase
+                </h2> -->
+                <div class="card-header card-header-flex">
+                    <div class=" justify-content-center mr-2 mt-3">
+                        <input nz-input type="number" [(ngModel)] = "batchno" placeholder="Order No" min="1" />
+                    </div>
+                    <div class=" justify-content-center mr-auto mt-3">
+                        <ng-template class="w-100" #vn let-r="result" let-t="term">
+                            <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                        </ng-template>
+                        <input #vendorautocomplete style="height: 70%;" #instance="ngbTypeahead" type="text"
+                            class="form-control" [(ngModel)]="model" placeholder="Search Vendor..."
+                            [ngbTypeahead]="searchvendor" [resultTemplate]="vn" [inputFormatter]="formattervendor"
+                            (selectItem)="selectedvendoritem($event.item)" />
+                    </div>
+                    <div class="d-flex flex-column justify-content-center mr-2">
+                        <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center ">
+                        <button class="btn btn-success " href="javascript: void(0);">
+                            Save Purchase
+                        </button>
+                    </div>
+                    <!-- <div class="d-flex flex-column justify-content-center">
+                        <div class="text-uppercase text-muted text-nowrap">Grand Total</div>
+                        <div class="font-weight-bold text-dark"> 200</div>
+                      </div> -->
+                </div>
+                <nz-table #getproduct [nzShowPagination]="false" [nzData]="products" class="kit__utils__table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th colspan="2">Tax</th>
+                            <th>Discount</th>
+                            <th>Total Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of cartitems; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <a class="btn btn-sm btn-light" href="javascript: void(0);">
+                                    {{product.product.product}}
+                                </a>
+                            </td>
+                            <td>
+                                <input type="number" nz-input nzSize='small' [(ngModel)]="product.quantity" min="1"
+                                    (input)="settotalprice(i,product.quantity)">
+                            </td>
+                            <td>
+                                <input type="number" nz-input nzSize='small' [(ngModel)]="product.price" min="1"
+                                    (input)="settotalprice(i,product.price)">
+                            </td>
+                            <td>
+                                {{product.taxpercent}} %
+                            </td>
+                            <td>
+                                &#8377;  {{product.tax}}
+                            </td>
+                            <td>
+                                <input type="number" nz-input nzSize='small' [(ngModel)]="product.disc" min="1"
+                                    (input)="settotalprice(i,product.disc)">
+                            </td>
+                            <td> &#8377; {{product.amount + product.tax}}</td>
+                            <td class="text-right">
+                                <a href="javascript: void(0);" (click)="delete(i)"
+                                    class="btn btn-sm btn-light pull-left" slot="actions">
+                                    <i class="fe fe-trash mr-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!cartitems.length">
+                            <td colspan="9" class="text-center">
+                                Cart is Empty!
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div  *ngIf="cartitems.length" class="text-right font-size-18 text-dark p-4 rounded bg-light">
+                    <div>
+                        Sub - Total amount: <span class="font-weight-bold">&#8377; {{subtotal}}</span>
+                    </div>
+                    <div>
+                        Tax: <span class="font-weight-bold">&#8377; {{tax}}</span>
+                    </div>
+                    <div>
+                        Discount: <span class="font-weight-bold">&#8377; {{discount}}</span>
+                    </div>
+                    <div>
+                        Grand Total: <span class="font-weight-bold font-size-24">&#8377; {{(tax+subtotal)-discount}}</span>
+                    </div>
+                    <a href="javascript: void(0);" class="btn btn-outline-success mr-3 mt-3">
+                        Print
+                    </a>
+                    <a href="javascript: void(0);" class="btn btn-success mt-3">
+                        Proceed Payment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

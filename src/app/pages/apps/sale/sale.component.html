@@ -1,0 +1,304 @@
+<div class="mb-5 col-xl-12 row" #target>
+    <div class=" col-xl-4">
+        <div>
+            <div class="card">
+                <div class="card-body" style="z-index: 2;">
+                    <nz-table #basicTable nzSize="small" [nzData]="tableData" [nzShowPagination]="false" class="table">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <div>
+                                        <ng-template class="w-100" #rt let-r="result" let-t="term">
+                                            <ngb-highlight [result]="r.product" [term]="t"></ngb-highlight>
+                                        </ng-template>
+                                        <input #productautocomplete id="typeahead-template" onfocus="this.select()"
+                                            [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}"
+                                            #productautocomplete style="height: 84%;" #instance="ngbTypeahead"
+                                            type="text" class="form-control" [(ngModel)]="model"
+                                            placeholder="Search Product..." [ngbTypeahead]="search"
+                                            [resultTemplate]="rt" [inputFormatter]="formatter"
+                                            (selectItem)="selectedItem(batchproductmodal, $event.item.barcodeId)" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+
+                                    <div>
+                                        <input #quantityel type="number"
+                                            [ngClass]="{'is-invalid':submitted &&temporaryItem.Quantity <= 0 || temporaryItem.Quantity > temporaryItem.quantity}"
+                                            [(ngModel)]="temporaryItem.Quantity" onfocus="this.select()"
+                                            placeholder="Qty" class="form-control"
+                                            (keyup.enter)="temporaryItem.Quantity>0&&discel.focus()" min="1" />
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div>
+                                        <input #discel [(ngModel)]="temporaryItem.DiscAmount" onfocus="this.select()"
+                                            placeholder="DiscAmount..." type="number" class="form-control"
+                                            (keyup.enter)="addItem()" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <button nz-button [disabled]="temporaryItem.Quantity <= 0" nzType="default"
+                                        class="mr-3 mt-2 pull-right" nzSize="small" (click)="addItem()"> <i
+                                            class="fe fe-plus fa-lg mb-1"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="order&&order.Items.length">
+
+            <div class="mb-4 ">
+                <div class=" col-lg">
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                        <input type="text" [(ngModel)]="order.CustomerDetails.PhoneNo" nz-input
+                            placeholder="Customer No" (keyup.enter)="getCustomer()" />
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button *ngIf="order.CustomerDetails.datastatus == 'new'" nz-button nzType="primary" nzSearch
+                            (click)="openCustomClass(vertical)"><i nz-icon nzType="plus"></i></button>
+                        <button *ngIf="order.CustomerDetails.datastatus == 'old'" nz-button nzType="primary" nzSearch><i
+                                nz-icon nzType="check"></i></button>
+                        <button *ngIf="order.CustomerDetails.datastatus == 'loading'" nz-button nzType="primary"
+                            nzSearch><i nz-icon nzType="loading"></i></button>
+                    </ng-template>
+                </div>
+                <div *ngIf="order.CustomerDetails.datastatus == 'old'" class="col-lg">
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                        <input disabled type="text" [(ngModel)]="order.CustomerDetails.Name" nz-input
+                            placeholder="Name" />
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button (click)="openCustomClass(vertical)" nz-button nzType="primary" nzSearch><i nz-icon
+                                nzType="edit"></i></button>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="order&&order.Items.length" class="btn-group ml-6 mb-2">
+            <button *ngFor="let spt of storePaymentTypes" type="button"
+                [class.active]="order.StorePaymentTypeId == spt.id"
+                (click)="order.StorePaymentTypeId = spt.id;order.PaidAmount = order.BillAmount" class="btn btn-squared">
+                {{spt.name}}
+            </button>
+            <button type="button" [class.active]="order.StorePaymentTypeId == 0"
+                (click)="order.StorePaymentTypeId = 0;order.PaidAmount = 0" class="btn btn-squared">
+                Unpaid
+            </button>
+        </div>
+        <div *ngIf="order&&order.Items.length" class="text-right font-size-18 text-dark p-4 rounded bg-light">
+            <div>
+                Sub - Total amount: <span class="font-weight-bold">&#8377; {{order.Subtotal}}</span>
+            </div>
+            <div>
+                Tax: <span class="font-weight-bold">&#8377; {{order.TaxAmount}}</span>
+            </div>
+            <div>
+                Discount: <span class="font-weight-bold">&#8377; -{{order.DiscAmount}}</span>
+            </div>
+            <div>
+                Grand Total: <span class="font-weight-bold font-size-24">&#8377; {{order.BillAmount }}</span>
+            </div>
+
+            <a href="javascript: void(0);" class="btn btn-success mt-3" (click)="saveOrder()">
+                Recieve (₹ {{order.PaidAmount}} /-)
+            </a>
+        </div>
+        <ng-template #vertical let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="order&&order.CustomerDetails.Id == 'new'" id="modal-basic-title"> Add
+                    Customer
+                </h5>
+                <h5 class="modal-title" *ngIf="order&&order.CustomerDetails.Id == 'old'" id="modal-basic-title">Update
+                    Customer</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="px-5 ">
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="name">Name</nz-form-label>
+                                <nz-form-control class="ml-2">
+                                    <input nz-input [(ngModel)]="order.CustomerDetails.Name" placeholder="Name">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="phone">Phone</nz-form-label>
+                                <nz-form-control class="ml-2">
+                                    <input nz-input [(ngModel)]="order.CustomerDetails.PhoneNo"
+                                        placeholder="Phone Number">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label>Address</nz-form-label>
+                                <nz-form-control class="ml-1">
+                                    <input nz-input [(ngModel)]="order.CustomerDetails.Address" placeholder="Address">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" (click)="savedata();modal.close('Save click')">Save
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #split let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-basic-title">Split Payment</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-20">
+                <div>
+                    <div class="px-5">
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="name">Cash</nz-form-label>
+                                <nz-form-control class="ml-2">
+                                    <input nz-input type="number" id="name" placeholder="Count">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="phone">Card</nz-form-label>
+                                <nz-form-control class="ml-2">
+                                    <input nz-input type="number" id="phone" placeholder="Count">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div>
+                            <nz-form-item>
+                                <nz-form-label>Bhim</nz-form-label>
+                                <nz-form-control class="ml-1">
+                                    <input nz-input type="number" id="adress" placeholder="Count">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" (click)="modal.close('Save click')">Save
+                </button>
+            </div>
+        </ng-template>
+        <ng-template #batchproductmodal let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-basic-title"> Select Batch Product</h5>
+                <button type="button" class="close" aria-label="Close" (click)="crossclick();d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <nz-table #smallTable nzSize="small" [nzData]="batchproduct" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+
+                            <th>Name</th>
+                            <th>AvailableQty</th>
+                            <th>Price</th>
+                            <th>BatchDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of smallTable.data"
+                            (click)="product.quantity>0&&selectedproduct(product)"
+                            [ngClass]="{'pointer': product.quantity>0,'na' : product.quantity==0}">
+                            <td>{{ product.product }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>&#8377; {{ product.price }}</td>
+                            <td>{{ product.createdDate | date: 'MMM d, y' }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+
+
+        </ng-template>
+    </div>
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-header card-header-flex">
+                <div class="justify-content-center mr-auto mt-3">
+                    <div class="row">
+                        <strong for="fname" style="margin-top: 3px;">Order No :</strong><br>
+                        <h4 class="text-success" style="margin-left: 3px; font-weight: 900;"
+                            [(ngModel)]="orderkey.orderno ">{{orderkey.orderno}}</h4>
+                    </div>
+                </div>
+                <div class="d-flex flex-column justify-content-center ">
+                    <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+                </div>
+                <div class="d-flex flex-column justify-content-center ">
+                    <a class="btn btn-link pull-right border" (click)="clearallorders()">
+                        CLear Order
+                    </a>
+                </div>
+            </div>
+            <div>
+                <nz-table #cartTable nzSize="middle" [nzShowPagination]="false" [nzData]="products"
+                    class="kit__utils__table mb-4" [nzScroll]="{x:'auto',y:'57vh'}">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of order&&order.Items">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <a class="btn btn-sm btn-light" href="javascript: void(0);">
+                                    {{item.ProductName}}
+                                </a>
+                            </td>
+                            <td>
+
+                                <input type="number" nz-input [(ngModel)]="item.OrderQuantity" 
+                                    (keyup)="quantitychange(Items,$event);" onfocus="this.select()">
+
+                            </td>
+                            <td>
+                                &#8377; {{item.Price}}
+                            </td>
+                            <td>&#8377; {{item.TotalAmount}}</td>
+                            <td class="text-right">
+                                <a href="javascript: void(0);" (click)="delete(i)"
+                                    class="btn btn-sm btn-light pull-left" slot="actions">
+                                    <i class="fe fe-trash mr-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!(order&&order.Items.length)">
+                            <td colspan="10" class="text-center">
+                                Cart is Empty!
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</div>

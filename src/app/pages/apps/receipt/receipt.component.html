@@ -1,0 +1,261 @@
+<div class="hk-pg-wrapper" id="qqq">
+  <div *ngIf="!show">
+    <!-- Receipts Cards -->
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="mr-auto">
+                <p class="text-uppercase text-dark font-weight-bold mb-1">
+                  Total Sales
+                </p>
+              </div>
+              <p class="text-blue font-weight-bold font-size-24 mb-0">
+                ₹ {{totalsales}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="mr-auto">
+                <p class="text-uppercase text-dark font-weight-bold mb-1">
+                  Tolal Payment
+                </p>
+                <!-- <p class="text-gray-5 mb-0">
+                                  Average Weekly Profit
+                              </p> -->
+              </div>
+              <p class="text-success font-weight-bold font-size-24 mb-0">
+                ₹ {{totalpayments}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="mr-auto">
+                <p class="text-uppercase text-dark font-weight-bold mb-1">
+                  Refunds
+                </p>
+                <!-- <p class="text-gray-5 mb-0">
+                                  Average Weekly Profit
+                              </p> -->
+              </div>
+              <p class="text-danger font-weight-bold font-size-24 mb-0">
+                {{totalrefund}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Receipt Search Bar -->
+    <div class="row">
+      <div class="col-xl-4">
+        <div>
+          <input type="text" class="form-control" placeholder="Search Receipt.." [(ngModel)]="term"
+            (input)="onKeySearch()">
+          <!-- <div style="height: fit-content;" class="input-group-append">
+            <button class="btn btn-primary"><i class="fe fe-search" (input)="onKeySearch()"></i></button>
+          </div> -->
+          <div class="form-group hidden">
+            <div class="input-group" >
+              <input name="datepicker" class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
+                [autoClose]="'outside'" (dateSelect)="onDateSelection($event, datepicker)" [displayMonths]="2"
+                [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1">
+              <ng-template #t let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4">
+        <h6 class="pl-3">Showing receipts from {{strdate| date: 'MMM d, y'}} to
+          {{enddate| date: 'MMM d, y'}}</h6>
+      </div>
+      <div class="col-xl-4">
+
+        <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)"></nz-range-picker>
+      </div>
+      <br><br>
+    </div>
+    <br>
+    <div class="row w-100 mx-0 mb-5 col-xl-12">
+      <div class="col-xl-12 pl-0 pr-0">
+        <div class="table-wrap" *ngIf="receipts!=undefinde">
+          <div class="table-responsive" *ngIf="receipts?.receipts.length>0;else emptyreceipt">
+            <table class="table mb-0 text-center">
+              <thead>
+                <tr>
+                  <th>InvoiceNo</th>
+                  <th>BillAmount</th>
+                  <th>paidAmount</th>
+                  <th>Payment Status</th>
+                  <th>Order Status</th>
+                  <th>Customer Details</th>
+                  <th>orderedDate</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orders of receipts.receipts ;let i=index">
+                  <td><button type="button" class="btn btn-link"
+                      (click)="parseOrder(orders.orderJson)">{{orders.invoiceNo}}</button>
+                  </td>
+                  <td>{{orders.billAmount}}</td>
+                  <td>{{orders.paidAmount}}</td>
+                  <td>
+                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount == orders.PaidAmount"
+                      class="badge badge-success mr-10">Paid</span>
+                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount > orders.PaidAmount"
+                      class="badge badge-warning mr-10">Pending</span>
+                    <span *ngIf="orders.OrderStatusId == -1" class="badge badge-danger mr-10">Cancelled</span>
+                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount < orders.PaidAmount"
+                      class="badge badge-danger mr-10">Refundable</span>
+                  </td>
+                  <td><span *ngIf="orders.OrderStatusId == 5">Completed</span>
+                    <span *ngIf="orders.OrderStatusId != -1 && orders.OrderStatusId != 5">Pending</span>
+                    <span *ngIf="orders.OrderStatusId == -1">Cancelled</span>
+                  </td>
+                  <td>
+                    {{orders.customerName==null?"-":orders.customerName}}/{{orders.customerPhone==null?"-":orders.customerPhone}}
+
+                  </td>
+                  <td>{{orders.orderedDateTime | date: 'MMM d, h:mm a'}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center">
+              <button [class.disabled]="LastId" [ngClass]="{'text-blue': !LastId}" class="btn btn-link"
+                (click)="nextRecipts('prev')">Previous</button>
+              <button [class.disabled]="FirstId" [ngClass]="{'text-blue': !FirstId}" class="btn btn-link text-blue"
+                (click)="nextRecipts('next')">Next</button>
+            </div>
+          </div>
+          <ng-template #emptyreceipt>
+            <p class="text-center">No receipts found!</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="show==1">
+    <!-- Title -->
+    <div class="hk-pg-header col-xl-12 row">
+      <h4 class="hk-pg-title col-xl-6"> <span class="badge badge-primary mr-2">{{ordertype}}</span> {{orderno}}
+      </h4>
+      <div class="mb-10 text-right col-xl-6 float-right"><button class="btn btn-link"
+          (click)="show=0">Back</button>|<button class="btn btn-link" (click)="electronPrint()">print</button>
+        <span *ngIf="OrderStatus != -1&&roleid == 1"> |<button class="btn btn-link"
+            (click)="openOrderpopup(CancelReceipt)">Cancel</button></span>
+      </div>
+    </div>
+    <!-- Row -->
+    <div class="col-xl-12 pl-0 pr-0">
+      <section class="hk-sec-wrapper">
+        <div class="row col-xl-12">
+          <div class="col-xl-6 mt-5">
+            <div class="mb-2 ml-0 row">
+              <strong>CustomerName :</strong><span>{{order.CustomerDetails.Name}} |
+                {{order.CustomerDetails.PhoneNo}}</span>
+            </div>
+            <div class="mb-2 ml-0 row">
+              <strong>CustomerAddress :</strong><span>{{order.CustomerDetails.Address}}</span>
+            </div>
+            <div class="mb-2 ml-0 row">
+              <strong>City :</strong><span>{{order.CustomerDetails.City}}</span>
+            </div>
+
+            <div class="mb-2">
+              <strong>Payment History</strong><br>
+              <ul>
+                <span *ngFor="let item of order.Transactions">
+                  <li *ngIf="item.TranstypeId==1">
+                    <span class="text-success">₹ {{item.Amount}}
+                      /-</span> on {{item.TransDateTime | date: 'MMM d, h:mm a'}} by <span
+                      class="badge badge-success">{{item.StorePaymentTypeName}}</span>
+                  </li>
+                  <li *ngIf="item.TranstypeId==2">
+                    <span class="text-danger">₹
+                      {{item.Amount}}</span> /- Refunded on {{item.TransDateTime | date: 'MMM d, h:mm a'}} by <span
+                      class="badge badge-success">{{item.Name}}</span>
+                  </li>
+                </span>
+              </ul>
+            </div>
+
+            <div class="row" *ngIf="OrderStatus != -1&&Total-PaidAmount>0">
+              <div class="col-md-12 pt-0">
+                <strong class="sp-margin-left20">Pending Payment
+                  :</strong><span>{{Total-PaidAmount}}</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-xl-6">
+            <div class="table-wrap">
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th><strong>Item</strong></th>
+                      <th><strong>Qty</strong></th>
+                      <th><strong>Tax%</strong></th>
+                      <th class="text-right"><strong>Price</strong></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of order.Items">
+                      <td>{{item.ProductName}}</td>
+                      <td>{{item.OrderQuantity}}{{item.ComplementryQty>0?'+'+item.ComplementryQty:''}}
+                      </td>
+                      <td>{{item.Tax1 + item.Tax2 + item.Tax3}}</td>
+                      <td class="text-right">{{((item.OrderQuantity > 0) ? item.TotalAmount : 0) |
+                        number: ".2" }}</td>
+
+                    </tr>
+                    <tr>
+                      <td class="cs" [attr.colspan]="3"><strong>Subtotal</strong><br><br>
+                        <span
+                          *ngFor="let item of AdditionalCharges"><strong>{{item.Description}}</strong><br><br></span>
+                        <span *ngIf="order.DiscAmount > 0"><strong>Discount</strong><br><br></span>
+                        <strong *ngIf="order.Tax1">CGST</strong><br><br>
+                        <strong *ngIf="order.Tax2">SGST</strong><br><br>
+                        <strong>Total</strong><br><br>
+                      </td>
+                      <td class="text-right">{{order.Subtotal| number: ".2" }}<br><br>
+                        <!-- <span class="text-right" *ngFor="let item of order.additionalcharge">{{item.ChargeAmount |
+                          number:".2" }}<br><br></span> -->
+                        <span class="text-right" *ngIf="order.DiscAmount > 0">{{order.DiscAmount | number:
+                          ".2"
+                          }}<br><br></span>
+                        <span class="text-right" *ngIf="order.Tax1">{{order.Tax1 | number: ".2" }}
+                        </span><br><br>
+                        <span class="text-right" *ngIf="order.Tax2">{{order.Tax2 | number: ".2" }}
+                        </span><br><br>
+                        <span class="text-right">{{order.BillAmount | number: ".2" }} </span><br><br>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>

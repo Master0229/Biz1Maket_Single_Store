@@ -1,0 +1,396 @@
+<div>
+    <div>
+        <div class="cui__utils__heading" *ngIf="isShown">
+            <strong> Purchase / Maintainence Bill</strong>
+            <button type="button" class="btn btn-squared btn-success  pull-right" (click)="showSubItem(index)"> <i
+                    class="fa fa-search"></i> Advance
+                Search </button>
+        </div>
+        <div class="row" *ngIf="visibleIndex === index"
+            style="background-color: aliceblue;height: 108px; margin-top: 20px;">
+            <div class="col-xl-2 mt-1 text-left">
+                <ng-template class="w-100" #catrgy let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+                </ng-template>
+                <div style="height: 84%; position: relative;">
+                    <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+                        (input)="arrayName = ''; searchField = 'description'" autocomplete="off"
+                        class="form-control" [(ngModel)]="cat" placeholder="Order ID..."
+                        [ngbTypeahead]="c_search" [resultTemplate]="catrgy" [inputFormatter]="formatter"
+                        (selectItem)="selectedItem($event.item)" />
+                </div>
+            </div>
+            <div class="col-xl-2">
+                <div>
+                    <ng-template class="w-100" #prd let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                    </ng-template>
+                    <div style="height: 84%; position: relative;">
+                        <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+                            (input)="arrayName = 'products'; searchField = 'name'" autocomplete="off"
+                            class="form-control" [(ngModel)]="prod" placeholder="Search Products..."
+                            [ngbTypeahead]="c_search" [resultTemplate]="prd" [inputFormatter]="formatter"
+                            (selectItem)="selectedItem($event.item)" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 mt-1 text-left">
+                <ng-template class="w-100" #prdtxt let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                </ng-template>
+                <div style="height: 84%; position: relative;">
+                    <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+                        (input)="arrayName = ''; searchField = 'name'" autocomplete="off" class="form-control"
+                        [(ngModel)]="prodtxt" placeholder="Search Products Text..." [ngbTypeahead]="c_search"
+                        [resultTemplate]="prdtxt" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+                </div>
+            </div>
+            <div class="col-xl-2 mt-1 text-left">
+                <input type="text" class="form-control" placeholder="BillId..">
+            </div>
+            <div class="col-xl-2 mt-1 text-left">
+                <ng-template class="w-100" #vndr let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+                </ng-template>
+                <div style="height: 84%; position: relative;">
+                    <input id="typeahead-template" style="height: 100%;" #instance="ngbTypeahead" type="text"
+                        (input)="arrayName ='vendors'; searchField ='name'" autocomplete="off" class="form-control"
+                        [(ngModel)]="vendor" placeholder="Search Vendors..." [ngbTypeahead]="c_search"
+                        [resultTemplate]="vndr" [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />
+                </div>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Search spl Order </option>
+                    <option value=""> Special Order </option>
+                    <option value="">Other Order </option>
+                </select>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Search Maintenance Order </option>
+                    <option value=""> Maintenance Order </option>
+                    <option value="">Other Order </option>
+                </select>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Show 100 Records </option>
+                    <option value=""> Show 1 Records </option>
+                    <option value="">Show 1000 Records </option>
+                    <option value="">Show All Records </option>
+                </select>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Search Cancel Status </option>
+                    <option value=""> Review Closed</option>
+                    <option value="">Closed </option>
+                    <option value="">Partial </option>
+                    <option value="">Open </option>
+                </select>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Search Review Status </option>
+                    <option value=""> Review Closed </option>
+                    <option value="">Closed </option>
+                    <option value="">Partial </option>
+                    <option value="">Open </option>
+                </select>
+            </div>
+            <div class="col-md-2 mt-1">
+                <select class="form-control">
+                    <option value=""> Search spl Order </option>
+                    <option value=""> Special Order </option>
+                    <option value="">Other Order </option>
+                </select>
+            </div>
+        </div><br>
+        <div class="card">
+            <div class="card-header card-header-flex" *ngIf="isShown">
+
+                <div class="col-xl-4 mt-1 text-left" *ngIf="isShown">
+                    <input type="text" class="form-control" placeholder="input search text.." (input)="filtersearch()"
+                        style="width: 250px;">
+                </div>
+
+
+                <div class="col-md-2 mt-1 ml-10">
+                    <select class="form-control">
+                        <option value="" (click)="Billstatus(1)"> Pending</option>
+                        <option value="" (click)="Billstatus(2)"> Paid </option>
+                        <option value="" (click)="Billstatus(3)"> Show All Records </option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 mt-1" *ngIf="isShown" style="margin-left: 10px;">
+                    <select class="form-control">
+                        <option value="" routerLink="/apps/purchasebill"> Bill Payments</option>
+                        <option value="" routerLink="/apps/billpaybyvendor"> Bills By Vendors </option>
+                    </select>
+                </div>
+
+            </div>
+            <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown"
+                [nzData]="filteredvalues">
+                <thead>
+                    <tr>
+                        <th><strong> Bill Id</strong></th>
+                        <th><strong> Vendor</strong> </th>
+                        <th><strong>Received Location </strong> </th>
+                        <th><strong>Payment Location </strong> </th>
+                        <th><strong>Bill Date </strong> </th>
+                        <th><strong> Bill Amount</strong></th>
+                        <th><strong>Balance </strong> </th>
+                        <th><strong>Status </strong> </th>
+                        <th><strong>Actions </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ord of basicTable.data">
+                        <td style="color: blue;">
+                            <a class="btn btn-sm btn-light" href="javascript: void(0);"
+                                (click)="openDetailpopup(contentdetail1,ord.id);reload()">
+                                {{ord.billId}}
+                            </a>
+                        </td>
+                        <td style="color: blue;">
+                            {{ord.name1}}
+                        </td>
+                        <td style="color: blue;">
+                            {{ord.name}}
+                        </td>
+                        <td style="color: blue;">
+                            {{ord.paymentStore}}
+                        </td>
+                        <td>
+                            {{ord.receivedDate.slice(0,10)}}
+                        </td>
+                        <td>
+                            &#8377;{{ord.billAmount| number: ".2"}}
+                        </td>
+                        <td>
+                            &#8377;{{ord.pendAmount| number: ".2"}}
+                        </td>
+                        <td></td>
+                        <td>
+                            <a (click)="billpayfor(ord.billId)" href="javascript: void(0);"
+                                class="btn btn-sm btn-light ">
+                                <i class="fe fe-dollar-sign" aria-hidden="true"></i>
+                            </a>
+                            <!-- <a href="javascript: void(0);" (click)="Delete(ord.billId)"
+                        class="btn btn-sm btn-light pull-left" slot="actions">
+                        <i class="fe fe-trash mr-1"></i>
+                    </a> -->
+                            <a href="javascript: void(0);" (click)="purchasedetail(ord.billId)"
+                                class="btn btn-sm btn-light pull-left" slot="actions" style="color: blue;">
+                                <i class="fad fa-info"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    <!-- <button *ngIf="isShown" (click)="locback()">Go Back</button> -->
+                    <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination">
+                    </ngb-pagination>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="isTable">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                            data-feather="archive"></i></span></span>Pay Purchase Bill</h4>
+        </div>
+    </div>
+
+    <div class="card-body" *ngIf="isTable">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Description"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment
+                Location</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.store"
+                    name="example_name" value="" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total
+                Balance</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.balance"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Amount"
+                    name="example_name" value="" />
+            </div>
+        </div>
+
+        <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5">
+            <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isTable">
+                <thead>
+                    <tr>
+                        <th><strong>Bill Id </strong> </th>
+                        <th><strong> Contact </strong> </th>
+                        <th><strong> Bill Date </strong> </th>
+                        <th><strong> Bill Amount </strong> </th>
+                        <th><strong>Paid Amount </strong> </th>
+                        <th><strong>Balance Amount </strong> </th>
+                        <th><strong>Payment </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ord of billpay.bills.value.bills">
+                        <td style="color: blue;">
+                            {{ord.billId}}
+                        </td>
+                        <td style="color: blue;">
+                            {{ord.name}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            {{ord.billDate.slice(0,10)}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.billAmount | number: ".2"}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.paidAmount | number: ".2"}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.pendAmount | number: ".2"}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            <input type="text" [(ngModel)]="trans.pay" (click)="updquery()">
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.IsOnlinePayment"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" style="font-weight: bold;">Payment Mode <span
+                    style="color: red">*</span></label>
+            <div class="col-md-3 pt-2">
+                <select class="form-control" style="border-color: black;" (click)="paymttype()"
+                    [(ngModel)]="trans.PaymentTypeId">
+                    <option *ngFor="let pcat of billpay.transMode" (click)="paymttype()"
+                        [(ngModel)]="trans.PaymentTypeId" value="{{pcat.id}}">{{pcat.description}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="label == true">
+            <label class="col-md-3 col-form-label" style="font-weight: bold;">Bank A/c No <span
+                    style="color: red">*</span></label>
+            <div class="col-md-3 pt-2">
+                <select class="form-control" style="border-color: black;" [(ngModel)]="trans.accountNo">
+                    <option *ngFor="let pcat of accountData.ord" value="{{pcat.id}}">{{pcat.accountNo}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction
+                Date</label>
+            <div class="col-md-3 pt-2">
+                <input type="date" class="form-control" style="border-color: black;" [(ngModel)]="trans.TransDate"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction
+                Time</label>
+            <div class="col-md-3 pt-2">
+                <input type="time" class="form-control" style="border-color: black;" [(ngModel)]="trans.TransDateTime"
+                    name="example_name" value="" />
+            </div>
+        </div>
+
+        <button class="btn btn-success px-5" (click)="Submit()">Submit</button>
+    </div>
+    <button *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="locback1()">Go
+        Back</button>
+
+    <div class="form-group row" *ngIf="EditTable">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                            data-feather="archive"></i></span></span> Purchase Bill Details</h4>
+        </div>
+    </div>
+
+    <div class="card-body" *ngIf="EditTable">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Description"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment
+                Location</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.paystore"
+                    name="example_name" value="" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total
+                Balance</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.TotalBalance"
+                    name="example_name" value="" />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" disabled style="border-color: black;" name="example_name"
+                    value="" />
+            </div>
+        </div>
+        <div class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5">
+            <nz-table [nzShowPagination]="false" class="kit__utils__table" *ngIf="EditTable">
+                <thead>
+                    <tr>
+                        <th><strong> Bill Id </strong></th>
+                        <th><strong> Contact </strong> </th>
+                        <th><strong> Bill Date </strong> </th>
+                        <th><strong> Bill Amount </strong> </th>
+                        <th><strong> Paid Amount </strong> </th>
+                        <th><strong> Balance Amount </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ord of billpay.bills.value.bills">
+                        <td style="color: blue;">
+                            {{ord.billId}}
+                        </td>
+                        <td style="color: blue;">
+                            {{ord.name}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            {{ord.billDate.slice(0,10)}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.billAmount | number: ".2"}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.paidAmount | number: ".2"}}
+                        </td>
+                        <td style="font-weight: bold;">
+                            &#8377;{{ord.pendAmount | number: ".2"}}
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <button *ngIf="EditTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="locback2()">Go
+        Back</button>
+</div>

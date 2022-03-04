@@ -1,0 +1,175 @@
+<div class="cui__utils__heading">
+    <strong>Add Product</strong>
+</div>
+<div class="card  ">
+    <div class="col-xl-12 row mt-3 ">
+        <div class="col-xl-6">
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Product Name</span>
+                <input type="text" class="form-control" [(ngModel)]="product.name" (input)="setcombinationname()" placeholder="Enter Product..."
+                    [ngClass]="{'is-invalid': submitted && product.name == ''}" />
+                <span *ngIf="submitted && product.name == ''" class="text-danger">Product name cannot be empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Product Description</span>
+                <input type="text" class="form-control" [(ngModel)]="product.description"
+                    placeholder="Enter Description..." />
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Product Code</span>
+                <input type="text" class="form-control" [(ngModel)]="product.productCode"
+                    placeholder="Enter Product Code.."
+                    [ngClass]="{'is-invalid': submitted && product.productCode == null}" />
+                <span *ngIf="submitted && product.productCode == null" class="text-danger">Product Code cannot be
+                    Empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Brand</span>
+                <input [(ngModel)]="product.brand" type="text" class="form-control" placeholder="Enter Brand..."
+                    [ngClass]="{'is-invalid': submitted && product.brand == ''}" />
+                <span *ngIf="submitted && product.brand == ''" class="text-danger">Brand cannot be empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Tax Group</span>
+                <select [(ngModel)]="product.taxGroupId" class="form-control"
+                    [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+                    <option value="{{tax.id}}" *ngFor="let tax of taxgroups">{{tax.description}}</option>
+                </select>
+                <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be Empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Category</span>
+                <select [(ngModel)]="product.categoryId" class="form-control"
+                    [ngClass]="{'is-invalid': submitted && product.categoryId == 0}" (change)="getcategoryvariants()">
+                    <option value="{{category.id}}" *ngFor="let category of categories">{{category.description}}
+                    </option>
+                </select>
+                <span *ngIf="submitted && product.categoryId == 0" class="text-danger">Category cannot be Empty*</span>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Price</span>
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">&#8377;</span>
+                    </div>
+                    <input [ngClass]="{'is-invalid': submitted && product.price == null}" [(ngModel)]="product.price"
+                        placeholder="Amount" min="0" max="100" step="1" type="number" class="form-control">
+                    <!-- <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                        
+                    </div> -->
+                </div>
+                <span *ngIf="submitted && product.price ==null" class="text-danger">Price cannot be Empty*</span>
+            </div>
+
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Product Type</span>
+                <select [(ngModel)]="product.productTypeId" class="form-control"
+                    [ngClass]="{'is-invalid': submitted && product.productTypeId == 0}">
+                    <option value="{{producttype.id}}" *ngFor="let producttype of producttypes">
+                        {{producttype.description}}
+                    </option>
+                </select>
+                <span *ngIf="submitted && product.productTypeId == 0" class="text-danger">ProductType cannot be
+                    Empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">vendor</span>
+                <input type="text" class="form-control" placeholder="Enter Vendor..." />
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">Units</span>
+                <select [(ngModel)]="product.unitId" class="form-control"
+                    [ngClass]="{'is-invalid': submitted && product.unitId == 0}">
+                    <option value="{{unit.id}}" *ngFor="let unit of units">{{unit.description}}</option>
+                </select>
+                <span *ngIf="submitted && product.unitId == 0" class="text-danger">Unit cannot Be Empty*</span>
+            </div>
+            <div class="mb-3">
+                <span class="cui-crypto-dashboard-form-label">KOT Groups </span>
+                <select [(ngModel)]="product.kotGroupId" class="form-control"
+                    [ngClass]="{'is-invalid': submitted && product.kotGroupId == 0}">
+                    <option value="{{kotgroup.id}}" *ngFor="let kotgroup of kotgroups">{{kotgroup.description}}</option>
+                </select>
+                <span *ngIf="submitted && product.kotGroupId == 0" class="text-danger">KotGroup cannot be Empty*</span>
+            </div>
+            <div class="mb-3" *ngIf="!(combinations.length > 0)">
+                <span class="cui-crypto-dashboard-form-label">Barcode</span>
+                <input type="text" class="form-control" placeholder="Enter Barcode..."
+                    [ngClass]="{'is-invalid': submitted && product.barCode == null}"
+                    [(ngModel)]="product.barCode" />
+                <span *ngIf="submitted && product.barCode ==null" class="text-danger">barcode cannot be Empty*</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="categoryvariantgroups.length > 0"
+        class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" style="width: 75%;align-self: center;">
+        <div class="card-header card-header-flex">
+            <div class="d-flex flex-column justify-content-center mr-auto">
+                <h5 class="mb-0">Select VariantGroup</h5>
+                <!-- </div> -->
+                <!-- <div class="d-flex flex-column justify-content-center ">
+                <a class="btn btn-dashed" href="javascript: void(0);">
+                    View Combination
+                </a>
+            </div> -->
+            </div>
+        </div>
+        <div class="card-body row col-xl-12">
+            <div *ngFor="let vg of categoryvariantgroups" class="col-xl-4">
+                <strong>{{vg.variantGroupName}}</strong>
+                <!-- <div class="ml-3 row" > -->
+                <div class="ml-4" *ngFor="let v of vg.variants">
+                    <input class="form-check-input"   [(ngModel)]="v.selected" type="checkbox" name="{{v.id}}"
+                        id="{{v.id}}" (change)="variantchecked(vg.variantGroupId,v.id, $event)">
+                    <label class="form-check-lable" for="{{v.Id}}">{{v.name}}</label>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+        <div *ngIf="combinations.length > 0" class="">
+            <nz-table #basicTable [nzData]="combinations" nzSize="small" [nzShowPagination]="false" class="">
+                <thead>
+                    <tr>
+                        <th class="bg-transparent text-uppercase"><strong>Product</strong> </th>
+                        <th *ngFor="let key of keys" class="bg-transparent text-uppercase "><strong>{{key}}</strong></th>
+                        <th class="bg-transparent text-uppercase"><strong>Barcode</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cmb of basicTable.data">
+                        <td>
+                            {{cmb.product? cmb.product : 'Unknown'}}
+                        </td>
+                        <td *ngFor="let key of keys">{{cmb[key]}}</td>
+                        <td style = "width: 30%;">
+                            <input type="text" class="form-control" placeholder="Enter Barcode..."
+                                [(ngModel)]="cmb.barcode" />
+                            <!-- <span *ngIf="submitted && product.barcodeid ==null" class="text-danger">barcode cannot be Empty*</span> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="mb-3">
+        <!-- <div>
+            <button class="btn btn-danger">
+                <strong>cancel</strong>
+            </button>
+        </div> -->
+        <!-- <button type="button" class="btn btn-secondary " (click)="location.back()"><i nz-icon nzType="left"></i>Go
+                Back</button>
+            <button class="btn btn-success pull-right"  (click)="addProduct()">
+                <strong>Add</strong>
+            </button> -->
+        <button type="button" class="btn btn-secondary px-5 ml-5" (click)="location.back()">Go
+            Back</button>
+        <button type="button" class="btn btn-success px-5 pull-right mr-5" (click)="addProduct()">Save</button>
+    </div>
+</div>
+

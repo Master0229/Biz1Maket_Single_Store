@@ -1,0 +1,107 @@
+<div>
+    <div [hidden]="!show">
+      <div class="cui__utils__heading">
+        <strong>TaxGroup</strong>
+      </div>
+      <div class="card">
+        <div class="card-header card-header-flex">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+              <input type="text" nz-input placeholder="input search text"  [(ngModel)]="term" (input)="filtersearch()"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+              <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+            </ng-template>
+          </div>
+          <div class="d-flex flex-column justify-content-center">
+            <a class="btn btn-success" href="javascript: void(0);" (click)="show = !show">
+              Add TaxGroup
+            </a>
+          </div>
+        </div>
+        <!-- Tax Grp Table -->
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" [nzData]="tabledata">
+          <thead>
+            <tr>
+              <th><strong>Description</strong>
+              </th>
+              <th><strong>Tax 1</strong>
+              </th>
+              <th><strong>Tax 2</strong>
+              </th>
+              <th><strong>Tax 3</strong>
+              </th>
+              <th><strong>IsInclusive</strong>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tax of basicTable.data ">
+              <td>
+                <a class="btn btn-sm btn-light kit__utils__donut--primary" (click)="editTaxgroup(tax)">
+                  {{tax.description}}
+                </a>
+              </td>
+              <td>
+                {{tax.tax1}}
+              </td>
+              <td>
+                {{tax.tax2}}
+              </td>
+              <td>
+                {{tax.tax3}}
+              </td>
+              <td>
+                <span *ngIf="tax.isInclusive" class="text-success">YES</span>
+                <span *ngIf="!tax.isInclusive" class="text-danger">NO</span>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <!-- Card Hide & Show -->
+    <div [hidden]="show " class="card">
+      <h5 class="ml-3 mt-3">
+        <strong *ngIf="taxgroup.id==0">Add TaxGroup</strong>
+        <strong *ngIf="taxgroup.id > 0">Edit TaxGroup</strong>
+      </h5>
+      <div class="card-body">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="baseFullname">Description</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" [(ngModel)]="taxgroup.description"
+              placeholder="Enter Description..." />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Tax 1</label>
+          <div class="col-md-6">
+            <input type="number" class="form-control" [(ngModel)]="taxgroup.tax1" placeholder="Enter Tax" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Tax 2</label>
+          <div class="col-md-6">
+            <input type="number" class="form-control" [(ngModel)]="taxgroup.tax2" placeholder="Enter Tax" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Tax 3</label>
+          <div class="col-md-6">
+            <input type="number" class="form-control" [(ngModel)]="taxgroup.tax3" placeholder="Enter Tax" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">IsInclusive</label>
+          <div class="col-md-6">
+            <input type="checkbox" [(ngModel)]="taxgroup.isInclusive" placeholder="Enter Tax" />
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary px-5" (click)="back()">
+          <i nz-icon nzType="left"></i>Back</button>
+        <button type="button" class="btn btn-success px-5 pull-right" (click)="addTax()">Save</button>
+      </div>
+    </div>
+  </div>
+  

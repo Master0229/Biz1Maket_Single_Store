@@ -1,0 +1,125 @@
+<div>
+    <div class="cui__utils__heading">
+        <strong>Add Stock</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex">
+            <div class="d-flex flex-column justify-content-center mr-auto">
+                <!-- <div class="row">
+                    <div class="text-muted">
+                        <label class="col-form-label">Batch No</label>
+                    </div>
+                    <div>
+                        <input nz-input [(ngModel)]="batchno" [ngClass]="{'is-invalid': submitted && batchno <=0}"
+                            class=" ml-2 mt-1" type="text" placeholder="Batch No" min="1" />
+                    </div>
+                </div> -->
+            </div>
+            <div class="d-flex flex-column justify-content-center mr-3">
+                <nz-date-picker [(ngModel)]="batchdate" nzShowTime nzFormat="yyyy-MM-dd h:mm a"
+                    nzPlaceHolder="Select DateTime">
+                </nz-date-picker>
+                <!-- <span *ngIf="submitted && batchdate == ''" class="text-danger">DateTime cannot be empty*</span> -->
+
+            </div>
+            <!-- <div class="d-flex flex-column justify-content-center">
+                <nz-time-picker [(ngModel)]="entrydatetime" nzFormat="h:mm a" [nzUse12Hours]="true"></nz-time-picker>
+            </div> -->
+            <div class="d-flex flex-column justify-content-center mr-2 ">
+                <button class="btn btn-success pull-right" [disabled]="!(batches.length > 0)"
+                    href="javascript: void(0);" (click)="saveBatch()">
+                    Save Stock
+                </button>
+            </div>
+        </div>
+        <nz-table #middleTable nzSize="middle" [nzData]="dynamicRows" class="kit__utils__table mb-4">
+            <thead>
+                <tr>
+                    <th><strong>Barcode</strong></th>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Quantity</strong></th>
+                    <!-- <th><strong>Variant</strong></th> -->
+                    <th><strong>Price</strong></th>
+                    <th><strong>Expiary Date</strong></th>
+                    <th><strong>Action </strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input class="form-control" #barcodeel [(ngModel)]="batchentry.barCode" type="text"
+                            placeholder="barcode" min="1" (keyup.enter)="searchbybarcode()"
+                            [ngClass]="{'is-invalid': submitted && batchentry.barCode <= 0}" />
+                    </td>
+                    <td>
+                        <input class="form-control" placeholder="Select" [(ngModel)]="inputValue"
+                            (input)="onInputAutocomplete()" [nzAutocomplete]="auto"
+                            (keyup.enter)="quantityel.focus();" />
+                        <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
+                            <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
+                                [nzValue]="product.product">
+                                {{ product.product }}
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                    </td>
+                    <td>
+                        <input class="form-control" #quantityel (keyup.enter)="priceel.focus();"
+                            [(ngModel)]="batchentry.quantity" type="text" placeholder="Qty" min="1"
+                            [ngClass]="{'is-invalid': submitted && batchentry.quantity <= 0}" />
+                    </td>
+                    <!-- <td>
+                        <select class="form-control">
+                            <option value="0" disabled>Select Variant Group</option>
+                            <option>1</option>
+                        </select>
+                    </td> -->
+                    <td>
+                        <div class="input-group ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">&#8377;</span>
+                            </div>
+                            <input #priceel [(ngModel)]="batchentry.price" type="text" placeholder="Price" min="1"
+                                class="form-control" aria-label="Amount (to the nearest dollar)"
+                                [ngClass]="{'is-invalid': submitted && batchentry.price <= 0}" />
+                        </div>
+                    </td>
+                    <td>
+                        <nz-date-picker [(ngModel)]="batchentry.expiarydate" (ngModelChange)="onChange($event)">
+                        </nz-date-picker>
+                    </td>
+                    <td>
+                        <a #add href="javascript: void(0);" class="btn btn-sm btn-primary" (click)="pushintobatch()">
+                            <i class="fe fe-plus fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr *ngFor="let batch of batches;let i = index">
+                    <td>
+                        {{batch.code}}
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-light" href="javascript: void(0);">
+                            {{batch.product.product}}
+                        </a>
+                    </td>
+                    <td>
+                        {{batch.quantity}}
+                    </td>
+                    <td>
+                        &#8377; {{batch.price}}
+                    </td>
+                    <td>
+                        <span *ngIf="batch.expiarydate">{{batch.expiarydate | date: 'mediumDate' }}</span>
+                        <span *ngIf="!batch.expiarydate">None</span>
+
+                    </td>
+                    <td>
+                        <a href="javascript: void(0);" class="btn btn-sm btn-light" (click)="delete(i)">
+                            <i class="fe fe-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

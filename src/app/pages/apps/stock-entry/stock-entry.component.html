@@ -1,0 +1,448 @@
+<div hidden>
+    <div class="cui__utils__heading">
+        <strong>Stock Entry</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex">
+            <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+                <h5 class="mb-0">Search By</h5>
+            </div> -->
+            <!-- <div class="ml-5 justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <input class="form-control"  [(ngModel)]="stockentry.batchno"
+                    type="number" placeholder="barcode" min="1" (keyup.enter)="searchbybatchno(batches)"  />
+                </nz-input-group>
+            
+            </div> -->
+            <!-- <div class=" justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <input class="form-control"   [(ngModel)]="stockentry.barcodeId"
+                    type="number" placeholder="barcode" min="1"  (keyup.enter)="searchbybarcode(stockentry.barcodeId)"/>
+                </nz-input-group>
+            
+            </div>  -->
+            <!-- <div class=" justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <input type="text" nz-input placeholder="Date" />
+                </nz-input-group>
+            
+            </div> -->
+            <div class=" justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+                </nz-input-group>
+
+            </div>
+            <div class="d-flex flex-column justify-content-center mr-2 ">
+                <button class="btn btn-success pull-right" href="javascript: void(0);">
+                    Save Stock
+                </button>
+            </div>
+        </div>
+        <div class="card-header card-header-flex">
+            <div class="d-flex flex-column justify-content-center mr-auto">
+                <h5 class="mb-0">Search By</h5>
+            </div>
+            <div class="ml-5 justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <!-- <input class="form-control" [(ngModel)]="stockentry.batchno" type="number" placeholder="batchNo"
+                        min="1" (keyup.enter)="searchbybatchno(batches)" /> -->
+                </nz-input-group>
+
+            </div>
+            <div class=" justify-content-center mr-auto mt-3">
+                <nz-input-group>
+                    <input class="form-control" [(ngModel)]="stockentry.barcodeId" type="number" placeholder="barcode"
+                        min="1" (keyup.enter)="searchbybarcode(stockentry.barcodeId)" />
+                </nz-input-group>
+            </div>
+            <div class=" justify-content-center mr-auto mt-3">
+                <input [(ngModel)]="inputValue" (input)="onInputAutocomplete()" class="form-control"
+                    placeholder="Select Product" [nzAutocomplete]="auto" />
+                <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
+                    <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
+                        [nzValue]="product.name">
+                        {{ product.name }}
+                    </nz-auto-option>
+                </nz-autocomplete>
+            </div>
+        </div>
+        <!-- <div class="card pl-3"> -->
+        <nz-table class="kit__utils__table mb-4">
+            <thead>
+                <tr>
+                    <th><strong>Batch No</strong></th>
+                    <th><strong>Barcode</strong></th>
+                    <th><strong>Product</strong></th>
+                    <!-- <th><strong>Batch</strong></th> -->
+                    <!-- <th><strong>Variant</strong></th> -->
+                    <th><strong>Quantity</strong></th>
+                    <th><strong>Price</strong></th>
+                    <th><strong>Expiary Date </strong></th>
+                    <th><strong>Action </strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <!-- <input class="form-control" [(ngModel)]="stockentry.batchno" type="number" placeholder="barcode"
+                            min="1" (keyup.enter)="searchbybatchno(batches)" /> -->
+                    </td>
+                    <td>
+                        <!-- <input class="form-control" [(ngModel)]="stockentry.barcodeId" type="number"
+                            placeholder="barcode" min="1" (keyup.enter)="searchbybarcode(stockentry.barcodeId)" /> -->
+                    </td>
+                    <td>
+                        <!-- <input [(ngModel)]="inputValue" (input)="onInputAutocomplete()" class="form-control"
+                            placeholder="Select" [nzAutocomplete]="auto" />
+                        <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
+                            <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
+                                [nzValue]="product.name">
+                                {{ product.name }}
+                            </nz-auto-option>
+                        </nz-autocomplete> -->
+                    </td>
+                    <td>
+                        <!-- <input class="form-control" #quantityel type="text" placeholder="Qty" min="1" /> -->
+                    </td>
+                    <td>
+                        <!-- <div class="input-group ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">&#8377;</span>
+                            </div>
+                            <input type="text" placeholder="Price" min="1" class="form-control"
+                                aria-label="Amount (to the nearest dollar)" />
+                        </div> -->
+                    </td>
+                    <td>
+                        jkl
+                    </td>
+                    <td>
+                        <!-- <a #add href="javascript: void(0);" class="btn btn-sm btn-primary">
+                            <i class="fe fe-plus fa-lg"></i>
+                        </a> -->
+                    </td>
+                </tr>
+                <!-- <tr >
+                    <td>
+                        {{batch.barcodeid}}
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-light" href="javascript: void(0);">
+                            {{batch.product.name}}
+                        </a>
+                    </td>
+                    <td>
+                        {{batch.quantity}}
+                    </td>
+                    <td>
+                        &#8377; {{batch.price}}
+                    </td>
+                    <td >
+                        <span *ngIf="batch.expiarydate">{{batch.expiarydate | date: 'mediumDate' }}</span>
+                        <span *ngIf="!batch.expiarydate">--------</span>
+
+                    </td>
+                    <td>
+                        <a href="javascript: void(0);" class="btn btn-sm btn-light" (click)="delete(i)">
+                            <i class="fe fe-trash"></i>
+                        </a>
+                    </td>
+                </tr> -->
+            </tbody>
+        </nz-table>
+    </div>
+    <ng-template #batches let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal-basic-title">Batch <code>#{{stockentry.batchno}}</code></h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <nz-table #smallTable nzSize="small">
+                <thead>
+                    <tr>
+                        <th>
+                            <code>#</code>
+                        </th>
+                        <th>Name</th>
+                        <th>Available Qty</th>
+                        <th>Price</th>
+                        <th>Expiary Date</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of batchesbybatchno">
+                        <td> <label nz-checkbox [(ngModel)]="product.selected"></label></td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>&#8377;{{ product.price}}</td>
+                        <td>{{ product.expiaryDate | date: "mediumDate"}}</td>
+                        <td>
+                            <input class="form-control" [(ngModel)]="product.stockquantity" type="number"
+                                placeholder="Qty" min="1" />
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="modal.close('Save click')">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="addstock()">Add Stock</button>
+        </div>
+    </ng-template>
+</div>
+<!-- ///////////////////////////////////////////////sdaSfaf///////////////////////// -->
+
+<div class="col-lg-12 ">
+    <div class="row">
+        <!-- <div class="mb-4  ">
+            <div class="mb-5">
+                <div class="mb-3"> -->
+        <nz-card style="height: 100%;" nzTitle="Search By">
+            <div>
+                <nz-input-group>
+                    <input class="form-control" [(ngModel)]="stockentry.batchno" type="number" placeholder="batchNo"
+                        min="1" (keyup.enter)="searchbybatchno()" />
+                </nz-input-group>
+            </div>
+            <br>
+            <div>
+                <nz-input-group>
+                    <input class="form-control" [(ngModel)]="stockentry.barcodeId" type="number" placeholder="barcode"
+                        min="1" (keyup.enter)="searchbybarcode(stockentry.barcodeId)" />
+                </nz-input-group>
+            </div>
+            <br>
+            <div>
+                <input [(ngModel)]="inputValue" (input)="onInputAutocomplete()" class="form-control"
+                    placeholder="Select Product" [nzAutocomplete]="auto" />
+                <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
+                    <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
+                        [nzValue]="product.name">
+                        {{ product.name }}
+                    </nz-auto-option>
+                </nz-autocomplete>
+            </div>
+            <br>
+        </nz-card>
+        <!-- <ng-template #extraTemplate>
+                    <a>More</a>
+                  </ng-template> -->
+        <!-- </div>
+            </div>
+        </div> -->
+
+        <div class="col-xs-12 col-md-9">
+            <!-- <div class="row"> -->
+            <nz-input-group>
+                <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+                <button class="btn btn-success pull-right mb-2" href="javascript: void(0);">
+                    Save Stock
+                </button>
+            </nz-input-group>
+            <!-- </div> -->
+            <!-- <div>
+                </div> -->
+            <div class="mb-4 card ">
+                <nz-table class="kit__utils__table mb-4" [nzData]="products" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th><strong>Batch No</strong></th>
+                            <th><strong>Barcode</strong></th>
+                            <th><strong>Product</strong></th>
+                            <!-- <th><strong>Batch</strong></th> -->
+                            <!-- <th><strong>Variant</strong></th> -->
+                            <th><strong>Quantity</strong></th>
+                            <th><strong>Price</strong></th>
+                            <th><strong>Expiary Date </strong></th>
+                            <th><strong>Action </strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let stock of stockproduct;let i = index;">
+                            <td>
+                                {{stock.batchNo}}
+                            </td>
+                            <td>
+                                {{stock.barcodeId}}
+                            </td>
+                            <td>
+                                {{stock.name}}
+                            </td>
+                            <td>
+                                {{stock.stockquantity}}
+                            </td>
+                            <td>
+                                &#8377;{{stock.price}}
+                            </td>
+                            <td>
+                                {{stock.expiaryDate | date: "mediumDate"}}
+                            </td>
+                            <td>
+                                <a href="javascript: void(0);" class="btn btn-sm btn-light" (click)="delete(i)">
+                                    <i class="fe fe-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!stockproduct.length">
+                            <td colspan="7" class="text-center">
+                                Stock is Empty!
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+        <ng-template #batchno let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-basic-title">Batch <code>#{{stockentry.batchno}}</code></h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <nz-table #smallTable nzSize="small" [nzData]="batchesbybatchno" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>
+                                <code>#</code>
+                            </th>
+                            <th>Name</th>
+                            <th>Available Qty</th>
+                            <th>Price</th>
+                            <th>Expiary Date</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of batchesbybatchno">
+                            <td> <label nz-checkbox [nzDisabled]="product.quantity == 0"
+                                    [(ngModel)]="product.selected"></label></td>
+                            <td>{{ product.name }}</td>
+                            <td [ngClass]="{'text-danger':product.quantity == 0}">{{ product.quantity }}</td>
+                            <td>&#8377;{{ product.price}}</td>
+                            <td><i *ngIf="product.isexpired" class="fe fe-alert-triangle text-danger mr-2" placement="top" ngbTooltip="Product is Expired"></i>
+                                <i *ngIf="!product.isexpired" class="fe fe-clock text-success mr-2"></i>
+                                {{ product.expiaryDate | date: "mediumDate"}}
+                            </td>
+                            <td>
+                                <input class="form-control" [disabled]="product.quantity == 0"
+                                    [(ngModel)]="product.stockquantity" type="number" placeholder="Qty" min="1"
+                                    max="{{product.quantity}}"
+                                    [ngClass]="{'is-invalid': (submitted && product.selected && !product.stockquantity >0) || product.stockquantity > product.quantity }" />
+                                <span *ngIf="product.stockquantity > product.quantity"
+                                    class="text-danger text-center">Entered quantity is exceeding available
+                                    quantity</span>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+            <div class="modal-footer">
+                <span *ngIf="submitted && !batchmodalvalid" class="text-danger text-center">Select One of the
+                    Product*</span>
+                <button type="button" class="btn btn-light" (click)="modal.close('Save click')">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addstockbybatch()">Add Stock</button>
+            </div>
+        </ng-template>
+        <ng-template #barcode let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-basic-title">Barcode <code>#{{stockentry.barcodeId}}</code></h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <nz-table #smallTable nzSize="small" [nzData]="batchesbybarcode" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>
+                                <code>#</code>
+                            </th>
+                            <th>Name</th>
+                            <th>Available Qty</th>
+                            <th>Price</th>
+                            <th>Expiary Date</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let barcode of batchesbybarcode">
+                            <td> <label nz-checkbox [nzDisabled]=" barcode.quantity == 0"
+                                    [(ngModel)]="barcode.selected"></label></td>
+                            <td>{{ barcode.name }}</td>
+                            <td [ngClass]="{'text-danger':barcode.quantity == 0}">{{ barcode.quantity }}</td>
+                            <td>&#8377;{{ barcode.price}}</td>
+                            <td>
+                                <i *ngIf="barcode.isexpired" class="fe fe-alert-triangle text-danger mr-2" placement="top" ngbTooltip="Product is Expired"></i>
+                                <i *ngIf="!barcode.isexpired" class="fe fe-clock text-success mr-2"></i>
+                                {{ barcode.expiaryDate | date: "mediumDate"}}
+                            </td>
+                            <td>
+                                <input class="form-control" [disabled]="barcode.quantity == 0"
+                                    [(ngModel)]="barcode.stockquantity" type="number" placeholder="Qty" min="1"
+                                    max="barcode.quantity"
+                                    [ngClass]="{'is-invalid': (submitted && barcode.selected && !barcode.stockquantity >0) || barcode.stockquantity > barcode.quantity }" />
+                                <span *ngIf="barcode.stockquantity > barcode.quantity"
+                                    class="text-danger text-center">Entered quantity is exceeding available
+                                    quantity</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+            <div class="modal-footer">
+                <span *ngIf="submitted && !batchmodalvalid" class="text-danger text-center">Select One of the
+                    Product*</span>
+                <button type="button" class="btn btn-light" (click)="modal.close('Save click')">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addstockbybarcode()">Add Stock</button>
+            </div>
+        </ng-template>
+        <ng-template #product let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-basic-title">Barcode <code>#{{stockentry.barcodeId}}</code></h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <nz-table #smallTable nzSize="small" [nzData]="batchesbybarcode" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>
+                                <code>#</code>
+                            </th>
+                            <th>Name</th>
+                            <th>Available Qty</th>
+                            <th>Price</th>
+                            <th>Expiary Date</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let barcode of batchesbybarcode">
+                            <td> <label nz-checkbox [(ngModel)]="barcode.selected"></label></td>
+                            <td>{{ barcode.name }}</td>
+                            <td>{{ barcode.quantity }}</td>
+                            <td>&#8377;{{ barcode.price}}</td>
+                            <td>{{ barcode.expiaryDate | date: "mediumDate"}}</td>
+                            <td>
+                                <input class="form-control" [(ngModel)]="barcode.stockquantity" type="number"
+                                    placeholder="Qty" min="1"
+                                    [ngClass]="{'is-invalid': submitted && barcode.selected && !barcode.stockquantity >0 }" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" (click)="modal.close('Save click')">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addstockbybarcode()">Add Stock</button>
+            </div>
+        </ng-template>
+    </div>
+</div>

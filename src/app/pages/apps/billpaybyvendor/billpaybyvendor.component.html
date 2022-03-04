@@ -1,0 +1,199 @@
+<!-- <div>
+    <div class="form-group row" *ngIf="isShown">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="archive"></i></span></span> Purchase Bill Payments</h4>
+          </div>
+              </div>
+              <div class="form-group row">     -->
+        <!-- <div class="form-group row" *ngIf="isShown" > -->
+            <div>
+                <div>
+                    <div class="cui__utils__heading" *ngIf="isShown">
+                        <strong>  Purchase Bill - Index </strong>
+                    </div>
+                <div class="card">
+                    <div class="card-header card-header-flex" *ngIf="isShown">          
+          <div ngbDropdown class="col-md-3 pt-2" >
+            <button  class="btn btn-success" id="dropdownBasic1" ngbDropdownToggle>Bill List</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button routerLink="/apps/purchasemaint" ngbDropdownItem>Bill Payments</button>
+              <button routerLink="/apps/purchasebill" ngbDropdownItem> Bills List</button>
+            </div>  
+          </div>
+        <!-- </div> -->
+        <div   *ngIf="isShown"  style="width: 200px;margin-left:500px;margin-top: 10px;">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                    (input)="filtersearch()"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+            </ng-template>
+            </div>
+
+        </div>
+<nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+     <thead>
+        <tr>
+            <th><strong>Vendor </strong> </th>
+            <th><strong>  Payment Store</strong></th> 
+            <th><strong> Bill Amount </strong></th>                            
+            <th><strong>Pending Amount </strong> </th>  
+            <th><strong>Action </strong> </th>
+        </tr>
+    </thead>
+    <tbody>
+ <tr *ngFor="let ord of basicTable.data" >
+            <td style="color: blue;">
+                {{ord.provider}}
+            </td>
+            <td style="color: blue;">
+                {{ord.paymentStore}}
+            </td>
+            <td>
+                &#8377;{{ord.billAmount| number: ".2"}} 
+            </td>
+            <td>
+                &#8377;{{ord.pendAmount| number: ".2"}} 
+            </td>
+<td>
+             <a (click)="paybill(ord.billId,ord.paymentStoreId,ord.providerId)" style="color: blue;" href="javascript: void(0);" class="btn btn-sm btn-light ">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                </a> 
+                    <!-- <a href="javascript: void(0);" style="color: blue;" (click)="Delete(ord.transactionId)"
+                        class="btn btn-sm btn-light pull-left" slot="actions">
+                        <i class="fe fe-trash mr-1"></i>
+                    </a> -->
+
+</td>
+        </tr>   
+        <button *ngIf="isShown" (click)="locback()">Go Back</button>
+        <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+    </tbody>
+</nz-table>
+</div>
+</div>
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                data-feather="archive"></i></span></span>Pay Purchase Bill</h4>
+      </div>
+          </div>
+
+<div class="card-body" *ngIf="isTable">
+     <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Description" name="example_name" value=""
+                 />
+        </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment Location</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.paystore" name="example_name" value="" 
+           />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total Balance</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalancebefore" name="example_name" value="" 
+           />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.amount" (click)="updquery()" name="example_name" value="" 
+            />
+    </div>
+</div>
+
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" disabled style="border-color: black;"  name="example_name" value="" 
+            />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment mode</label>
+    <div class="col-md-3 pt-2">
+        <select class="form-control"  [(ngModel)]="vendor.PaymentTypeId" (click)="paymttype()" style="width: 50%;border-color: black;">
+            <option *ngFor="let pcat of paymentTypes" (click)="paymttype()" value="{{pcat.id}}">{{pcat.description}}</option>
+        </select>
+    </div>
+    </div>
+<div class="form-group row" *ngIf= "label == true">
+    <label class="col-md-3 col-form-label" style="font-weight: bold;">Bank A/c No <span style="color: red">*</span></label>
+    <div class="col-md-3 pt-2">
+        <select class="form-control" style="border-color: black;" [(ngModel)]="trans.accountNo">
+            <option *ngFor="let pcat of accountData.ord" value="{{pcat.id}}">{{pcat.accountNo}}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Date</label>
+    <div class="col-md-3 pt-2">
+        <input type="date" class="form-control" style="border-color: black;"  name="example_name" value="" 
+          />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Time</label>
+    <div class="col-md-3 pt-2">
+        <input type="time" class="form-control" style="border-color: black;"  name="example_name" value="" 
+          />
+    </div>
+</div>
+<div  class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" >
+<nz-table  #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isTable">
+    <thead>
+<tr>
+<th><strong>Bill Id </strong> </th>
+<th><strong> Contact </strong> </th>
+<th><strong>Bill Date  </strong> </th>                          
+<th><strong>Bill Amount </strong>  </th>                            
+<th><strong>Paid Amount </strong> </th>  
+<th><strong>Balance Amount </strong> </th>   
+<th><strong>Payment </strong> </th>                                                                             
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let ord of billpay.bill.value.bills; let i = index">
+<td style="color: blue;">
+{{ord.billId}}
+</td>
+<td style="color: blue;">
+{{ord.PayStore}}
+</td>
+<td style="color: blue;">
+{{ord.billDate.slice(0,10)}}
+</td>            
+<td style="color: blue;">
+{{ord.billAmount}}
+</td>
+<td>
+{{ord.paidAmount}}
+</td>            
+<td>
+&#8377;{{ord.pendAmount| number: ".2"}} 
+</td>
+<td>
+<input type="text" [(ngModel)]="trans.amount"  (click)="updquery()">
+</td>
+</tr>   
+</tbody>
+</nz-table>
+</div>
+
+    <button  class="btn btn-success px-5"  (click)="Submit()" >Submit</button>
+</div>
+<button *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;"  (click)="locback()">Go
+    Back</button>
+
+

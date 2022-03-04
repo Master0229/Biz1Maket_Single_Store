@@ -1,0 +1,139 @@
+<div>
+    <div class="cui__utils__heading" *ngIf="isShown">
+        <strong>Asset Type List - Index</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex" *ngIf="isShown">
+            <button style="width:105px;height: 34px;margin-top: 20px;" class="btn btn-success " (click)="locback()">
+                Create New
+            </button>
+            <div style="width: 200px;margin-left: 700px;margin-top: 10px">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                        (input)="filtersearch()" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+            </div>
+        </div>
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+            <thead>
+                <tr>
+                    <th><strong>Type Id</strong></th>
+                    <th><strong>Type</strong></th>
+                    <th><strong>Vehicle</strong> </th>
+                    <th><strong>Status</strong></th>
+                    <th><strong>Actions</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ord of basicTable.data">
+                    <td>
+                        {{ord.id}}
+                    </td>
+                    <td>
+                        {{ord.description}}
+                    </td>
+                    <td>
+                        {{ord.isVehicle}}
+                    </td>
+                    <td>
+                        <span *ngIf="ord.isActive == true">Active</span>
+                        <span *ngIf="ord.isActive == false">InActive</span>
+                    </td>
+                    <td>
+                         <a href="javascript: void(0);" (click)="DeActivate(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="fa fa-check-square"></i>
+                        </a>
+                        <a (click)="upddata(ord.id)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        </a>
+                       
+                    </td>
+                </tr>
+                <!-- <button *ngIf="isShown" (click)="locback()">Go Back</button> -->
+                <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Create Asset Type</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                 placeholder="Enter Asset Type..."
+                [ngClass]="{'is-invalid': submitted && account.Description == ''}" />
+            <span *ngIf="submitted && asset.Description == ''" class="text-danger">Asset Type cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is Vehicle</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsVehicle" name="example_name" value=""
+                style="width: 15px;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is Online
+            Payment</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsOnlinePayment" name="example_name" value=""
+                style="width: 15px;" />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success px-5" (click)="Create()">Create</button>
+</div>
+<button type="button" *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+<div class="card-body" *ngIf="isEditTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                style="width: 50%;border-color: black;" placeholder="Enter Asset Type..."
+                [ngClass]="{'is-invalid': submitted && account.StartDate == ''}" />
+            <span *ngIf="submitted && asset.Description == ''" class="text-danger">Asset Type cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;"> Status</label>
+        <span *ngIf="asset.isActive == true"> Active </span>
+        <span *ngIf="asset.isActive == false"> InActive</span>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is Vehicle</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsVehicle" name="example_name" value=""
+                style="width: 50%;border-color: black;" style="width: 10px;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is Online
+            Payment</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsOnlinePayment" name="example_name" value=""
+                style="width: 50%;border-color: black;" style="width: 10px;" />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success px-5" (click)="Update()">Update</button>
+</div>
+<button type="button" *ngIf="isEditTable" class="btn btn-secondary " style="width: 80px;height: 30px;"
+    (click)="goback()">Go
+    Back</button>

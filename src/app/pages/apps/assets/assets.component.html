@@ -1,0 +1,325 @@
+<div>
+    <div class="cui__utils__heading" *ngIf="isShown">
+        <strong>Asset List - Index</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex" *ngIf="isShown">
+            <button class="btn btn-success" style="width:105px;height: 34px;margin-top: 18px;"
+                (click)="locback()">Create New</button>
+
+            <div style="width: 200px;margin-left: 700px;margin-top: 10px">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                        (input)="filtersearch()" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+            </div>
+        </div>
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+            <thead>
+                <tr>
+                    <th><strong>AssetId</strong></th>
+                    <th><strong>Asset</strong></th>
+                    <th><strong>Asset Type </strong></th>
+                    <th><strong>Responsible By</strong> </th>
+                    <th><strong>Vendor</strong> </th>
+                    <th><strong>Location</strong> </th>
+                    <th><strong>Is Active</strong> </th>
+                    <th><strong>Count</strong> </th>
+                    <th><strong>Actions</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ord of basicTable.data">
+                    <td>
+                        <a (click)="upddata(ord.id)" class="btn btn-sm btn-light kit__utils__donut--primary">
+                            {{ord.id}}
+                        </a>
+                    </td>
+                    <td>
+                        {{ord.description}}
+                    </td>
+                    <td>
+                        <span *ngIf="ord.liabilityTypeId == 1">Swiping Machine</span>
+                        <span *ngIf="ord.liabilityTypeId == 2">Mobile</span>
+                        <span *ngIf="ord.liabilityTypeId == 3">Tab</span>
+                    </td>
+
+                    <td>
+                        {{ord.contact.name}}
+                    </td>
+                    <td>
+                        {{ord.vendor.name}}
+                    </td>
+
+                    <td>
+                        {{ord.store.name}}
+                    </td>
+
+                    <td>
+                        <span *ngIf="ord.isActive == true">Active</span>
+                        <span *ngIf="ord.isActive == false">InActive</span>
+                    </td>
+                    <td>
+                        {{ord.count}}
+                    </td>
+                    <td>
+
+                        <a href="javascript: void(0);" (click)="DeActivate(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="fa fa-check"></i>
+                        </a>
+
+                        <!-- <a class="px-10">
+                            <input type="checkbox" [(ngModel)]="product.isactive"
+                                (click)="active(product.id,!product.isactive)">
+                        </a> -->
+
+                        <a href="javascript: void(0);" (click)="DetailAsset(ord.id)"
+                            class="btn btn-icon btn-icon-only  btn-icon-style-4 mr-25 text-primary" style="height: 30px;width: 38px;" slot="actions">
+                            <i class="fe fe-edit-2" aria-hidden="true"></i>
+                        </a>
+                        
+
+
+
+                    </td>
+                </tr>
+                <!-- <button *ngIf="isShown" (click)="locback()">Go Back</button> -->
+                <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Add Assets</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                placeholder="Enter Asset..." [ngClass]="{'is-invalid': submitted && asset.Description == ''}" />
+            <span *ngIf="submitted && asset.Description == ''" class="text-danger">Asset name cannot be empty*</span>
+        </div>
+        <!-- </div>
+<div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #assetautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Asset Type ..." [ngbTypeahead]="searchdispatch" [inputFormatter]="formatterdispatch"
+                [resultTemplate]="rt" (selectItem)="selecteddispatchitem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ot let-o="result" let-t="term">
+                <ngb-highlight [result]="o.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #Supplierautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Search Location..." [ngbTypeahead]="searchsupplier" [resultTemplate]="ot"
+                [inputFormatter]="formattersupplier" (selectItem)="selectedsupplieritem($event.item)" />
+        </div>
+        <!-- </div>
+<div class="form-group row"> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ct let-c="result" let-t="term">
+                <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete #instance="ngbTypeahead" type="text" class="form-control" placeholder="Search ..."
+                [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact" [resultTemplate]="ct"
+                (selectItem)="selectedcontactitem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Count</label>
+        <div class="col-md-3 pt-2">
+            <input type="number" class="form-control" [(ngModel)]="asset.Count" name="example_name" value=""
+                placeholder="Enter Count..." />
+        </div>
+        <!-- </div>
+ <div class="form-group row"> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #vt let-v="result" let-t="term">
+                <ngb-highlight [result]="v.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #vendorautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Search ..." [ngbTypeahead]="searchvendor" [inputFormatter]="formattervendor"
+                [resultTemplate]="vt" (selectItem)="selectedvendoritem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is
+            IsOnlinePayment</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsOnlinePayment" name="example_name" value=""
+                style="width: 10px;" />
+        </div>
+    </div>
+
+    <button class="btn btn-success px-5" (click)="Create()">Create</button>
+</div>
+<button *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+<div class="form-group row" *ngIf="isEditTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Edit Assets</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isEditTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+        <!-- </div>
+    <div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #assetautocomplete [(ngModel)]="model" #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Asset Type ..." [ngbTypeahead]="searchdispatch" [inputFormatter]="formatterdispatch"
+                [resultTemplate]="rt" (selectItem)="selecteddispatchitem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ot let-o="result" let-t="term" style="font-weight: bold;">
+                <ngb-highlight [result]="o.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #Supplierautocomplete [(ngModel)]="Store" #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Search Location..." [ngbTypeahead]="searchsupplier" [resultTemplate]="ot"
+                [inputFormatter]="formattersupplier" (selectItem)="selectedsupplieritem($event.item)" />
+        </div>
+        <!-- </div>
+    <div class="form-group row"> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #ct let-c="result" let-t="term">
+                <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete [(ngModel)]="Contact" #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Search ..." [ngbTypeahead]="searchcontact" [inputFormatter]="formattercontact"
+                [(ngModel)]="asset.Contact" [resultTemplate]="ct" (selectItem)="selectedcontactitem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Count</label>
+        <div class="col-md-3 pt-2">
+            <input type="number" class="form-control" [(ngModel)]="asset.Count" name="example_name" value=""
+                placeholder="Enter Count..." />
+        </div>
+        <!-- </div>
+     <div class="form-group row"> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #vt let-v="result" let-t="term">
+                <ngb-highlight [result]="v.name" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #vendorautocomplete [(ngModel)]="Vendor" #instance="ngbTypeahead" type="text" class="form-control"
+                placeholder="Search ..." [ngbTypeahead]="searchvendor" [inputFormatter]="formattervendor"
+                [resultTemplate]="vt" (selectItem)="selectedvendoritem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is
+            IsOnlinePayment</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsOnlinePayment" name="example_name" value=""
+                style="width: 10px;" />
+        </div>
+    </div>
+
+    <button class="btn btn-success px-5" (click)="Update()">Update</button>
+</div>
+<button *ngIf="isEditTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+<div class="card-body" *ngIf="isDetailTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+        <!-- </div>
+       <div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type</label>
+        <!-- <div class="col-md-3"> -->
+        <!-- <ng-template class="w-100" #rt let-r="result" let-t="term">
+                       <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+                   </ng-template>
+                   <input #assetautocomplete  #instance="ngbTypeahead" type="text" class="form-control"
+                       placeholder="Asset Type ..."  [ngbTypeahead]="searchdispatch" [inputFormatter]="formatterdispatch"
+                       [resultTemplate]="rt" (selectItem)="selecteddispatchitem($event.item)" /> -->
+        <!-- </div>  -->
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.LiabilityType" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Location</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Store" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Responsible By</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Contact" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Count</label>
+        <div class="col-md-3 pt-2">
+            <input type="number" class="form-control" [(ngModel)]="asset.Count" name="example_name" value=""
+                placeholder="Enter Count..." />
+        </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.Description" name="example_name" value=""
+                placeholder="Enter Asset..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Is
+            IsOnlinePayment</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsOnlinePayment" name="example_name" value=""
+                style="width: 10px;" />
+        </div>
+    </div>
+</div>
+<button *ngIf="isDetailTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback3()">Go
+    Back</button>

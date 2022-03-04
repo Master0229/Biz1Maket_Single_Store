@@ -1,0 +1,384 @@
+<!-- <div class="form-group row" *ngIf="isShown">
+        <div class="hk-pg-header" *ngIf="isShown">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="archive"></i></span></span> Bankaccounts - Index</h4>
+          </div>
+              </div>
+        <div  class="form-group row" *ngIf="isShown">
+            <div  class="d-flex flex-column justify-content-center mr-auto" style="width: 350px;"> -->
+<div>
+    <div class="cui__utils__heading" *ngIf="isShown">
+        <strong>Bankaccounts - Index</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex" *ngIf="isShown">
+            <button style="width:105px;height: 34px;margin-top: 18px;" class="btn btn-success " (click)="locback()">
+                Create New
+            </button>
+            <div style="width: 200px;margin-left: 700px;margin-top: 10px">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                        (input)="filtersearch()" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+            </div>
+            <!-- <button style="background-color: green;color: white;"(click)="locback()">Create New</button> -->
+        </div>
+
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+            <thead>
+                <tr>
+                    <th>
+                        <strong>Account Id</strong>
+                    </th>
+                    <th> <strong>Account Holder</strong></th>
+                    <th> <strong>Account No</strong></th>
+                    <th> <strong>Account Type</strong> </th>
+                    <th><strong>Bank Name</strong> </th>
+                    <th><strong>Branch Code</strong> </th>
+                    <th><strong>Balance</strong> </th>
+                    <th><strong>IsActive</strong> </th>
+                    <th><strong>Actions</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ord of basicTable.data">
+                    <td>
+                        {{ord.id}}
+                    </td>
+                    <td>
+                        {{ord.accountHolder}}
+                    </td>
+                    <td>
+                        {{ord.accountNo}}
+                    </td>
+                    <td>
+                        {{ord.description}}
+                    </td>
+                    <td>
+                        {{ord.bankName}}
+                    </td>
+                    <td>
+                        {{ord.branchCode}}
+                    </td>
+                    <td>
+                        {{ord.balance}}
+                    </td>
+                    <td>
+                        <span *ngIf="ord.isActive == true">Active</span>
+                        <span *ngIf="ord.isActive == false">InActive</span>
+                    </td>
+
+
+                    <td style="color: blue;">
+                        <a (click)="upddata(ord.id)" style="color: blue;" href="javascript: void(0);"
+                            class="btn btn-sm btn-light ">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript: void(0);" style="color: blue;" (click)="DeActivate(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="far fa-toggle-on"></i>
+                        </a>
+                        <a href="javascript: void(0);" routerLink="/apps/bankaccountdetail/{{ord.id}}"
+                            class="btn btn-sm btn-light pull-left" slot="actions" style="color: blue;">
+                            <i class="fad fa-info"></i>
+                        </a>
+                    </td>
+                </tr>
+                <button (click)="locback()" *ngIf="isShown">Go Back</button>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Create New BankAccounts</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isTable">
+    <label style="color: blue;">Account Information</label>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" id="AccountNo" name="AccountNo" [(ngModel)]="account.AccountNo"
+                name="example_name" value="" placeholder=" AccountNo ..." #name="ngModel"
+                [ngClass]="{'is-invalid': submitted && account.AccountNo == ''}" />
+            <span *ngIf="submitted && account.AccountNo == ''" class="text-danger">AccountNo cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account Type <span
+                style="color: red;">*</span></label>
+        <div class="451col-md-3">
+            <ng-template class="w-100" #at let-a="result" let-t="term">
+                <ngb-highlight [result]="a.description" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #acctautocomplete #instance="ngbTypeahead" type="text" class="form-control" placeholder="Search ..."
+                [ngbTypeahead]="searchAccountType" [inputFormatter]="formatterAccountType" [resultTemplate]="at"
+                (selectItem)="selectedAccountTypeitem($event.item)" />
+        </div>
+        <!-- <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.AccountTypeCd" name="example_name" value="" style="width: 50%"
+            placeholder="Enter AccountTypeCd..." />
+    </div> -->
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">CreditLimit</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.CreditLimit" name="example_name" value=""
+                placeholder=" CreditLimit..." [ngClass]="{'is-invalid': submitted && account.CreditLimit == ''}" />
+            <span *ngIf="submitted && account.CreditLimit == ''" class="text-danger">CreditLimit cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Card Number </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.CardNumber" name="example_name" value=""
+                placeholder=" CardNumber..." [ngClass]="{'is-invalid': submitted && account.CardNumber == ''}" />
+            <span *ngIf="submitted && account.CardNumber == ''" class="text-danger">CardNumber cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Bank Name <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.BankName" name="example_name" value=""
+                placeholder=" BankName..." [ngClass]="{'is-invalid': submitted && account.BankName == ''}" />
+            <span *ngIf="submitted && account.BankName == ''" class="text-danger">BankName cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Branch Code</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.BranchCode" name="example_name" value=""
+                placeholder=" BranchCode..." [ngClass]="{'is-invalid': submitted && account.BranchCode == ''}" />
+            <span *ngIf="submitted && account.BranchCode == ''" class="text-danger">BranchCode cannot be empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account Holder <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.AccountHolder" name="example_name" value=""
+                placeholder=" AccountHolder..." [ngClass]="{'is-invalid': submitted && account.AccountHolder == ''}" />
+            <span *ngIf="submitted && account.AccountHolder == ''" class="text-danger">AccountHolder cannot be
+                empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Opening Balance <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.Balance" name="example_name" value=""
+                placeholder=" Opening Balance..." [ngClass]="{'is-invalid': submitted && account.Balance == ''}" />
+            <span *ngIf="submitted && account.Balance == ''" class="text-danger">Balance cannot be empty*</span>
+        </div>
+    </div>
+    <label style="color: blue;">Other Information</label>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Phone No <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.PhoneNo" name="example_name" value=""
+                placeholder=" PhoneNo..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Alt Phone No </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.AlternatePhoneNo" name="example_name" value=""
+                placeholder=" AlternatePhoneNo..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Email</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.Email" name="example_name" value=""
+                placeholder=" Email..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Address </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.Address" name="example_name" value=""
+                placeholder=" Address..." />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">City </label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.City" name="example_name" value=""
+                placeholder=" City..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">PinCode</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.Zip" name="example_name" value=""
+                placeholder=" PostalCode..." />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Start date <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="date" class="form-control" [(ngModel)]="account.StartDate" name="example_name" value=""
+                placeholder=" StartDate..." [ngClass]="{'is-invalid': submitted && account.StartDate == ''}" />
+            <span *ngIf="submitted && account.StartDate == ''" class="text-danger">StartDate cannot be empty*</span>
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Notes</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="account.Notes" name="example_name" value=""
+                placeholder=" Notes..." />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success px-5" (click)="Create()">Create</button>
+</div>
+<button type="button" *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+<div class="form-group row" *ngIf="isEditTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span> BankAccounts - Edit</h4>
+    </div>
+</div>
+
+<div class="card" *ngIf="isEditTable">
+    <div class="card-body" *ngIf="isEditTable">
+        <label style="color: blue;">Account Information</label>
+
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account No <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.AccountNo" name="example_name" value=""
+                    placeholder=" AccountNo ..." [ngClass]="{'is-invalid': submitted && account.AccountNo == ''}" />
+                <span *ngIf="submitted && account.AccountNo == ''" class="text-danger">AccountNo cannot be empty*</span>
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account Type <span
+                    style="color: red;">*</span></label>
+            <!-- <div class="col-md-3 pt-2">
+            <input type="text" class="form-control"  [(ngModel)]="account.AccountTypeCd" name="example_name" value="" style="width: 50%"
+                placeholder="Enter AccountTypeCd..." />
+        </div> -->
+            <div class="col-md-3">
+                <ng-template class="w-100" #at let-a="result" let-t="term">
+                    <ngb-highlight [result]="a.description" [term]="t"></ngb-highlight>
+                </ng-template>
+                <input #acctautocomplete [(ngModel)]="accontType" #instance="ngbTypeahead" type="text"
+                    class="form-control" placeholder="Search ..." [ngbTypeahead]="searchAccountType"
+                    [inputFormatter]="formatterAccountType" [resultTemplate]="at"
+                    (selectItem)="selectedAccountTypeitem($event.item)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">CreditLimit</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.CreditLimit" name="example_name" value=""
+                    placeholder=" CreditLimit..." [ngClass]="{'is-invalid': submitted && account.CreditLimit == ''}" />
+                <span *ngIf="submitted && account.CreditLimit == ''" class="text-danger">CreditLimit cannot be
+                    empty*</span>
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Card Number <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.CardNumber" name="example_name" value=""
+                    placeholder=" CardNumber..." [ngClass]="{'is-invalid': submitted && account.CardNumber == ''}" />
+                <span *ngIf="submitted && account.CardNumber == ''" class="text-danger">CardNumber cannot be
+                    empty*</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Bank Name <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.BankName" name="example_name" value=""
+                    placeholder=" BankName..." [ngClass]="{'is-invalid': submitted && account.BankName == ''}" />
+                <span *ngIf="submitted && account.BankName == ''" class="text-danger">BankName cannot be empty*</span>
+
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Branch Code</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.BranchCode" name="example_name" value=""
+                    placeholder=" BranchCode..." [ngClass]="{'is-invalid': submitted && account.BranchCode == ''}" />
+                <span *ngIf="submitted && account.BranchCode == ''" class="text-danger">BranchCode cannot be
+                    empty*</span>
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Account Holder <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.AccountHolder" name="example_name" value=""
+                    placeholder=" AccountHolder..."
+                    [ngClass]="{'is-invalid': submitted && account.AccountHolder == ''}" />
+                <span *ngIf="submitted && account.AccountHolder == ''" class="text-danger">AccountHolder cannot be
+                    empty*</span>
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Opening Balance <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.Balance" name="example_name" value=""
+                    placeholder=" Opening Balance..." [ngClass]="{'is-invalid': submitted && account.Balance == ''}" />
+                <span *ngIf="submitted && account.Balance == ''" class="text-danger">Balance cannot be empty*</span>
+            </div>
+        </div>
+        <label style="color: blue;">Other Information</label>
+
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Phone No <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.PhoneNo" name="example_name" value=""
+                    placeholder=" PhoneNo..." />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Alt Phone No</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.AlternatePhoneNo" name="example_name"
+                    value="" placeholder=" AlternatePhoneNo..." />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Email</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.Email" name="example_name" value=""
+                    placeholder=" Email..." />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Address </label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.Address" name="example_name" value=""
+                    placeholder=" Address..." />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">City </label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.City" name="example_name" value=""
+                    placeholder=" City..." />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">PinCode</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.Zip" name="example_name" value=""
+                    placeholder=" Zip..." />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Start date <span
+                    style="color: red;">*</span></label>
+            <div class="col-md-3 pt-2">
+                <input type="date" class="form-control" [(ngModel)]="account.StartDate" name="example_name" value=""
+                    placeholder=" StartDate..." [ngClass]="{'is-invalid': submitted && account.StartDate == ''}" />
+                <span *ngIf="submitted && account.StartDate == ''" class="text-danger">StartDate cannot be empty*</span>
+
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight:bold">Notes</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="account.Notes" name="example_name" value=""
+                    placeholder=" Notes..." />
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success px-5" (click)="Update()">Update</button>
+    </div>
+    <button type="button" *ngIf="isEditTable" class="btn btn-secondary " style="width: 80px;height: 30px;"
+        (click)="goback2()">Go
+        Back</button>
+</div>

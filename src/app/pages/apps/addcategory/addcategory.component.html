@@ -1,0 +1,58 @@
+<div class="card">
+    <h5 class="ml-3 mt-3">
+        <strong *ngIf="category.id==0">Add Category</strong>
+        <strong *ngIf="category.id>0">Edit Category:
+        <a class="btn btn-sm btn-light" href="javascript: void(0);">
+            {{category.description}}
+        </a> </strong>
+        <!-- <strong >Edit Variant Group</strong> -->
+    </h5>
+    <div class="card-body">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="baseFullname">Category Name</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" [(ngModel)]="category.description"
+                    [ngClass]="{'is-invalid': submitted && category.description == ''}"
+                    placeholder="Enter Variant Group Name..." />
+            </div>
+            <span *ngIf="submitted && category.description == ''" class="text-danger">*Name cannot be empty</span>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Parant Category</label>
+            <div class="col-md-6">
+                <select class="form-control" [(ngModel)]="category.parentCategoryId">
+                    <option value=null>Parent Category</option>
+                    <option *ngFor="let pcat of pcategories" value="{{pcat.id}}">{{pcat.description}}</option>
+                </select>
+            </div>
+            <!-- <span *ngIf="submitted && variant.variantGroupId == 0" class="text-danger">*Please Select VariantGroup</span> -->
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Variant Group</label>
+            <div class="col-md-6">
+                <nz-select [(ngModel)]="category.variantgroupids" [nzSize]="size" nzMode="tags"
+                    nzPlaceHolder="Please select" style="width: 100%;">
+                    <nz-option [nzLabel]="variantgrp.name" [nzValue]="variantgrp.id"
+                        *ngFor="let variantgrp of variantgroups"></nz-option>
+                </nz-select>
+            </div>
+            <!-- <span *ngIf="submitted && variant.variantGroupId == 0" class="text-danger">*Please Select VariantGroup</span> -->
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange">Sort Order</label>
+            <div class="col-md-6 pt-2">
+                <input type="text" class="form-control" [(ngModel)]="category.sortOrder" name="example_name" />
+            </div>
+        </div>
+        <!-- <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Sort Order</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control"  name="example_name"
+                        value="" />
+                </div>
+            </div> -->
+        <button type="button" class="btn btn-secondary px-5" (click)="location.back()"><i nz-icon nzType="left"></i>Go
+            Back</button>
+        <button type="button" class="btn btn-success px-5 pull-right" (click)="save()">Save</button>
+    </div>
+</div>

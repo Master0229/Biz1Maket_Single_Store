@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Printer",
+        "unread": 0,
+        "position": "Moderator",
+        "icon": "printer"
+    },
+    {
+        "id": 1,
+        "name": "Server-Client",
+        "unread": 0,
+        "position": "Agent",
+        "icon": "global"
+    },
+    {
+        "id": 1,
+        "name": "Data Storage",
+        "unread": 0,
+        "position": "Agent",
+        "icon": "database"
+    }
+]

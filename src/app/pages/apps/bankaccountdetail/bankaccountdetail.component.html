@@ -1,0 +1,111 @@
+<div class="form-group row">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                data-feather="archive"></i></span></span> BankAccounts - Details</h4>
+      </div>
+          </div>
+
+<div class="card-body" >
+    <label style="color: blue;">Account Information</label>
+
+     <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Account No</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control"  [(ngModel)]="account.AccountNo" name="example_name" value="" style="width: 50%"
+                placeholder=" AccountNo ..." />
+        </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Account Type</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.AccountTypeCd" name="example_name" value="" style="width: 50%"
+            placeholder=" AccountTypeCd..." />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">CreditLimit</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.CreditLimit" name="example_name" value="" style="width: 50%"
+            placeholder=" CreditLimit..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Card Number </label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.CardNumber" name="example_name" value="" style="width: 50%"
+            placeholder=" CardNumber..." />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Bank Name </label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.BankName" name="example_name" value="" style="width: 50%"
+            placeholder=" BankName..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Branch Code</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.BranchCode" name="example_name" value="" style="width: 50%"
+            placeholder=" BranchCode..." />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Account Holder</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.AccountHolder" name="example_name" value="" style="width: 50%"
+            placeholder=" AccountHolder..." />
+    </div>
+<label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Opening Balance</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.Balance" name="example_name" value="" style="width: 50%"
+            placeholder=" Opening Balance..." />
+    </div> 
+</div>
+<label style="color: blue;">Other Information</label>
+ <div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Phone No</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.PhoneNo" name="example_name" value="" style="width: 50%"
+            placeholder=" PhoneNo..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Alt Phone No</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.AlternatePhoneNo" name="example_name" value="" style="width: 50%"
+            placeholder=" AlternatePhoneNo..." />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Email</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.Email" name="example_name" value="" style="width: 50%"
+            placeholder=" Email..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Address </label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.Address" name="example_name" value="" style="width: 50%"
+            placeholder=" Address..." />
+    </div>
+</div> 
+ <div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">City </label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.City" name="example_name" value="" style="width: 50%"
+            placeholder=" City..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">PinCode</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.Zip" name="example_name" value="" style="width: 50%"
+            placeholder=" Zip..." />
+    </div>
+</div> 
+
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Start date</label>
+    <div class="col-md-3 pt-2">
+        <input type="date" class="form-control"  [(ngModel)]="account.StartDate" name="example_name" value="" style="width: 50%"
+            placeholder=" StartDate..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="color: black;">Notes</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="account.Notes" name="example_name" value="" style="width: 50%"
+            placeholder="Notes..." />
+    </div>
+</div>  
+</div>
+<button type="button" routerLink="/apps/bankaccount" class="btn btn-secondary " style="width: 80px;height: 30px;" >Go
+    Back</button>

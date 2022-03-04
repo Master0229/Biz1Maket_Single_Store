@@ -1,0 +1,140 @@
+<div class="form-group row">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span> Bills Pay Vendor</h4>
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-md-3 col-form-label" for="baseFullname" style="font-weight: bold;">Select Vendor</label>
+    <div class="col-md-3">
+        <ng-template class="w-100" #ct let-c="result" let-t="term">
+            <ngb-highlight [result]="c.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <input #contactautocomplete #instance="ngbTypeahead" type="text" class="form-control" placeholder="Search ..."
+            [ngbTypeahead]="searchvendor" [inputFormatter]="formattervendor" [resultTemplate]="ct"
+            (selectItem)="selectedvendoritem($event.item)" />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment Location</label>
+    <div class="col-md-3">
+        <ng-template class="w-100" #ot let-o="result" let-t="term">
+            <ngb-highlight [result]="o.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <input #Supplierautocomplete #instance="ngbTypeahead" type="text" class="form-control"
+            placeholder="Search Location..." [ngbTypeahead]="searchsupplier" [resultTemplate]="ot"
+            [inputFormatter]="formattersupplier" (selectItem)="selectedsupplieritem($event.item)" />
+    </div>
+</div>
+
+
+<div class="card-body">
+    <!-- <div class="form-group row">  -->
+    <!-- <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor</label>
+               <div class="col-md-3 pt-2">
+                   <input type="text" class="form-control"  [(ngModel)]="vendor.Description" name="example_name" value=""
+                        />
+               </div> -->
+    <!-- </div>
+       <div class="form-group row">  -->
+    <!-- <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment Location</label>
+           <div class="col-md-3 pt-2">
+               <input type="text" class="form-control"  [(ngModel)]="vendor.name" name="example_name" value="" 
+                  />
+           </div> -->
+    <!-- </div> -->
+    <div class="form-group row">
+
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total Balance</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="vendor.balance" name="example_name" value="" />
+        </div>
+    </div>
+    <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isTable">
+        <thead>
+            <tr>
+                <th><strong> Bill Id </strong></th>
+                <th><strong> Contact </strong></th>
+                <th><strong> Bill Date</strong></th>
+                <th><strong>Bill Amount </strong> </th>
+                <th><strong>Paid Amount </strong> </th>
+                <th><strong>Balance Amount </strong> </th>
+                <th><strong>Payment </strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{ord.billId}}
+                </td>
+                <td>
+                    {{ord.contact.name}}
+                </td>
+                <td>
+                    {{ord.billDate.slice(0,10)}}
+                </td>
+                <td>
+                    &#8377; {{ord.billAmount | number: ".2"}}
+                </td>
+                <td>
+                    &#8377; {{ord.paidAmount | number: ".2"}}
+                </td>
+                <td>
+                    &#8377; {{ord.pendAmount | number: ".2"}}
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="vendor.amount">
+                </td>
+        </tbody>
+    </nz-table>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="vendor.amount" (click)="updquery()" name="example_name"
+                value="" />
+        </div>
+        <!-- </div>
+       <div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" disabled class="form-control" name="example_name" value="" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment mode <span
+                style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <select class="form-control" [(ngModel)]="vendor.PaymentTypeId" (click)="paymttype()">
+                <option *ngFor="let pcat of paymentTypes" (click)="paymttype()" value="{{pcat.id}}">{{pcat.description}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row" *ngIf="label == true">
+        <label class="col-md-3 col-form-label" style="font-weight: bold;">Bank A/c No <span
+                style="color: red">*</span></label>
+        <div class="col-md-3 pt-2">
+            <select class="form-control" [(ngModel)]="vendor.accountNo">
+                <option *ngFor="let pcat of accountData.ord" value="{{pcat.id}}">{{pcat.accountNo}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction
+            Date</label>
+        <div class="col-md-3 pt-2">
+            <input type="date" class="form-control" [(ngModel)]="vendor.billDate" name="example_name" value="" />
+        </div>
+        <!-- </div>
+       <div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction
+            Time</label>
+        <div class="col-md-3 pt-2">
+            <input type="time" class="form-control" [(ngModel)]="vendor.IsOnlinePayment" name="example_name" value="" />
+        </div>
+    </div>
+    <button class="btn btn-success px-5" (click)="Submit()">Submit</button>
+    <button *ngIf="isTable" class="btn btn-secondary pull-right " style="width: 80px;height: 30px;"
+        (click)="locback()">Go
+        Back</button>
+</div>

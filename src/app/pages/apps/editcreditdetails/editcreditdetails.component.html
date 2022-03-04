@@ -1,0 +1,64 @@
+<div class="form-group row">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                data-feather="archive"></i></span></span> Credit - Details</h4>
+      </div>
+          </div>
+<div class="card-body">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="baseFullname">Select Contact</label>
+        <div class="col-md-3">
+            <input type="text" class="form-control" disabled [(ngModel)]="trans.name" name="example_name" value="" style="width: 50%"
+            placeholder="Contact..." />
+         </div> 
+         <label class="col-md-3 col-form-label" for="formControlRange">Payment</label>
+         <div class="col-md-3 pt-2">
+             <input type="text" class="form-control" [(ngModel)]="trans.amount" name="example_name" value="" style="width: 50%"
+                 placeholder="Payment..." />
+         </div>
+    </div>
+
+    <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="formControlRange"> Payment Mode</label>
+        <div  class="col-md-3 pt-2">
+            <input type="text" class="form-control"  [(ngModel)]="trans.paymentTypeId" name="example_name" value="" style="width: 50%"
+            placeholder="Payment mode..." />
+          </div> 
+
+        <label class="col-md-3 col-form-label" for="formControlRange">Location</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control"  [(ngModel)]="trans.supplier" name="example_name" value=""  style="width: 50%"
+                placeholder="Location..." />
+        </div>    
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange">Responsible By</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control"  name="example_name" value="" style="width: 50%"
+                placeholder="Responsible..." />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange"> IsCommission</label>
+    <div class="col-md-3 pt-2">
+        <input type="checkbox" class="form-control" disabled  name="example_name" value="" style="width:10%"
+            placeholder="Commission..." />
+    </div>
+    </div>
+    <div class="form-group row">
+        <!-- <label class="col-md-3 col-form-label" for="formControlRange">Transaction Date</label> -->
+        <!-- <div class="col-md-3 pt-2">
+            <nz-date-picker (ngModelChange)="onChange($event)"></nz-date-picker>
+   </div> -->
+            <label class="col-md-3 col-form-label" for="formControlRange">Commission%</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" disabled  name="example_name" value="" style="width: 50%"
+            placeholder="Commission..." />
+    </div>
+    <label class="col-md-3 col-form-label" for="formControlRange">Reference</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control"  [(ngModel)]="trans.description"  style="width: 50%"
+            placeholder="Reference..." />
+    </div>
+</div>
+    <button type="button" routerLink="/apps/creditrepay" class="btn btn-secondary px-5"  >Go
+        Back</button>
+</div>

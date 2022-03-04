@@ -1,0 +1,173 @@
+<div>
+    <div [hidden]="!show">
+        <div class="cui__utils__heading">
+            <strong>Vendors</strong>
+        </div>
+        <div class="card">
+            <div class="card-header card-header-flex">
+                <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+                    <h5 class="mb-0">Latest Orders</h5>
+                </div> -->
+                <div class="d-flex flex-column justify-content-center mr-auto">
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                        <input type="text" (input)="filtersearch()" [(ngModel)]="term" nz-input
+                            placeholder="input search text" />
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                    </ng-template>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <button type="button" class="btn btn-squared btn-success  pull-right" (click)="show = !show">Add
+                        Vendors</button>
+                </div>
+            </div>
+            <!-- <div class="card-body"> -->
+            <nz-table #orderTable nzSize="middle" [nzData]="filteredvalues" class="kit__utils__table mb-4">
+                <thead>
+                    <tr>
+                        <th>
+                            <strong>Business Name</strong>
+                        </th>
+                        <th>
+                            <strong>Phone no</strong>
+                        </th>
+                        <th>
+                            <strong> Name</strong>
+                        </th>
+
+                        <th>
+                            <strong>Address</strong>
+                        </th>
+                        <th>
+                            <strong> City</strong>
+                        </th>
+                        <th>
+                            <strong>PostalCode</strong>
+                        </th>
+                        <th>
+                            <strong>Email</strong>
+                        </th>
+                        <th>
+                            <strong>Total Order</strong>
+                        </th>
+                        <!-- <th nzShowSort [(nzSort)]="mapOfSort.shipping" (nzSortChange)="sort('shipping', $event)">
+                                Action
+                            </th> -->
+                        <!-- <th nzShowSort [(nzSort)]="mapOfSort.quantity" (nzSortChange)="sort('quantity', $event)">
+                    Quantity</th>
+                  <th nzShowSort [(nzSort)]="mapOfSort.status" (nzSortChange)="sort('status', $event)">
+                    Status
+                  </th> -->
+                        <!-- <th>Action</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let v of orderTable.data" (click)="getvendorbyid(v.id)">
+
+                        <td>
+                            {{v.businessName}}
+                        </td>
+                        <td>
+                            {{v.phoneNo}}
+                        </td>
+                        <td>
+                            {{v.name}}
+
+                        </td>
+
+                        <td>
+                            {{v.address}}
+                        </td>
+                        <td>
+                            {{v.city}}
+                        </td>
+                        <td>
+                            {{v.postalCode}}
+                        </td>
+                        <td>
+                            {{v.email}}
+                        </td>
+                        <td>
+                            0
+                        </td>
+                        <!-- <td> -->
+                        <!-- <a href="javascript: void(0);" class="btn btn-sm btn-light mr-2 ">
+                                <i class="fe fe-edit mr-2"></i>
+                            </a> -->
+                        <!-- <a href="javascript: void(0);" class="btn btn-sm btn-light ">
+                                <i class="fe fe-trash ml-1"></i>
+                            </a> -->
+                        <!-- </td> -->
+                    </tr>
+                </tbody>
+            </nz-table>
+            <!-- </div> -->
+        </div>
+
+    </div>
+    <div [hidden]="show" class="card">
+        <h5 class="ml-3 mt-3">
+            <strong *ngIf="!(vendors.id > 0)">Add Vendors</strong>
+            <strong *ngIf="vendors.id > 0">Edit Vendors</strong>
+        </h5>
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Business Name</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.businessName" name="example_name"
+                        value="" placeholder="Enter Business Name..." />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="baseFullname">Phone No</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.phoneNo"
+                        placeholder="Enter Variant Group Name..." />
+                </div>
+                <!-- <span *ngIf="submitted && variantgroup.name == ''" class="text-danger">*VariantGroup cannot be
+                    empty</span> -->
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="baseFullname">Name</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.name"
+                        placeholder="Enter description..." />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Address</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.address" name="example_name" value=""
+                        placeholder="Enter address..." />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">City</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.city" name="example_name" value=""
+                        placeholder="Enter city..." />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">PostalCode</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.postalCode" name="example_name"
+                        value="" placeholder="Enter postalcode..." />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Email</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="vendors.email" name="example_name" value=""
+                        placeholder="Enter email..." />
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary px-5" (click)="back()">Go
+                Back</button>
+            <button type="button" class="btn btn-success px-5 pull-right" (click)=" addVendor()">Save</button>
+        </div>
+    </div>
+</div>

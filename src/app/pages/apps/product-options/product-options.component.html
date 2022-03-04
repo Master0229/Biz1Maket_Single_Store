@@ -1,0 +1,206 @@
+<div>
+    <div [hidden]="!show">
+        <h5 class="mb-4">
+            <strong>Product Options</strong>
+            <button type="button" class="btn btn-squared btn-success  pull-right"
+                (click)="show = !show">{{buttonname}}</button>
+        </h5>
+        <div class="mb-5">
+            <ngb-tabset (tabChange)="ontabchange($event)">
+                <ngb-tab title="Varient">
+                    <ng-template ngbTabContent>
+                        <div class="card">
+                            <nz-table #variantTable nzSize="small" [nzData]="variants" class="kit__utils__table mb-4 ">
+                                <thead>
+                                    <tr>
+                                        <!-- <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked"
+                                            [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)">
+                                        </th> -->
+                                        <th><strong>Variant Name</strong></th>
+                                        <th><strong>Description</strong> </th>
+                                        <th><strong>Price</strong> </th>
+                                        <th><strong>Sort Order</strong> </th>
+                                        <th><strong>Variant Group</strong> </th>
+                                        <th><strong> Action</strong></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of variantTable.data">
+                                        <!-- <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" -->
+                                        <!-- (nzCheckedChange)="refreshStatus()"></td> -->
+                                        <td>{{ data.name }}</td>
+                                        <td>{{ data.description }}</td>
+                                        <td>{{ data.price }}</td>
+                                        <td>{{ data.sortOrder }}</td>
+                                        <td>{{ data.variantGroup.name }} </td>
+                                        <td>
+                                            <!-- <a href="javascript: void(0);"
+                                                class="btn btn-sm btn-light pull-left" slot="actions">
+                                                <i class="fe fe-trash mr-1"></i>
+                                            </a> -->
+                                            <a href="javascript: void(0);" class="btn btn-sm btn-light mr-2"
+                                                (click)="editVariant(data)">
+                                                <i class="fe fe-edit mr-2"></i>
+                                            </a>
+                                            <!-- <a href="javascript: void(0);" class="btn btn-sm btn-light">
+                                                <i class="fe fe-trash mr-2"></i>
+                                            </a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab>
+                    <ng-template ngbTabTitle>Variant Group</ng-template>
+                    <ng-template ngbTabContent>
+                        <div class="card">
+                            <nz-table #variantgroupTable nzSize="small" [nzData]="variantgroups"
+                                class="kit__utils__table mb-4">
+                                <thead>
+                                    <tr>
+                                        <!-- <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked"
+                                            [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)">
+                                        </th> -->
+                                        <th><strong>Variant Group Name</strong> </th>
+                                        <th><strong>Description</strong> </th>
+                                        <th><strong> VariantCount</strong></th>
+                                        <th><strong>Sort Order</strong> </th>
+                                        <th><strong>Action</strong> </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of variantgroupTable.data">
+                                        <!-- <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]"
+                                            (nzCheckedChange)="refreshStatus()"></td> -->
+                                        <td>{{ data.name }}</td>
+                                        <td>{{ data.description }}</td>
+                                        <td>{{ data.variantcount }}</td>
+                                        <td>{{ data.sortOrder }}</td>
+                                        <td>
+                                            <!-- <a href="javascript: void(0);"
+                                                class="btn btn-sm btn-light pull-left" slot="actions">
+                                                <i class="fe fe-trash mr-1"></i>
+                                            </a> -->
+                                            <a href="javascript: void(0);" class="btn btn-sm btn-light mr-2"
+                                                (click)="editVariantGroup(data)">
+                                                <i class="fe fe-edit mr-2"></i>
+                                            </a>
+                                            <!-- <a href="javascript: void(0);" class="btn btn-sm btn-light">
+                                                <i class="fe fe-trash mr-2"></i>
+                                            </a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+    </div>
+
+    <div [hidden]="show || currenttab != 'variant'" class="card">
+        <h5 class="ml-3 mt-3">
+            <strong *ngIf="variant.id==0">Add Variants</strong>
+            <strong *ngIf="variant.id>0">Edit Variants</strong>
+
+        </h5>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="baseFullname">Variant Name</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="variant.name"
+                        [ngClass]="{'is-invalid': submitted && variant.name == ''}"
+                        placeholder="Enter Variant Name..." />
+                </div>
+                <span *ngIf="submitted && variant.name == ''" class="text-danger">*Variant Name cannot Be Empty</span>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Description</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="variant.description"
+                        placeholder="Enter Description" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">VariantGroup</label>
+                <div class="col-md-6">
+                    <select [(ngModel)]="variant.variantGroupId" class="form-control"
+                        [ngClass]="{'is-invalid': submitted && variant.variantGroupId == 0}">
+                        <option value="0" disabled>Select Variant Group</option>
+                        <option value="{{variantgroup.id}}" *ngFor="let variantgroup of variantgroups">
+                            {{variantgroup.name}}</option>
+                    </select>
+                </div>
+                <span *ngIf="submitted && variant.variantGroupId == 0" class="text-danger">*Please Select
+                    VariantGroup</span>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="basePrice">Price</label>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">&#8377;</span>
+                        </div>
+                        <input type="text" class="form-control" [(ngModel)]="variant.price"
+                            [ngClass]="{'is-invalid': submitted && variant.price == 0}"
+                            aria-label="Amount (to the nearest dollar)" id="basePrice" />
+                        <!-- <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div> -->
+                    </div>
+                </div>
+                <span *ngIf="submitted && variant.price == 0" class="text-danger">*Price cannot Be Empty</span>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Sort Order</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="variant.sortOrder" name="example_name" />
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary px-5" (click)="back()"><i nz-icon nzType="left"></i>Go
+                Back</button>
+            <button type="button" class="btn btn-success px-5 pull-right" (click)="addVariant()">Save</button>
+        </div>
+    </div>
+    <div [hidden]="show || currenttab != 'variantgroup'" class="card">
+        <h5 class="ml-3 mt-3">
+            <strong *ngIf="variantgroup.id == 0">Add Variant Group</strong>
+            <strong *ngIf="variantgroup.id > 0">Edit Variant Group</strong>
+        </h5>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="baseFullname">Variant Group Name</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="variantgroup.name"
+                        [ngClass]="{'is-invalid': submitted && variantgroup.name == ''}"
+                        placeholder="Enter Variant Group Name..." />
+                </div>
+                <span *ngIf="submitted && variantgroup.name == ''" class="text-danger">*VariantGroup cannot be
+                    empty</span>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="baseFullname">Description</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="variantgroup.description"
+                        placeholder="Enter description..." />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="formControlRange">Sort Order</label>
+                <div class="col-md-6 pt-2">
+                    <input type="text" class="form-control" [(ngModel)]="variantgroup.sortOrder" name="example_name"
+                        value="" />
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary px-5" (click)="back()"><i nz-icon nzType="left"></i>Go
+                Back</button>
+            <button type="button" class="btn btn-success px-5 pull-right" (click)="addVariantGroup()">Save</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,328 @@
+<!-- <div>
+    <div class="form-group row" *ngIf="isShown">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="archive"></i></span></span> Purchase Bill Payments</h4>
+          </div>
+              </div>
+        <div class="form-group row" *ngIf="isShown" > -->
+            <div>
+                <div>
+                    <div class="cui__utils__heading" *ngIf="isShown">
+                        <strong>  Purchase Bill Payments </strong>
+                    </div>
+                <div class="card">
+                    <div class="card-header card-header-flex" *ngIf="isShown">          
+          <div ngbDropdown class="col-md-3 pt-2" >
+            <button   class="btn btn-success" id="dropdownBasic1" ngbDropdownToggle>Bill List</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button routerLink="/apps/purchasemaint" ngbDropdownItem>Bill List</button>
+              <button routerLink="/apps/billpaybyvendor" ngbDropdownItem> Bills By Vendors</button>
+            </div>  
+          </div>
+        <!-- </div> -->
+        <div  style="width: 200px;margin-left:500px;margin-top: 10px;" *ngIf="isShown">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                    (input)="filtersearch()"/>
+            </nz-input-group>
+            <ng-template #suffixIconButton>
+                <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+            </ng-template>
+            </div>
+</div>
+<nz-table  #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+     <thead>
+        <tr>
+            <th><strong>TransactionId </strong> </th>
+            <th><strong> Vendor</strong> </th>
+            <th><strong> Payment Location </strong> </th> 
+            <th><strong>Transaction Date </strong> </th>                              
+            <th><strong> Amount </strong></th>                            
+            <th><strong> TransType</strong>  </th>  
+            <th><strong>Actions </strong> </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of basicTable.data" >
+            <td style="color: blue;">
+                {{order.transactionId}}
+            </td>
+            <td style="color: blue;">
+                {{order.name}}
+            </td>   
+            <td style="color: blue;">
+                {{order.name1}}
+            </td>
+            <td>
+                {{order.transDate.slice(0,10)}}
+            </td>            
+            <td>
+                &#8377;{{order.amount| number: ".2"}} 
+            </td>
+                <td style="color: blue;">
+                    <span *ngIf="order.transTypeId == 1">Purchase</span>
+                    <span *ngIf="order.transTypeId == 3">Maintenance</span>
+                    <span *ngIf="order.transTypeId == 11">Purchase_Refund</span>
+                    <span *ngIf="order.transTypeId == 12">Maintenance_Refund</span>
+                </td>                
+<td>
+    <a href="javascript: void(0);" (click)="purchasedetail(order.transactionId)"
+    class="btn btn-sm btn-light pull-left" slot="actions" style="color: blue;">
+    <i class="fad fa-info" ></i>
+</a>
+<a (click)="getTransList(order.transactionId)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                </a> 
+
+</td>
+        </tr>   
+        <button *ngIf="isShown" (click)="locback()">Go Back</button>
+        <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+    </tbody>
+</nz-table>
+</div>
+</div>
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                data-feather="archive"></i></span></span>Pay Purchase Bill</h4>
+      </div>
+          </div>
+
+<div class="card-body" *ngIf="isTable">
+    <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Id</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.TransactionId" name="example_name" value=""
+                 />
+        </div>
+ <!-- </div>
+     <div class="form-group row">  -->
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Vendor <span style="color: red;">*</span></label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Description" name="example_name" value=""
+                 />
+        </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment Location  <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.paystore" name="example_name" value="" 
+           />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total Balance(Before) <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalancebefore" name="example_name" value="" 
+           />
+    </div>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Total Balance(After)</label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalanceafter" name="example_name" value="" 
+           />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.amount" name="example_name" value="" 
+            />
+    </div>
+</div>
+
+<div  class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" >
+<nz-table  #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isTable">
+    <thead>
+<tr>
+<th><strong>Bill Id </strong> </th>
+<th><strong>Billing Store </strong>  </th>
+<th><strong> Bill Date  </strong> </th>                              
+<th><strong>  Bill Amount</strong> </th>                            
+<th><strong> Balance Amount 
+    (before) </strong> </th>  
+<th><strong> Balance Amount 
+    (After) </strong></th>   
+<th><strong> Payment</strong>  </th>                                                                             
+</tr>
+</thead>
+<tbody>
+    <tr  *ngFor="let ord of trans.bill">
+    <td>
+{{ord.billId}}
+    </td>
+    <td>
+        {{ord.billId}}
+            </td>
+ <td>
+  {{ord.billDate.slice(0,10 )}}
+  </td>
+   <td>
+    {{ord.billAmount}}
+   </td>
+    <td>
+     {{ord.paidAmount}}
+      </td>
+      <td>
+        {{ord.pendAmount}}
+         </td>
+         <td>
+<input type="text"  [(ngModel)]="trans.pay" (click)="updquery()">  
+</td>
+           </tr>   
+                                                                                               
+</tbody>
+</nz-table>
+</div>
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Reference </label>
+    <div class="col-md-3 pt-2">
+        <input type="text" class="form-control" disabled style="border-color: black;"  name="example_name" value="" 
+            />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Payment mode <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <select class="form-control" [(ngModel)]="trans.PaymentTypeId" (click)="paymttype()"style="width: 50%;border-color: black;">
+            <option *ngFor="let pcat of paymentTypes" (click)="paymttype()" value="{{pcat.id}}">{{pcat.description}}</option>
+        </select>
+    </div>
+</div>
+<div class="form-group row" *ngIf= "label == true">
+    <label class="col-md-3 col-form-label" style="font-weight: bold;">Bank A/c No <span style="color: red">*</span></label>
+    <div class="col-md-3 pt-2">
+        <select class="form-control" style="border-color: black;" [(ngModel)]="trans.accountNo">
+            <option *ngFor="let pcat of accountData.ord" value="{{pcat.id}}">{{pcat.accountNo}}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group row"> 
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Date <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <input type="date" class="form-control" style="border-color: black;" name="example_name" value="" 
+          />
+    </div>
+<!-- </div>
+<div class="form-group row">  -->
+    <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Time <span style="color: red;">*</span></label>
+    <div class="col-md-3 pt-2">
+        <input type="time" class="form-control" style="border-color: black;"  name="example_name" value="" 
+          />
+    </div>
+</div>
+
+    <button  class="btn btn-success px-5"  (click)="Update()" >Update</button>
+</div>
+<button *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;"  (click)="locback1()">Go
+    Back</button>
+
+
+    <div class="form-group row" *ngIf="EditTable">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="archive"></i></span></span> Purchase Bill Details</h4>
+          </div>
+              </div>
+    
+    <div class="card-body" *ngIf="EditTable">
+        <div class="form-group row"> 
+            <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Transaction Id</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.TransactionId" name="example_name" value=""
+                     />
+            </div>
+            <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Vendor</label>
+            <div class="col-md-3 pt-2">
+                <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Description" name="example_name" value=""
+                     />
+            </div>
+    </div>
+    <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Payment Location</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.paystore" name="example_name" value="" 
+               />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Total Balance(Before)</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalancepaid" name="example_name" value="" 
+               />
+        </div>
+    </div>
+    <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Total Balance(After)</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalanceafter" name="example_name" value="" 
+               />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Payment</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;" [(ngModel)]="trans.Totalbalanceafter" name="example_name" value="" 
+                />
+        </div>
+    </div>
+    
+    <div class="form-group row"> 
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Transaction Date</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" style="border-color: black;"  [(ngModel)]="trans.billDate" name="example_name" value="" 
+              />
+        </div>
+        <label class="col-md-3 col-form-label" for="formControlRange"  style="font-weight: bold;">Reference</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" disabled class="form-control" style="border-color: black;"  name="example_name" value="" 
+              />
+        </div>
+    </div>
+    <div  class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" >
+    <nz-table  #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="EditTable">
+        <thead>
+    <tr>
+    <th><strong>Bill Id </strong> </th>
+    <th><strong>  Billing Store</strong> </th>
+    <th><strong> Bill Date </strong>  </th>                              
+    <th><strong> Bill Amount </strong> </th>                            
+    <th><strong> Balance Amount (before) </strong></th>  
+    <th><strong> Balance Amount (After)</strong></th>   
+    <!-- <th><strong>Payment </strong> </th>                                                                              -->
+    </tr>
+    </thead>
+    <tbody>
+        <tr  *ngFor="let ord of trans.bills">
+            <td>
+        {{ord.billId}}
+            </td>
+            <td>
+                {{ord.paystore}}
+                    </td>
+         <td>
+          {{ord.billDate.slice(0,10 )}}
+          </td>
+           <td>
+            {{ord.billAmount}}
+           </td>
+            <td>
+             {{ord.paidAmount}}
+              </td>
+              <td>
+                {{ord.pendAmount}}
+                 </td>
+                 <!-- <td>
+        <input type="text"  [(ngModel)]="trans.pay" (click)="updquery()">  
+        </td> -->
+                   </tr>   
+            </tbody>
+    </nz-table>  
+    </div>  
+    </div>
+    <button *ngIf="EditTable" class="btn btn-secondary " style="width: 80px;height: 30px;"  (click)="locback2()">Go
+        Back</button>
+    
+    
+    

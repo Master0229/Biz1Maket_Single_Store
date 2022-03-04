@@ -1,0 +1,63 @@
+@import 'src/app/components/mixins.scss';
+@import 'src/app/components/mixins.scss';
+
+.widget-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.status {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  width: 6px;
+  z-index: 1;
+}
+
+.categories {
+  min-height: rem(300);
+  height: 100%;
+
+  @media (max-width: $sm-max-width) {
+    max-height: rem(240);
+    min-height: rem(240);
+    margin-bottom: rem(15);
+  }
+}
+
+.category {
+  padding-top: rem(5);
+  padding-bottom: rem(8);
+  padding-left: rem(10);
+  border-radius: 5px;
+
+  &:hover {
+    background-color: lighten($gray-1, 2);
+  }
+
+  &.title {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.current {
+  background-color: $gray-1;
+
+  &:hover {
+    background-color: $gray-1;
+  }
+}
+
+// dark theme
+:host-context([data-kit-theme='dark']) {
+  .category {
+    &:hover,
+    &.current {
+      background-color: $dark-gray-4;
+    }
+  }
+}

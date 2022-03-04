@@ -1,0 +1,181 @@
+<!-- <div>
+    <div class="form-group row" *ngIf="isShown">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="archive"></i></span></span> Maintainence Bill Type List</h4>
+          </div>
+              </div>
+        <div class="form-group row" *ngIf="isShown" > -->
+<div>
+    <div class="cui__utils__heading" *ngIf="isShown">
+        <strong>Maintainence Bill Type List - Index</strong>
+    </div>
+    <div class="card">
+        <div class="card-header card-header-flex" *ngIf="isShown">
+            <button style="width:105px;height: 34px;margin-top: 18px;" class="btn btn-success " (click)="locback()">
+                Create New
+            </button>
+            <div style="width: 200px;margin-left: 700px;margin-top: 10px">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" [(ngModel)]="term" nz-input placeholder="input search text"
+                        (input)="filtersearch()" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                </ng-template>
+            </div>
+        </div>
+        <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" *ngIf="isShown" [nzData]="filteredvalues">
+            <thead>
+                <tr>
+                    <th><strong> Bill TypeId</strong></th>
+                    <th><strong>Maint Bill Type Name</strong></th>
+                    <th><strong> AssetType</strong> </th>
+                    <th><strong> Status </strong></th>
+                    <th><strong> Actions</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ord of basicTable.data">
+                    <td>
+                        {{ord.id}}
+                    </td>
+                    <td>
+                        {{ord.description}}
+                    </td>
+                    <td>
+                        <span *ngIf="ord.liabilityTypeId == 1">Swiping Machine</span>
+                        <span *ngIf="ord.liabilityTypeId == 2">Mobile</span>
+                        <span *ngIf="ord.liabilityTypeId == 3">Tab</span>
+                    </td>
+
+                    <td>
+                        <span *ngIf="ord.isActive == true">Active</span>
+                        <span *ngIf="ord.isActive == false">InActive</span>
+                    </td>
+                    <td>
+                        <a href="javascript: void(0);" (click)="DeActivate(ord.id)"
+                            class="btn btn-sm btn-light pull-left" slot="actions">
+                            <i class="fa fa-check-square"></i>
+                        </a>
+                        <a (click)="upddata(ord.id)" href="javascript: void(0);" class="btn btn-sm btn-light ">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+
+                        <!-- <a href="javascript: void(0);" (click)="DetailbillType(ord.id)"
+                    class="btn btn-sm btn-light pull-left" slot="actions" >
+                    <i class="fad fa-info" ></i>
+                </a> -->
+                    </td>
+                </tr>
+                <!-- <button *ngIf="isShown" (click)="goback()">Go Back</button> -->
+                <!-- <ngb-pagination [collectionSize]="20" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<div class="form-group row" *ngIf="isTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Add Maintainence Bill Type</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maint Bill Type
+            Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.description" name="example_name" value=""
+                placeholder="Enter Maint Bill Type..."
+                [ngClass]="{'is-invalid': submitted && asset.description == ''}" />
+            <span *ngIf="submitted && asset.description == ''" class="text-danger">Maint Bill Type cannot be
+                empty*</span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete  #instance="ngbTypeahead"
+                type="text" class="form-control" placeholder="Select Asset Type ..." [ngbTypeahead]="searchdispatch"
+                [inputFormatter]="formatterdispatch" [resultTemplate]="rt"
+                (selectItem)="selecteddispatchitem($event.item)" />
+        </div>
+    </div>
+
+    <button class="btn btn-success px-5" (click)="Create()">Create</button>
+</div>
+<button *ngIf="isTable" class="btn btn-secondary " style="width: 80px;height: 30px;" (click)="goback()">Go
+    Back</button>
+
+
+<div class="form-group row" *ngIf="isEditTable">
+    <div class="hk-pg-header">
+        <h4 class="hk-pg-title" style="margin-left:35px"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="archive"></i></span></span>Update Maintainence Bill Type</h4>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="isEditTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maint Bill Type
+            Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" placeholder="Search Invoice..." [(ngModel)]="asset.description">
+
+            <!-- <input type="text" class="form-control" [(ngModel)]="asset.description" name="example_name" value=""
+                style="width:80%;border-color: black;" /> -->
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type</label>
+        <div class="col-md-3">
+            <ng-template class="w-100" #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.description" [term]="t"></ngb-highlight>
+            </ng-template>
+            <input #dispautocomplete [(ngModel)]="AssetType" #instance="ngbTypeahead" type="text" class="form-control"
+                [ngbTypeahead]="searchdispatch" [inputFormatter]="formatterdispatch" [resultTemplate]="rt"
+                (selectItem)="selecteddispatchitem($event.item)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;"> Status</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsActive" name="example_name" value=""
+                style="width: 10px;border-color: black;" />
+        </div>
+    </div>
+    <button class="btn btn-success px-5" (click)="Update()">Update</button>    
+</div>
+
+
+<div class="card-body" *ngIf="isDetailTable">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Maint Bill Type
+            Name</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.description" name="example_name" value=""
+                style="width: 50%;border-color: black;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;">Asset Type</label>
+        <div class="col-md-3 pt-2">
+            <input type="text" class="form-control" [(ngModel)]="asset.liabilityType" name="example_name" value=""
+                style="width: 50%;border-color: black;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="formControlRange" style="font-weight: bold;"> Status</label>
+        <div class="col-md-3 pt-2">
+            <input type="checkbox" class="form-control" [(ngModel)]="asset.IsActive" name="example_name" value=""
+                style="width: 10px;border-color: black;" />
+        </div>
+    </div>
+</div>
+<!-- <button *ngIf="isEditTable" class="btn btn-secondary" (click)="goback2()">Go
+    Back</button> -->
