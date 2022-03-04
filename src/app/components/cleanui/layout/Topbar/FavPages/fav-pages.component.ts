@@ -20,7 +20,7 @@ export class TopbarFavPagesComponent implements OnInit {
   ngOnInit() {
     this.menuService.getMenuData().subscribe(menuData => (this.menuData = menuData))
     this.loadPagesList()
-    this.filterPagesList()
+    // this.filterPagesList()
   }
 
   loadPagesList() {
@@ -51,25 +51,25 @@ export class TopbarFavPagesComponent implements OnInit {
     this.pagesList = pagesList()
   }
 
-  filterPagesList() {
-    const pagesList = this.pagesList
-    const favs = this.favs
-    const _searchText = this.searchText ? this.searchText.toUpperCase() : ''
-    const getFilteredPageList = () => {
-      const list = []
-      pagesList.forEach(item => {
-        const isActive = favs.some(child => child.url === item.url)
-        if (!item.title.toUpperCase().includes(_searchText) && _searchText) {
-          return null
-        }
-        item.isActive = isActive
-        list.push(item)
-        return null
-      })
-      return list
-    }
-    this.filteredPagesList = getFilteredPageList()
-  }
+  // filterPagesList() {
+  //   const pagesList = this.pagesList
+  //   const favs = this.favs
+  //   const _searchText = this.searchText ? this.searchText.toUpperCase() : ''
+  //   const getFilteredPageList = () => {
+  //     const list = []
+  //     pagesList.forEach(item => {
+  //       const isActive = favs.some(child => child.url === item.url)
+  //       if (!item.title.toUpperCase().includes(_searchText) && _searchText) {
+  //         return null
+  //       }
+  //       item.isActive = isActive
+  //       list.push(item)
+  //       return null
+  //     })
+  //     return list
+  //   }
+  //   this.filteredPagesList = getFilteredPageList()
+  // }
 
   setFav(e, item) {
     e.preventDefault()
@@ -80,7 +80,7 @@ export class TopbarFavPagesComponent implements OnInit {
       const filtered = favs.filter(child => child.url !== item.url)
       store.set('app.topbar.favs', filtered)
       this.favs = filtered
-      this.filterPagesList()
+      // this.filterPagesList()
       return
     }
     if (favs.length >= 3) {
@@ -91,6 +91,6 @@ export class TopbarFavPagesComponent implements OnInit {
     items.push(item)
     store.set('app.topbar.favs', items)
     this.favs = items
-    this.filterPagesList()
+    // this.filterPagesList()
   }
 }

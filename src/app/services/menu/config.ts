@@ -3,11 +3,17 @@ export const getMenuData: any[] = [
     category: true,
     title: 'BizDom',
   },
+  // {
+  //   title: 'Dashboards',
+  //   key: 'dashboards',
+  //   icon: 'fa fa-area-chart',
+  //   url: '/dashboard/alpha',
+  // },
   {
-    title: 'Dashboards',
-    key: 'dashboards',
+    title: 'Dashboard',
+    key: 'dashboard',
     icon: 'fa fa-area-chart',
-    url: '/dashboard/alpha',
+    url: '/apps/dashboard',
   },
   {
     title: 'Sale',
@@ -276,6 +282,12 @@ export const getMenuData: any[] = [
   //   key: 'extraAppsWordpressAdd',
   //   url: '/apps/wordpress-add',
   // },
+    {
+    title: 'Pricing Tables',
+    key: 'pricingTables',
+    icon: 'fe fe-command',
+    url: '/advanced/pricing-tables',
+  },
   {
     title: 'About Us',
     icon: 'fe fe-alert-octagon',

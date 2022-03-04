@@ -55,12 +55,18 @@ import { LocationComponent } from './location/location.component'
 import { BankaccountsComponent } from './bankaccounts/bankaccounts.component'
 import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetail.component'
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
+import { DashboardComponent } from './dashboard/dashboard.component'
 
 
 
 
 
 const routes: Routes = [
+  {
+    path : 'dashboard',
+    component : DashboardComponent,
+    data : {title : 'Home'}
+  },
   {
     path: 'sale',
     component: SaleComponent,

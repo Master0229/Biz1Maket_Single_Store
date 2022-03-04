@@ -1,221 +1,216 @@
 <div>
-    <div [hidden]="!show">
-        <div class="cui__utils__heading">
-            <strong>Products</strong>
-        </div>
-        <div class="card">
-            <div class="card-header card-header-flex">
-                <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+  <div [hidden]="!show">
+    <div class="cui__utils__heading">
+      <strong>Products</strong>
+    </div>
+    <div class="card">
+      <div class="card-header card-header-flex">
+        <!-- <div class="d-flex flex-column justify-content-center mr-auto">
                 <h5 class="mb-0">Latest Orders</h5>
             </div> -->
-                <div class="d-flex flex-column justify-content-center mr-auto">
-                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-                        <input type="text" [(ngModel)]="term" nz-input placeholder="Search Products"
-                            (input)="filtersearch()" />
-                    </nz-input-group>
-                    <ng-template #suffixIconButton>
-                        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-                    </ng-template>
-                </div>
-                <div class="col-sm-auto row">
+        <div class="d-flex flex-column justify-content-center mr-auto">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" [(ngModel)]="term" nz-input placeholder="Search Products" (input)="filtersearch()" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+          </ng-template>
+        </div>
+        <div class="col-sm-auto row">
 
-                    <div class="form-group row py-3 mr-5">
-                        <strong class="p-2" style="font-size: medium;">Show Inactive :</strong>
-                        <input type="checkbox" style=" width: 18px; height: calc(1.5em + 0.75rem + 2px);"
-                            (change)="changefilter($event.target.checked)">
-                    </div>
+          <div class="form-group row py-3 mr-5">
+            <strong class="p-2" style="font-size: medium;">Show Inactive :</strong>
+            <input type="checkbox" style=" width: 18px; height: calc(1.5em + 0.75rem + 2px);"
+              (change)="changefilter($event.target.checked)">
+          </div>
 
-                    <div class="mx-5 py-3">
-                        <a (click)="show = !show" class="btn btn-success" href="javascript: void(0);">
-                            + Add Product
-                        </a>
-                    </div>
-                  
-                </div>
+          <div class="mx-5 py-3">
+            <a (click)="show = !show" class="btn btn-success" href="javascript: void(0);">
+              + Add Product
+            </a>
+          </div>
 
-            </div>
-            <!-- <div class="card-body"> -->
-            <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" [nzData]="prod">
-                <thead>
-                    <tr>
-                        <th>
-                            <strong>
-                                Name
-                            </strong>
-                        </th>
-                        <th>
-                            <strong>
-                                Description
-                            </strong>
-                        </th>
-                        <th>
-                            <strong>
-                                Category
-                            </strong>
-                        </th>
-                        <th>
-                            <strong> Bar Code</strong>
-                        </th>
-                        <th>
-                            <strong>
-                                Price
-                            </strong>
-                        </th>
-                        <!-- <th nzShowSort [(nzSort)]="mapOfSort.shipping" (nzSortChange)="sort('shipping', $event)">
+        </div>
+
+      </div>
+      <!-- <div class="card-body"> -->
+      <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" [nzData]="prod">
+        <thead>
+          <tr>
+            <th>
+              <strong>
+                Name
+              </strong>
+            </th>
+            <th>
+              <strong>
+                Description
+              </strong>
+            </th>
+            <th>
+              <strong>
+                Category
+              </strong>
+            </th>
+            <th>
+              <strong> Bar Code</strong>
+            </th>
+            <th>
+              <strong>
+                Price
+              </strong>
+            </th>
+            <!-- <th nzShowSort [(nzSort)]="mapOfSort.shipping" (nzSortChange)="sort('shipping', $event)">
                             Price
                         </th> -->
-                        <!-- <th nzShowSort [(nzSort)]="mapOfSort.quantity" (nzSortChange)="sort('quantity', $event)">
+            <!-- <th nzShowSort [(nzSort)]="mapOfSort.quantity" (nzSortChange)="sort('quantity', $event)">
                 Quantity</th>
               <th nzShowSort [(nzSort)]="mapOfSort.status" (nzSortChange)="sort('status', $event)">
                 Status
               </th> -->
-                        <th> <strong>
-                                Action
-                            </strong>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let product of basicTable.data">
-                        <td>
+            <th >
+              <strong>
+                Active
+              </strong>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of basicTable.data">
+            <td>
 
-                            <!-- routerLink="/apps/addproduct/{{product.id}}" -->
-                            <a (click)="getproduct(product.id)" (click)="show = !show" class="btn btn-sm btn-light">
-                                {{product.name}}
-                            </a>
-                        </td>
-                        <td>
-                            {{product.description}}
-                        </td>
-                        <td>
-                            {{product.category}}
-                        </td>
-                        <td>
-                            {{product.barCode}}
-                        </td>
-                        <td>
-                            &#8377; {{product.price}}
-                        </td>
-                        <!-- <td>
-  
+              <!-- routerLink="/apps/addproduct/{{product.id}}" -->
+              <a (click)="getproduct(product.id)" (click)="show = !show" class="btn btn-sm btn-light">
+                {{product.name}}
+              </a>
+            </td>
+            <td>
+              {{product.description}}
+            </td>
+            <td>
+              {{product.category}}
+            </td>
+            <td>
+              {{product.barCode}}
+            </td>
+            <td>
+              &#8377; {{product.price}}
+            </td>
+            <!-- <td>
+
               </td> -->
-                        <!-- <td>
+            <!-- <td>
                 <span
                   [ngClass]="[item.status === 'Processing' ? 'font-size-12 badge badge-primary' : 'font-size-12 badge badge-default']">
                   {{item.status}}
                 </span>
               </td> -->
-                        <td>
-                            <a class="px-10">
-                                <input type="checkbox" [(ngModel)]="product.isactive"
-                                    (click)="active(product.id,!product.isactive)">
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-            <!-- </div> -->
-        </div>
+            <td>
+              <a class="px-10">
+                <input type="checkbox" [(ngModel)]="product.isactive" (click)="active(product.id,!product.isactive)">
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- </div> -->
     </div>
-    <div [hidden]="show" class="card">
-        <div class="cui__utils__heading">
-            <strong>Add Product</strong>
+  </div>
+  <div [hidden]="show" class="card">
+    <div class="cui__utils__heading">
+      <strong>Add Product</strong>
+    </div>
+    <div class="card-body">
+      <div class="col-xl-12 row mt-3 ">
+        <div class="col-xl-6">
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Product Name</span>
+            <input type="text" class="form-control" [(ngModel)]="product.name" (input)="setcombinationname()"
+              placeholder="Enter Product..." [ngClass]="{'is-invalid': submitted && product.name == ''}" />
+            <span *ngIf="submitted && product.name == ''" class="text-danger">Product name cannot be
+              empty*</span>
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Product Description</span>
+            <input type="text" class="form-control" [(ngModel)]="product.description"
+              placeholder="Enter Description..." />
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Product Code</span>
+            <input type="text" class="form-control" [(ngModel)]="product.productCode" placeholder="Enter Product Code.."
+              [ngClass]="{'is-invalid': submitted && product.productCode == null}" />
+            <span *ngIf="submitted && product.productCode == null" class="text-danger">Product Code cannot
+              be
+              Empty*</span>
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Brand</span>
+            <input [(ngModel)]="product.brand" type="text" class="form-control" placeholder="Enter Brand..."
+              [ngClass]="{'is-invalid': submitted && product.brand == ''}" />
+            <span *ngIf="submitted && product.brand == ''" class="text-danger">Brand cannot be empty*</span>
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Tax Group</span>
+            <select [(ngModel)]="product.taxGroupId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
+              <option value="{{tax.id}}" *ngFor="let tax of taxgroups">{{tax.description}}</option>
+            </select>
+            <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be
+              Empty*</span>
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Category</span>
+            <select [(ngModel)]="product.categoryId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.categoryId == 0}" (change)="getcategoryvariants()">
+              <option value="{{category.id}}" *ngFor="let category of categories">{{category.description}}
+              </option>
+            </select>
+            <span *ngIf="submitted && product.categoryId == 0" class="text-danger">Category cannot be
+              Empty*</span>
+          </div>
         </div>
-        <div class="card-body">
-            <div class="col-xl-12 row mt-3 ">
-                <div class="col-xl-6">
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Product Name</span>
-                        <input type="text" class="form-control" [(ngModel)]="product.name"
-                            (input)="setcombinationname()" placeholder="Enter Product..."
-                            [ngClass]="{'is-invalid': submitted && product.name == ''}" />
-                        <span *ngIf="submitted && product.name == ''" class="text-danger">Product name cannot be
-                            empty*</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Product Description</span>
-                        <input type="text" class="form-control" [(ngModel)]="product.description"
-                            placeholder="Enter Description..." />
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Product Code</span>
-                        <input type="text" class="form-control" [(ngModel)]="product.productCode"
-                            placeholder="Enter Product Code.."
-                            [ngClass]="{'is-invalid': submitted && product.productCode == null}" />
-                        <span *ngIf="submitted && product.productCode == null" class="text-danger">Product Code cannot
-                            be
-                            Empty*</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Brand</span>
-                        <input [(ngModel)]="product.brand" type="text" class="form-control" placeholder="Enter Brand..."
-                            [ngClass]="{'is-invalid': submitted && product.brand == ''}" />
-                        <span *ngIf="submitted && product.brand == ''" class="text-danger">Brand cannot be empty*</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Tax Group</span>
-                        <select [(ngModel)]="product.taxGroupId" class="form-control"
-                            [ngClass]="{'is-invalid': submitted && product.taxGroupId == 0}">
-                            <option value="{{tax.id}}" *ngFor="let tax of taxgroups">{{tax.description}}</option>
-                        </select>
-                        <span *ngIf="submitted && product.taxGroupId == 0" class="text-danger">Tax cannot be
-                            Empty*</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Category</span>
-                        <select [(ngModel)]="product.categoryId" class="form-control"
-                            [ngClass]="{'is-invalid': submitted && product.categoryId == 0}"
-                            (change)="getcategoryvariants()">
-                            <option value="{{category.id}}" *ngFor="let category of categories">{{category.description}}
-                            </option>
-                        </select>
-                        <span *ngIf="submitted && product.categoryId == 0" class="text-danger">Category cannot be
-                            Empty*</span>
-                    </div>
-                </div>
-                <div class="col-xl-6">
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Price</span>
-                        <div class="input-group ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">&#8377;</span>
-                            </div>
-                            <input [ngClass]="{'is-invalid': submitted && product.price == null}"
-                                [(ngModel)]="product.price" placeholder="Amount" min="0" max="100" step="1"
-                                type="number" class="form-control">
-                            <!-- <div class="input-group-append">
+        <div class="col-xl-6">
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Price</span>
+            <div class="input-group ">
+              <div class="input-group-prepend">
+                <span class="input-group-text">&#8377;</span>
+              </div>
+              <input [ngClass]="{'is-invalid': submitted && product.price == null}" [(ngModel)]="product.price"
+                placeholder="Amount" min="0" max="100" step="1" type="number" class="form-control">
+              <!-- <div class="input-group-append">
                             <span class="input-group-text">.00</span>
-  
-                        </div> -->
-                        </div>
-                        <span *ngIf="submitted && product.price ==null" class="text-danger">Price cannot be
-                            Empty*</span>
-                    </div>
 
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Product Type</span>
-                        <select [(ngModel)]="product.productTypeId" class="form-control"
-                            [ngClass]="{'is-invalid': submitted && product.productTypeId == 0}">
-                            <option value="{{producttype.id}}" *ngFor="let producttype of producttypes">
-                                {{producttype.description}}
-                            </option>
-                        </select>
-                        <span *ngIf="submitted && product.productTypeId == 0" class="text-danger">ProductType cannot be
-                            Empty*</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">vendor</span>
-                        <input type="text" class="form-control" placeholder="Enter Vendor..." />
-                    </div>
-                    <div class="mb-3">
-                        <span class="cui-crypto-dashboard-form-label">Units</span>
-                        <select [(ngModel)]="product.unitId" class="form-control"
-                            [ngClass]="{'is-invalid': submitted && product.unitId == 0}">
-                            <option value="{{unit.id}}" *ngFor="let unit of units">{{unit.description}}</option>
-                        </select>
-                        <span *ngIf="submitted && product.unitId == 0" class="text-danger">Unit cannot Be Empty*</span>
-                    </div>
-                    <!-- <div class="mb-3">
+                        </div> -->
+            </div>
+            <span *ngIf="submitted && product.price ==null" class="text-danger">Price cannot be
+              Empty*</span>
+          </div>
+
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Product Type</span>
+            <select [(ngModel)]="product.productTypeId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.productTypeId == 0}">
+              <option value="{{producttype.id}}" *ngFor="let producttype of producttypes">
+                {{producttype.description}}
+              </option>
+            </select>
+            <span *ngIf="submitted && product.productTypeId == 0" class="text-danger">ProductType cannot be
+              Empty*</span>
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">vendor</span>
+            <input type="text" class="form-control" placeholder="Enter Vendor..." />
+          </div>
+          <div class="mb-3">
+            <span class="cui-crypto-dashboard-form-label">Units</span>
+            <select [(ngModel)]="product.unitId" class="form-control"
+              [ngClass]="{'is-invalid': submitted && product.unitId == 0}">
+              <option value="{{unit.id}}" *ngFor="let unit of units">{{unit.description}}</option>
+            </select>
+            <span *ngIf="submitted && product.unitId == 0" class="text-danger">Unit cannot Be Empty*</span>
+          </div>
+          <!-- <div class="mb-3">
                         <span class="cui-crypto-dashboard-form-label">KOT Groups </span>
                         <select [(ngModel)]="product.kotGroupId" class="form-control"
                             [ngClass]="{'is-invalid': submitted && product.kotGroupId == 0}">
@@ -225,87 +220,84 @@
                         <span *ngIf="submitted && product.kotGroupId == 0" class="text-danger">KotGroup cannot be
                             Empty*</span>
                     </div> -->
-                    <div class="mb-3" *ngIf="!(combinations.length > 0)">
-                        <span class="cui-crypto-dashboard-form-label">Barcode</span>
-                        <input type="text" class="form-control" placeholder="Enter Barcode..."
-                            [ngClass]="{'is-invalid': submitted && product.barCode == null}"
-                            [(ngModel)]="product.barCode" />
-                        <span *ngIf="submitted && product.barCode ==null" class="text-danger">barcode cannot be
-                            Empty*</span>
-                    </div>
-                </div>
+          <div class="mb-3" *ngIf="!(combinations.length > 0)">
+            <span class="cui-crypto-dashboard-form-label">Barcode</span>
+            <input type="text" class="form-control" placeholder="Enter Barcode..."
+              [ngClass]="{'is-invalid': submitted && product.barCode == null}" [(ngModel)]="product.barCode" />
+            <span *ngIf="submitted && product.barCode ==null" class="text-danger">barcode cannot be
+              Empty*</span>
+          </div>
+        </div>
 
-            </div>
+      </div>
 
-            <div *ngIf="categoryvariantgroups.length > 0"
-                class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5"
-                style="width: 75%;align-self: center;">
-                <div class="card-header card-header-flex">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0">Select VariantGroup</h5>
-                        <!-- </div> -->
-                        <!-- <div class="d-flex flex-column justify-content-center ">
+      <div *ngIf="categoryvariantgroups.length > 0"
+        class="card kit__utils__cardMarked kit__utils__cardMarked--primary mx-5" style="width: 75%;align-self: center;">
+        <div class="card-header card-header-flex">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0">Select VariantGroup</h5>
+            <!-- </div> -->
+            <!-- <div class="d-flex flex-column justify-content-center ">
                     <a class="btn btn-dashed" href="javascript: void(0);">
                         View Combination
                     </a>
                 </div> -->
-                    </div>
-                </div>
-                <div class="card-body row col-xl-12">
-                    <div *ngFor="let vg of categoryvariantgroups" class="col-xl-4">
-                        <strong>{{vg.variantGroupName}}</strong>
-                        <!-- <div class="ml-3 row" > -->
-                        <div class="ml-4" *ngFor="let v of vg.variants">
-                            <input class="form-check-input" [(ngModel)]="v.selected" type="checkbox" name="{{v.id}}"
-                                id="{{v.id}}" (change)="variantchecked(vg.variantGroupId,v.id, $event)">
-                            <label class="form-check-lable" for="{{v.Id}}">{{v.name}}</label>
-                        </div>
-
-                    </div>
-                </div>
-                <div *ngIf="combinations.length > 0" class="">
-                    <nz-table #basicTable [nzData]="combinations" nzSize="small" [nzShowPagination]="false" class="">
-                        <thead>
-                            <tr>
-                                <th class="bg-transparent text-uppercase"><strong>Product</strong> </th>
-                                <th *ngFor="let key of keys" class="bg-transparent text-uppercase ">
-                                    <strong>{{key}}</strong>
-                                </th>
-                                <th class="bg-transparent text-uppercase"><strong>Barcode</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let cmb of basicTable.data">
-                                <td>
-                                    {{cmb.product? cmb.product : 'Unknown'}}
-                                </td>
-                                <td *ngFor="let key of keys">{{cmb[key]}}</td>
-                                <td style="width: 30%;">
-                                    <input type="text" class="form-control" placeholder="Enter Barcode..."
-                                        [(ngModel)]="cmb.barcode" />
-                                    <!-- <span *ngIf="submitted && product.barcodeid ==null" class="text-danger">barcode cannot be Empty*</span> -->
-                                </td>
-                            </tr>
-                        </tbody>
-                    </nz-table>
-                </div>
+          </div>
+        </div>
+        <div class="card-body row col-xl-12">
+          <div *ngFor="let vg of categoryvariantgroups" class="col-xl-4">
+            <strong>{{vg.variantGroupName}}</strong>
+            <!-- <div class="ml-3 row" > -->
+            <div class="ml-4" *ngFor="let v of vg.variants">
+              <input class="form-check-input" [(ngModel)]="v.selected" type="checkbox" name="{{v.id}}" id="{{v.id}}"
+                (change)="variantchecked(vg.variantGroupId,v.id, $event)">
+              <label class="form-check-lable" for="{{v.Id}}">{{v.name}}</label>
             </div>
-            <div class="mb-3">
-                <!-- <div>
+
+          </div>
+        </div>
+        <div *ngIf="combinations.length > 0" class="">
+          <nz-table #basicTable [nzData]="combinations" nzSize="small" [nzShowPagination]="false" class="">
+            <thead>
+              <tr>
+                <th class="bg-transparent text-uppercase"><strong>Product</strong> </th>
+                <th *ngFor="let key of keys" class="bg-transparent text-uppercase ">
+                  <strong>{{key}}</strong>
+                </th>
+                <th class="bg-transparent text-uppercase"><strong>Barcode</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cmb of basicTable.data">
+                <td>
+                  {{cmb.product? cmb.product : 'Unknown'}}
+                </td>
+                <td *ngFor="let key of keys">{{cmb[key]}}</td>
+                <td style="width: 30%;">
+                  <input type="text" class="form-control" placeholder="Enter Barcode..." [(ngModel)]="cmb.barcode" />
+                  <!-- <span *ngIf="submitted && product.barcodeid ==null" class="text-danger">barcode cannot be Empty*</span> -->
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      <div class="mb-3">
+        <!-- <div>
                 <button class="btn btn-danger">
                     <strong>cancel</strong>
                 </button>
             </div> -->
-                <!-- <button type="button" class="btn btn-secondary " (click)="location.back()"><i nz-icon nzType="left"></i>Go
+        <!-- <button type="button" class="btn btn-secondary " (click)="location.back()"><i nz-icon nzType="left"></i>Go
                     Back</button>
                 <button class="btn btn-success pull-right"  (click)="addProduct()">
                     <strong>Add</strong>
                 </button> -->
-                <button type="button" class="btn btn-secondary px-5 ml-5" (click)="back()">Go
-                    Back</button>
-                <button type="button" class="btn btn-success px-5 pull-right mr-5" (click)="addProduct()">Save</button>
-            </div>
-        </div>
-
+        <button type="button" class="btn btn-secondary px-5 ml-5" (click)="back()">Go
+          Back</button>
+        <button type="button" class="btn btn-success px-5 pull-right mr-5" (click)="addProduct()">Save</button>
+      </div>
     </div>
+
+  </div>
 </div>

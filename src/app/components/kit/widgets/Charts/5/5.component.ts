@@ -27,8 +27,8 @@ export class CuiChart5Component implements OnInit {
     },
     axisX: {
       showGrid: false,
-      showLabel: false,
-      offset: 0,
+      showLabel: true,
+      offset: 20,
     },
     seriesBarDistance: 5,
     plugins: [

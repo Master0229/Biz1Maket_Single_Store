@@ -1,9 +1,9 @@
 {
-  "labels": ["Boston", "Gravity Falls", "New York"],
+  "labels": ["New Customer", "Old Customer"],
   "datasets": [
     {
-      "data": [45, 45, 45],
-      "backgroundColor": ["#46be8a", "#fb434a", "#1b55e3"],
+      "data": [60, 40],
+      "backgroundColor": ["#46be8a", "#1b55e3"],
       "borderColor": "#fff",
       "borderWidth": 2,
       "hoverBorderWidth": 0,

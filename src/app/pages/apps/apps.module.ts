@@ -66,7 +66,8 @@ import { LocationComponent } from './location/location.component'
 import { BankaccountsComponent } from './bankaccounts/bankaccounts.component'
 import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetail.component'
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
-import { Ng2SearchPipeModule } from 'ng2-search-filter'
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { DashboardComponent } from './dashboard/dashboard.component'
 
 const COMPONENTS = [
   AppsMessagingComponent,
@@ -139,6 +140,7 @@ const COMPONENTS = [
     BankaccountsComponent,
     BankaccountdetailComponent,
     BillbyvendorComponent,
+    DashboardComponent,
   ],
 
   providers: [
