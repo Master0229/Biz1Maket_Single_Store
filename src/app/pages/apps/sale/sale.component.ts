@@ -393,7 +393,7 @@ export class SaleComponent implements OnInit {
         if (product.stockBatchId == this.temporaryItem['stockBatchId']) {
           product.quantity -= this.temporaryItem.Quantity
           Object.keys(product).forEach(key => {
-            this.temporaryItem[key] = product[key]      
+            this.temporaryItem[key] = product[key]
 
           })
         }
@@ -457,7 +457,7 @@ export class SaleComponent implements OnInit {
       this.products.filter(x => x.stockBatchId == Items.stockBatchId)[0].quantity = prod.maxqty - 1
       this.order.setbillamount()
     }
-    // this.addItem() 
+    // this.addItem()
     console.log(Items.OrderQuantity)
   }
   delete(index) {
@@ -595,7 +595,7 @@ export class SaleComponent implements OnInit {
     this.order.CreatedDate = moment().format('YYYY-MM-DD HH:mm A')
     this.order.BillDateTime = moment().format('YYYY-MM-DD HH:mm A')
     this.order.OrderedDate = moment().format('YYYY-MM-DD HH:mm A')
-    this.order.OrderedDateTime = moment().format('YYYY-MM-DD HH:mm A')
+    this.order.OrderedDateTime = moment().format('YYYY-MM-DD hh:mm A')
     this.order.DeliveryDateTime = moment().format('YYYY-MM-DD HH:mm A')
     this.order.ModifiedDate = moment().format('YYYY-MM-DD HH:mm A')
     this.order.InvoiceNo = this.loginfo.storeId + moment().format('YYYYMMDD') + '/' + this.order.OrderNo
@@ -769,7 +769,7 @@ export class SaleComponent implements OnInit {
             ${this.loginfo.city}, ${this.loginfo.phoneNo}
             GSTIN:${this.orderkey.GSTno}<br>
             Receipt:${this.order.InvoiceNo}<br>
-            ${moment(this.order.OrderedDateTime).format('LLL')}
+            ${moment(this.order.OrderedDateTime).format("LLL")}
         </p>
     </div>
     <hr>
@@ -782,8 +782,7 @@ export class SaleComponent implements OnInit {
             <th class="text-right">AMOUNT</th>
         </thead>
         <tr>
-        <td colspan="4"><hr></td>
-      </tr> 
+      </tr>
         <tbody>`
     var extra = 0
     this.order.Items.forEach(item => {

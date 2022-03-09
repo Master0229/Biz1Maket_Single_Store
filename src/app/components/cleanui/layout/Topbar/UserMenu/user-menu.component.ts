@@ -39,10 +39,24 @@ export class TopbarUserMenuComponent {
     this.store.dispatch(new UserActions.Logout())
   }
 
+
+  ngOnInit(): void {
+    this.Auth.getdbdata(['loginfo']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.CompanyId = this.loginfo.CompanyId
+      this.StoreId = this.loginfo.StoreId
+      console.log(this.loginfo)
+      this.sync()
+    })
+  }
+  loginfo
+  CompanyId: any
+  StoreId: any
+
   sync() {
-    this.Auth.syncdata().subscribe(data => {
-      console.log(data)
-      this.notification.success("Variant Added", "Successfully")
+    this.Auth.getstoredata(this.loginfo.companyId, this.loginfo.storeId, 1).subscribe(data1 => {
+      console.log(data1)
+      this.Auth.getstoredatadb(data1).subscribe(d => {})
     })
   }
 }

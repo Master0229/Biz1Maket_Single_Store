@@ -152,10 +152,10 @@ export class ProductsComponent implements OnInit {
     })
   }
   gettax() {
-    this.Auth.GetTaxGrp(this.CompanyId).subscribe(data => {
+    this.Auth.GetTaxGrp(this.loginfo.companyId).subscribe(data => {
       this.taxgroups = data
       this.product.taxGroupId = this.taxgroups[0].id
-      // console.log(this.taxgroups);
+      console.log(this.taxgroups);
     })
   }
   getproduct(id) {
