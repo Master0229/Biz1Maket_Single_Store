@@ -36,6 +36,7 @@ export class TopbarUserMenuComponent {
   }
 
   logout() {
+    localStorage.setItem("logState", "logged_out")
     this.store.dispatch(new UserActions.Logout())
   }
 

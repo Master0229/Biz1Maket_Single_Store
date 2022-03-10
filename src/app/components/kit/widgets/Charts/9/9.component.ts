@@ -57,6 +57,7 @@ export class CuiChart9Component implements AfterViewChecked {
   }
   constructor() {}
   ngAfterViewChecked() {
+    console.log(this.chart)
     this.chart.chart.generateLegend()
   }
 }

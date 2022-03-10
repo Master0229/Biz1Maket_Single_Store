@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
         filter(route => route.outlet === 'primary'),
         mergeMap(route => route.data),
       )
-      .subscribe(event => this.titleService.setTitle('Biz1Market | ' + event['title']))
+      .subscribe(event => this.titleService.setTitle('Biz1Pos | ' + event['title']))
 
     // listen url query params and set them to ngrx store
     this.router.events
@@ -177,6 +177,13 @@ export class AppComponent implements OnInit {
       }
     }
     primaryColor()
+
+    var loggedState = localStorage.getItem("logState")
+    if(loggedState == "logged_in"){
+      this.router.navigate(['/auth/pinscreen'])
+    } else {
+      this.router.navigate(['/auth/login'])
+    }
   }
 
   setTheme = theme => {

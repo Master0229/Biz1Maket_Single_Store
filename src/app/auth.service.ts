@@ -604,8 +604,8 @@ export class AuthService {
   }
 
   ///////////////////////////////////////// Customer data ///////////////////////////////////////
-  GetCustomer(CompanyId) {
-    return this.http.get(this.base_url1 + 'Customer/GetIndex?CompanyId=' + CompanyId)
+  GetCustomer(CompanyId, StoreId) {
+    return this.http.get(this.base_url1 + 'Customer/GetIndex?CompanyId=' + CompanyId + '&StoreId=' + StoreId)
   }
   UpdateCustomer(data) {
     return this.http.get(this.base_url1 + 'Customer/Update', data)
@@ -614,6 +614,9 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'Customer/Delete?Id=' + Id)
   }
 
+  getDashboard(storeId, companyId, fromDate, toDate, toDay){
+    return this.http.get(this.base_url1 + `Login/DashBoard?storeId=${storeId}&companyId=${companyId}&fromDate=${fromDate}&toDate=${toDate}&toDay=${toDay}`)
+  }
   ///////////////////////////////////////// Receipts data ///////////////////////////////////////
   GetReceipts(Storeid, fromdate, todate, invoice) {
     return this.http.get(

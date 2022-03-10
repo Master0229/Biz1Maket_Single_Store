@@ -111,7 +111,7 @@ export class SaleComponent implements OnInit {
       value: '+982',
     },
   ]
-  temporaryItem: any = { DiscAmount: 0, DiscPercent: 0 }
+  temporaryItem: any = { DiscAmount: null, DiscPercent: 0 }
   barcodeItem = { quantity: null, tax: 0, amount: 0, price: 0, Tax1: 0, Tax2: 0 }
   barcodemode: boolean = false
   customerdetails = {

@@ -1,4 +1,4 @@
-### Biz1Market Angular Admin Template Preview ###
+### Biz1Pos Angular Admin Template Preview ###
 https://angular.cleanui.cloud
 
 ### Documentation ###

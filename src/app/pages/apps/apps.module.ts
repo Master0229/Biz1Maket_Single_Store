@@ -69,6 +69,9 @@ import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { DashboardComponent } from './dashboard/dashboard.component'
 
+import { ChartModule } from 'angular2-chartjs'
+import { ChartistModule } from 'ng-chartist'
+
 const COMPONENTS = [
   AppsMessagingComponent,
   AppsCalendarComponent,
@@ -102,6 +105,8 @@ const COMPONENTS = [
     NestableModule,
     NgbModule,
     Ng2SearchPipeModule,
+    ChartModule,
+    ChartistModule
   ],
   declarations: [
     ...COMPONENTS,

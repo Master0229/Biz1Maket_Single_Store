@@ -47,7 +47,7 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomer() {
-    this.Auth.GetCustomer(this.CompanyId).subscribe(data => {
+    this.Auth.GetCustomer(this.loginfo.companyId, this.loginfo.storeId).subscribe(data => {
       this.Customer = data
       console.log(this.Customer)
       for (let i = 0; i < this.Customer.length; i++) {

@@ -17,7 +17,7 @@
               <i class="fa fa-rupee font-size-50 mr-3"></i>
               <div>
                 <div class="font-size-21 font-weight-bold">Total Sales</div>
-                <div class="font-size-15">Total: 78,155</div>
+                <div class="font-size-15">Total: {{toDaySales?.sales}}</div>
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@
               <i class="fe fe-file-text font-size-50 mr-3"></i>
               <div>
                 <div class="font-size-21 font-weight-bold">Invoices</div>
-                <div class="font-size-15">Total: 78,155</div>
+                <div class="font-size-15">Total: {{toDaySales?.bills}}</div>
               </div>
             </div>
           </div>
@@ -43,13 +43,13 @@
               <i class="fa fa-users font-size-50 mr-3"></i>
               <div class="text-dark">
                 <div class="font-size-21 font-weight-bold">Customers</div>
-                <div class="font-size-15">Total: 78,155</div>
+                <div class="font-size-15">Total: {{totalCustomers}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col">
+      <!-- <div class="col">
         <div class="card border-0 bg-warning text-white" style="margin-bottom: 0;">
           <div class="card-body">
             <div class="d-flex flex-wrap align-items-center">
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -70,14 +70,41 @@
       <div class="col-4">
         <div class="card" style="margin-bottom: 0;">
           <div class="card-body">
-            <kit-chart-9></kit-chart-9>
+
+            <div *ngIf="showData">
+              <div class="text-dark font-size-18 font-weight-bold mb-1">Sales By Customer</div>
+              <div class="d-flex flex-wrap align-items-center">
+                <div class="mr-3 mt-3 mb-3 position-relative">
+                  <div style="width: 140px;">
+                    <chart [type]="'doughnut'" [data]="chartData" [options]="options"></chart>
+                  </div>
+                  <div class="tooltip text-gray-5 font-size-28" #tooltip></div>
+                </div>
+                <div #legend></div>
+              </div>
+            </div>
+            <!-- <kit-chart-9></kit-chart-9> -->
+
           </div>
         </div>
       </div>
       <div class="col-8">
         <div class="card" style="margin-bottom: 0;">
           <div class="card-body">
-            <kit-chart-5></kit-chart-5>
+
+            <div *ngIf="showData">
+              <div class="text-dark font-size-18 font-weight-bold mb-1">Monthly Revenue</div>
+              <x-chartist
+                [data]="barchartData"
+                [type]="'Bar'"
+                [options]="chartOptions"
+                class="height-200 chart"
+              >
+              </x-chartist>
+            </div>
+
+            <!-- <kit-chart-5></kit-chart-5> -->
+
           </div>
         </div>
       </div>

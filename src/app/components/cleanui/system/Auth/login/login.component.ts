@@ -87,9 +87,9 @@ export class LoginComponent implements OnInit {
 
   setProvider(authProvider) {
     this.store.dispatch(
-      new SettingsActions.SetStateAction({  
+      new SettingsActions.SetStateAction({
         authProvider,
-      }), 
+      }),
     )
   }
   getusers(id) {
@@ -100,6 +100,7 @@ export class LoginComponent implements OnInit {
         this.Auth.getstoredatadb(data1).subscribe(d => {})
       })
       localStorage.setItem('users', JSON.stringify(data))
+      localStorage.setItem("logState", "logged_in")
       this.router.navigate(['/auth/pinscreen'])
     })
   }
