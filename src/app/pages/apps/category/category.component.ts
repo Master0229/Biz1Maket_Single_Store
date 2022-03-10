@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CategoryComponent implements OnInit {
   CompanyId: any;
+  StoreId: any;
   categories: any = [];
   categoryact: any = []
   term: string = '';
@@ -56,14 +57,19 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCategory();
-    this.getpcategories();
-    this.getvariantgroups();
-    this.getcatactive()
+    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.CompanyId = this.loginfo.CompanyId
+      this.StoreId = this.loginfo.StoreId
+      this.getCategory();
+      this.getpcategories();
+      this.getvariantgroups();
+      this.getcatactive()
+      })
   }
 
   getCategory() {
-    this.Auth.getcategories(1, 'A').subscribe(data => {
+    this.Auth.getcategories(this.loginfo.companyId, 'A').subscribe(data => {
       this.categories = data;
       // this.cat = this.categories.filter(x => x.isactive)
       console.log(this.categories)
@@ -80,7 +86,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getpcategories() {
-    this.Auth.getcategories(1, 'P').subscribe(data => {
+    this.Auth.getcategories(this.loginfo.companyId, 'P').subscribe(data => {
       this.pcategories = data;
       console.log(this.pcategories)
     })
@@ -112,6 +118,7 @@ export class CategoryComponent implements OnInit {
   //  Add Category
 
   addcategory() {
+    this.category.companyId = this.loginfo.companyId
     if (this.category.id == 0) {
       this.Auth.addcategories(this.category).subscribe(data => {
         this.back()

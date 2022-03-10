@@ -853,7 +853,16 @@ app.get('/getloginfo', function (req, res) {
 app.post('/setstoredata', function (req, res) {
     var i = 0
     var obj = { mas: "success" }
-    db.loginfo.remove({}, { multi: true }, function (err, numberRemoved) {
+    db.orderkeydb.remove({}, { multi: true }, function (err, numberRemoved) {
+      const orderkey = {orderno: req.body.orderkey[0].orderno + 1, GSTno: "", timestamp: new Date().getTime()}
+      db.orderkeydb.insert(orderkey, function (err, newDoc) {   // Callback is optional
+          console.log("loginfo", i)
+          i++
+          if (i == 11)
+              res.send(obj)
+      });
+  })
+  db.loginfo.remove({}, { multi: true }, function (err, numberRemoved) {
         db.loginfo.insert(req.body.logInfo, function (err, newDoc) {   // Callback is optional
             console.log("loginfo", i)
             i++

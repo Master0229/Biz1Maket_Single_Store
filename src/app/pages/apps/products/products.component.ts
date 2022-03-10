@@ -207,7 +207,7 @@ export class ProductsComponent implements OnInit {
   //   })
   // }
   getCategories() {
-    this.Auth.getcategories(1, 'A').subscribe(data => {
+    this.Auth.getcategories(this.loginfo.companyId, 'A').subscribe(data => {
       this.categories = data
       this.product.categoryId = this.categories[0].id
       this.getMasterproduct()

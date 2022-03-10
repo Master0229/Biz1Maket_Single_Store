@@ -16,7 +16,7 @@ import { ConstantsService } from '../../../../../services/constants/constants.se
 export class LoginComponent implements OnInit {
   form: FormGroup
   logo: String
-  authProvider: string = 'firebase'
+  authProvider: string = 'jwt'
   loading: boolean = false
   isloggedin: boolean = false
   stores = []
@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
     private globals: ConstantsService,
   ) {
     this.form = fb.group({
-      EmailId: ['testuser@gmail.com', [Validators.required, Validators.minLength(4)]],
-      Password: ['123456789', [Validators.required]],
+      EmailId: ['', [Validators.required, Validators.minLength(4)]],
+      Password: ['', [Validators.required]],
     })
     this.store.pipe(select(Reducers.getSettings)).subscribe(state => {
       this.logo = state.logo

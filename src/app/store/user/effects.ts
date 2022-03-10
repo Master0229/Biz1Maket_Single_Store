@@ -41,7 +41,7 @@ export class UserEffects implements OnInitEffects {
       if (settings.authProvider === 'jwt') {
         return this.jwtAuthService.login(payload.email, payload.password).pipe(
           map(response => {
-            if (response) {
+            if (response["status"][0]["result"] == "Login_Success") {
               response.loggedin =true;
               this.globals.email = payload.email;
               this.globals.emit(response)
@@ -49,7 +49,7 @@ export class UserEffects implements OnInitEffects {
               // return this.router.navigate([this.route.snapshot.queryParams.returnUrl])
               return new UserActions.LoadCurrentAccount()
             }
-            this.notification.warning('Auth Failed', response)
+            this.notification.warning('Auth Failed', response["status"][0]["result"])
             return new UserActions.LoginUnsuccessful()
           }),
           catchError(error => {

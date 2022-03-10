@@ -160,17 +160,19 @@ export class SaleComponent implements OnInit {
   orderkey = { orderno: 1, timestamp: 0, GSTno: '' }
 
   ngOnInit(): void {
-    this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
+    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
+      this.orderkey = data["orderkeydb"][0]
+      localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
       this.CompanyId = this.loginfo.CompanyId
       this.StoreId = this.loginfo.StoreId
       this.orderkeyValidation()
       console.log(this.loginfo)
     })
-    this.orderkey = localStorage.getItem('orderkey')
-      ? JSON.parse(localStorage.getItem('orderkey'))
-      : { orderno: 1, timestamp: 0, GSTno: '' }
+    // this.orderkey = localStorage.getItem('orderkey')
+    //   ? JSON.parse(localStorage.getItem('orderkey'))
+    //   : { orderno: 1, timestamp: 0, GSTno: '' }
     this.Auth.getloginfo().subscribe(data => {
       this.loginfo = data
       this.order = new OrderModule(6)
