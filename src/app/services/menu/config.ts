@@ -288,12 +288,12 @@ export const getMenuData: any[] = [
     icon: 'fe fe-command',
     url: '/advanced/pricing-tables',
   },
-  {
-    title: 'About Us',
-    icon: 'fe fe-alert-octagon',
-    key: 'extraAppsHelpdeskDashboard',
-    url: '/apps/helpdesk-dashboard',
-  },
+  // {
+  //   title: 'About Us',
+  //   icon: 'fe fe-alert-octagon',
+  //   key: 'extraAppsHelpdeskDashboard',
+  //   url: '/apps/helpdesk-dashboard',
+  // },
   {
     // title: 'Setup',
     // key: 'apps',

@@ -17,7 +17,8 @@
     "stylelint": "stylelint \"src/**/*.{scss,less}\"",
     "postinstall": "ngcc",
     "start:electron": "ng build --base-href ./ && electron .",
-    "run:electron": "electron ."
+    "run:electron": "electron .",
+    "setup-win": "electron-packager . Biz1Pos --overwrite --asar=true --platform=win32 --arch=ia32 --icon=dist/favicon.png --prune=true --out=release-builds --version-string.CompanyName=BizDom --version-string.FileDescription=POS --version-string.ProductName=\"Biz1Pos\""
   },
   "husky": {
     "hooks": {
@@ -60,6 +61,7 @@
     "angular2-chartjs": "^0.5.1",
     "apexcharts": "^3.19.0",
     "axios": "^0.21.1",
+    "body-parser": "^1.19.2",
     "bootstrap": "^4.5.2",
     "c3": "^0.7.12",
     "chartist": "^0.11.4",
@@ -68,7 +70,9 @@
     "cors": "^2.8.5",
     "daterangepicker": "^3.1.0",
     "electron": "^11.1.0",
+    "electron-packager": "^15.4.0",
     "electron-pos-printer": "^1.2.4",
+    "express": "^4.17.3",
     "firebase": "^7.14.4",
     "hammerjs": "^2.0.8",
     "local-devices": "^3.1.0",
