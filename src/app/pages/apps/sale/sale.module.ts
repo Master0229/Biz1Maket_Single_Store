@@ -165,8 +165,7 @@ export class OrderModule {
       console.log(item)
       item.TotalAmount = item.Price * item.OrderQuantity
       if (item.IsInclusive) {
-        item.TotalAmount =
-          item.TotalAmount - (item.TotalAmount * (item.Tax1 + item.Tax2 + item.Tax3)) / 100
+        item.TotalAmount = item.TotalAmount - (item.TotalAmount * (item.Tax1 + item.Tax2 + item.Tax3)) / 100
       }
       item.TaxAmount1 = (item.Tax1 * item.TotalAmount) / 100
       item.TaxAmount2 = (item.Tax2 * item.TotalAmount) / 100
@@ -271,7 +270,7 @@ export class OrderItemModule {
   ProductName: string
   Price: number
   ProductId: number
-  quantity: number
+  // quantity: number
   ReceivedQuantity: number
   ReturnedQuantity: number
   ReceiveLaterQuantity: number
@@ -292,13 +291,14 @@ export class OrderItemModule {
   Updated: boolean = false
   VarianceReasonStr: string
   VarianceReasonDesc: string
+  quantity: number
   constructor(product, showname) {
     console.log(product)
     this.Amount = 0
     this.BillId = 0
     this.BarcodeId = product.barcodeId
     this.CancelledQuantity = 0
-    this.CreatedDate = ''
+    // this.CreatedDate = ''
     this.CurrentStock = 0
     this.ComplementryQty = 0
     this.CompanyId = 1
@@ -393,7 +393,7 @@ export class OrderItemDetailModule {
     this.Date = ''
     this.DateTime = ''
     this.RelatedOrderId = ''
-    this.CreatedDate = ''
+    // this.CreatedDate = ''
     this.CreatedBy = 0
     this.DiscAmount = 0
     this.DiscPercent = 0
@@ -415,11 +415,13 @@ export class CustomerModule {
   CompanyId: number
   StoreId: number
   val: number
+  CreatedDate: string
   datastatus: string
   constructor() {
     this.Id = null
     this.Name = ''
     this.Email = ''
+    // this.CreatedDate = ''
     this.PhoneNo = ''
     this.Address = ''
     this.City = ''

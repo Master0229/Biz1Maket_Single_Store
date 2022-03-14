@@ -14,6 +14,7 @@ function redirect() {
   mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
 }
 
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -51,7 +52,7 @@ function createWindow() {
       ]
     },
     {
-      label: 'View',
+      label: 'Biz1Pos POS',
       submenu: [
         {
           label: 'Reload',
@@ -81,7 +82,7 @@ function createWindow() {
       submenu: [
         {
           label: 'Learn More',
-          click() { require('electron').shell.openExternal('https://www.slickpos.com/') }
+          click() { require('electron').shell.openExternal('https://www.pos.biz1book.com/') }
         }
       ]
     }

@@ -111,7 +111,7 @@ export class SaleComponent implements OnInit {
       value: '+982',
     },
   ]
-  temporaryItem: any = { DiscAmount: null, DiscPercent: 0 }
+  temporaryItem: any = { DiscAmount: null, Quantity: null, DiscPercent: 0 }
   barcodeItem = { quantity: null, tax: 0, amount: 0, price: 0, Tax1: 0, Tax2: 0 }
   barcodemode: boolean = false
   customerdetails = {
@@ -136,7 +136,7 @@ export class SaleComponent implements OnInit {
               v =>
                 (v.product.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
                   v.barCode?.toLowerCase().indexOf(term.toLowerCase()) > -1) &&
-                v.quantity > 0,
+                v.quantity > 0 && !this.barcodeMode,
             )
             .slice(0, 10),
       ),
@@ -181,9 +181,9 @@ export class SaleComponent implements OnInit {
       this.getproducts()
       this.getcustomers()
       this.GetStorePaymentType()
-      // this.temporaryItem.Quantity = 0
+      this.temporaryItem.Quantity = null
       this.products.forEach(product => {
-        product.Quantity = 0
+        product.Quantity = null
         product.tax = 0
         product.amount = 0
       })
@@ -268,25 +268,18 @@ export class SaleComponent implements OnInit {
     }, [])
     console.log(this.groupedProducts)
   }
+  barcodeMode: boolean = false
   setproductbybarcode(code) {
-    // console.log(code, this.products.filter(x => x.Product == code));
-    // var product = this.products.filter(x => x.Product == code)[0];
-    // if (product) {
-    //   this.temporaryItem = product;
-    //   this.temporaryItem.Quantity = 1;
-    //   this.temporaryItem.amount = this.temporaryItem.price * this.temporaryItem.Quantity
-    //   this.temporaryItem.tax = (this.temporaryItem.Tax1 + this.temporaryItem.Tax2) * this.temporaryItem.amount / 100
-    //   this.temporaryItem.amount = +this.temporaryItem.amount.toFixed(2)
-    //   this.temporaryItem.totalprice = +(this.temporaryItem.price * this.temporaryItem.quantity).toFixed(2)
-    //   if (this.order.Items.some(x => x.Id == this.temporaryItem["Id"])) {
-    //     this.order.Items.filter(x => x.Id == this.temporaryItem["Id"])[0].OrderQuantity += this.temporaryItem.Quantity
-    //   } else {
-    //     this.order.Items.push(Object.assign({}, this.temporaryItem));
-    //   }
-    //   this.calculate();
-    //   // this.temporaryItem = { DiscAmount: 0, Quantity: null, DiscPercent: 0 };
-    //   8901803000179
-    // }
+    this.barcodeMode = false
+    console.log(code, this.products.filter(x => x.barCode == code));
+    var product = this.products.filter(x => x.barCode == code)[0];
+    if (product) {
+      console.log(product);
+      this.temporaryItem = product;
+      this.temporaryItem.Quantity = 1;
+      this.temporaryItem.DiscAmount = 0
+      this.addItem()
+    }
   }
 
   getcustomers() {
@@ -384,6 +377,7 @@ export class SaleComponent implements OnInit {
   batchno = 0;
   addItem() {
     this.submitted = true
+    this.barcodeMode = false
     if (this.validation()) {
       if (this.order.Items.some(x => x.stockBatchId == this.temporaryItem['stockBatchId'])) {
         this.order.Items.filter(x => x.stockBatchId == this.temporaryItem['stockBatchId'],)[0].OrderQuantity += this.temporaryItem.Quantity
@@ -518,7 +512,7 @@ export class SaleComponent implements OnInit {
   ////////////////////////////////////////dfgdfhsfhgj?//////////////////////////////////
   batchproduct: any = []
   selectedItem(batchproduct, barcodeId) {
-    this.batchproduct = this.products.filter(x => x.barcodeId == barcodeId)
+    this.batchproduct = this.products.filter(x => x.barcodeId == barcodeId && x.quantity > 0)
     if (this.batchproduct.length > 1) {
       this.modalService.open(batchproduct, { centered: true })
     } else {

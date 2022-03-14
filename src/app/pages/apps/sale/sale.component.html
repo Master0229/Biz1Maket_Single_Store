@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="order&&order.Items.length">
+        <div *ngIf="order&&order.Items.length ;let i = index">
 
             <div class="mb-4 ">
                 <div class=" col-lg">
@@ -267,7 +267,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of order&&order.Items">
+                        <tr *ngFor="let item of order&&order.Items ;let i = index">
                             <td>{{i+1}}</td>
                             <td>
                                 <a class="btn btn-sm btn-light" href="javascript: void(0);">
@@ -277,7 +277,7 @@
                             <td>
 
                                 <input type="number" nz-input [(ngModel)]="item.OrderQuantity"
-                                    (keyup)="quantitychange(Items,$event);" onfocus="this.select()">
+                                    (keyup)="quantitychange(item,$event);" (change)="quantitychange(item,$event);" onfocus="this.select()">
 
                             </td>
                             <td>
