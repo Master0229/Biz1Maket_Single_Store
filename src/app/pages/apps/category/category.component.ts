@@ -199,7 +199,7 @@ export class CategoryComponent implements OnInit {
   // Active in active
 
   getcatactive() {
-    this.Auth.catactive(this.companyid = 1).subscribe(data => {
+    this.Auth.catactive(this.loginfo.companyId).subscribe(data => {
       this.categoryact = data
       this.Category = this.categoryact.filter(x => x.isactive == !this.showInactive)
       console.log(this.categoryact);
@@ -208,7 +208,7 @@ export class CategoryComponent implements OnInit {
 
   active(id, act) {
     console.log(id, act)
-    this.Auth.Categoryupdate(id, act, this.CompanyId = 1).subscribe(data => {
+    this.Auth.Categoryupdate(id, act, this.loginfo.companyId).subscribe(data => {
       console.log(data)
       this.getcatactive()
     });
