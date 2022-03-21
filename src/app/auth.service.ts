@@ -733,4 +733,33 @@ export class AuthService {
   UpdateTaxGrp(taxgroup) {
     return this.http.post(this.base_url1 + 'TaxGroup/UpdateTaxGrp', taxgroup)
   }
+
+  // SERIAL PORT
+  getPortList() {
+    return this.http.get(this.dburl + 'portList')
+  }
+
+  configurePortList(port) {
+    return this.http.get(this.dburl + 'configurePort?port=' + port)
+  }
+
+  getWeight() {
+    return this.http.get(this.dburl + 'getWeight')
+  }
+
+  getplan() {
+    return this.http.get(this.base_url1 + 'Sale/Testplan')
+  }
+
+  Testplandetail() {
+    return this.http.get(this.base_url1 + 'Sale/Testplandetails')
+  }
+
+  sendmail(dblist) {
+    return this.http.post(this.dburl + 'sendemail', dblist)
+  }
+
+  getaccess(CompanyId, storeid, planid) {
+    return this.http.get(this.base_url1 + 'Sale/GetAccess?companyid=' + CompanyId + '&storeid=' + storeid + '&planid=' + planid)
+  }
 }

@@ -2,9 +2,9 @@
   <div class="card-body">
     <div class="pt-5 pb-5 pl-5 pr-5 text-center flex-grow-1">
       <i class="fe fe-hard-drive font-size-80 mb-3 d-block"></i>
-      <div class="font-weight-bold font-size-36">Premium</div>       
+      <div class="font-weight-bold font-size-36">Premium</div>
       <div class="font-weight-bold font-size-48 mb-3">
-        ₹ 15,000 <span class="align-text-top font-size-28">/PA</span>
+        ₹15,000 <span class="align-text-top font-size-28">/PA</span>
       </div>
       <ul class="list-unstyled font-size-18 mb-5">
         <li>Standart +</li>
@@ -13,7 +13,33 @@
         <li>Multiple Counter</li>
         <li>Data Consolidation</li>
       </ul>
-      <a class="btn btn-white width-100" href="javascript: void(0);">Get Access</a>
+      <button nz-button [nzType]="'success'" (click)="showModal()"><span>Get Access</span></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Premium Plan" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container>
+          <p>24 x 7 Customer Support,
+            Inventory,
+            Point Of Sale(Billing),
+            Reports
+          </p>
+          <p>Free Plan + ,
+            Purchase ,
+            Advanced Report ,
+            Batch Entry ,
+            Admin Website.</p>
+          <p>Standart + ,
+            Internal Transfer ,
+            Accounts Maintenance ,
+            Multiple Counter ,
+            Data Consolidation.</p> <br>
+
+          <input nz-input placeholder="Name" [(ngModel)]="value" />
+          <br />
+          <br />
+          <input nz-input placeholder="Phone No" [(ngModel)]="value1" />
+
+        </ng-container>
+      </nz-modal>
+      <!-- <a class="btn btn-white width-100" href="javascript: void(0);">Get Access</a> -->
     </div>
   </div>
 </div>

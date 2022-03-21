@@ -71,6 +71,7 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 
 import { ChartModule } from 'angular2-chartjs'
 import { ChartistModule } from 'ng-chartist'
+import { NgxBarcodeModule } from 'ngx-barcode';
 
 const COMPONENTS = [
   AppsMessagingComponent,
@@ -106,7 +107,8 @@ const COMPONENTS = [
     NgbModule,
     Ng2SearchPipeModule,
     ChartModule,
-    ChartistModule
+    ChartistModule,
+    NgxBarcodeModule
   ],
   declarations: [
     ...COMPONENTS,

@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Printer",
+        "name": "Receipt Printer",
         "unread": 0,
         "position": "Moderator",
         "icon": "printer"
@@ -19,5 +19,19 @@
         "unread": 0,
         "position": "Agent",
         "icon": "database"
+    },
+    {
+        "id": 1,
+        "name": "Weigh Machine",
+        "unread": 0,
+        "position": "Agent",
+        "icon": "column-height"
+    },
+    {
+        "id": 1,
+        "name": "Barcode Printer",
+        "unread": 0,
+        "position": "Agent",
+        "icon": "barcode"
     }
 ]

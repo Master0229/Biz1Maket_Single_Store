@@ -59,9 +59,10 @@ function createWindow() {
           // accelerator: process.platform === 'darwin' ? 'Ctrl+R' : 'F5',
           // click() { redirect(); }
         },
-        { role: 'toggledevtools', 
-        // accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12', 
-      },
+        {
+          role: 'toggledevtools',
+          // accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12', 
+        },
         { type: 'separator' },
         { role: 'resetzoom' },
         { role: 'zoomin' },
@@ -190,5 +191,13 @@ global.print = function (count, printers, template) {
           console.error(error);
         });
     }
+  });
+
+}
+global.barcodePrint = function (options, data) {
+  PosPrinter.print(data, options).then(() => {
+    console.log("Print Successfull");
+  }).catch((error) => {
+    console.log(error);
   });
 }

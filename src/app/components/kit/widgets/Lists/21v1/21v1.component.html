@@ -4,16 +4,37 @@
       <i class="fe fe-cpu font-size-80 mb-3 d-block"></i>
       <div class="text-dark font-weight-bold font-size-36">Standart</div>
       <div class="text-dark font-weight-bold font-size-48 mb-3">
-        ₹ 9,000 <span class="align-text-top font-size-28 text-gray-6">/PA</span>
+        ₹9,000 <span class="align-text-top font-size-28 text-gray-6">/PA</span>
       </div>
-      <ul class="list-unstyled font-size-18 mb-5">  
+      <ul class="list-unstyled font-size-18 mb-5">
         <li>Free Plan +</li>
         <li>Purchase</li>
         <li>Advanced Report</li>
         <li>Batch Entry</li>
         <li>Admin Website</li>
       </ul>
-      <a class="btn btn-primary width-100" href="javascript: void(0);">Get Access</a>
+      <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Get Access</span></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Standart Plan" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container>
+          <p>24 x 7 Customer Support,
+            Inventory,
+            Point Of Sale(Billing),
+            Reports
+          </p>
+          <p>Free Plan + ,
+            Purchase ,
+            Advanced Report ,
+            Batch Entry ,
+            Admin Website.</p> <br>
+
+          <input nz-input placeholder="Name" [(ngModel)]="value" />
+          <br />
+          <br />
+          <input nz-input placeholder="Phone No" [(ngModel)]="value1" />
+         
+        </ng-container>
+      </nz-modal>
+      <!-- <a class="btn btn-primary width-100" href="javascript: void(0);">Get Access</a> -->
     </div>
   </div>
 </div>

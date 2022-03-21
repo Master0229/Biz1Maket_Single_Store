@@ -13,4 +13,8 @@ export class PrintService {
     if (this.electronService.isElectronApp)
       this.electronService.remote.getGlobal('print')(1, printers, html)
   }
+  printBarcode(options, data) {
+    if (this.electronService.isElectronApp)
+      this.electronService.remote.getGlobal('barcodePrint')(options, data)
+  }
 }

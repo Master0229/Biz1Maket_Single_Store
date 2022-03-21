@@ -3,7 +3,11 @@ const https = require('https');
 var db = {};
 // Type 2: Persistent datastore with manual loading
 var Datastore = require('nedb')
-// db.orderkey = new Datastore({ filename: './database/orderkey.db', autoload: true });
+const nodemailer = require("nodemailer");
+const { SerialPort } = require('serialport');
+const { ReadlineParser } = require('@serialport/parser-readline')
+var parser;
+var port;
 db.pendingordersdb = new Datastore({ filename: './database/pendingorders.db', autoload: true });
 db.printersettings = new Datastore({ filename: './database/printersettings.db', autoload: true });
 db.paymenttypes = new Datastore({ filename: './database/paymenttypes.db', autoload: true });
@@ -105,6 +109,43 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 app.use(cors());
+
+app.get('/portList', function (req, res) {
+    SerialPort.list().then(function (ports) {
+        res.send(ports)
+    });
+})
+
+app.get('/configurePort', function (req, res) {
+    console.log(req.query);
+    port = new SerialPort({
+        path: req.query.port,
+        baudRate: 9600,
+    })
+    parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }))
+    listener()
+    res.send({ status: 200, parser })
+})
+
+var weight = '0'
+
+const listener = () => {
+    parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }))
+    parser.on("data", (line) => weight = line)
+}
+
+app.get('/getWeight', function (req, res) {
+    res.send({ status: 200, weight })
+})
+// app.get('/getWeight', function (req, res, next) {
+//     //when using text/plain it did not stream
+//     //without charset=utf-8, it only worked in Chrome, not Firefox
+//     res.setHeader('Content-Type', 'text/html; charset=utf-8');
+//     res.setHeader('Transfer-Encoding', 'chunked');
+
+//     writer = fs.createWriteStream('test.txt')
+//     parser.on("data", (line) => writer.write(line))
+// });
 
 app.get('/getproducts', function (req, res) {
     db.productdb.find({ quantity: { $gt: 0 } }, function (err, docs) {

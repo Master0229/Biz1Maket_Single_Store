@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core'
 import { ElectronService } from 'ngx-electron'
 import { AuthService } from 'src/app/auth.service'
 import { NzNotificationService } from 'ng-zorro-antd'
+import { PrintService } from 'src/app/services/print/print.service'
+// import { SerialPort } from 'serialport';
 // import { NzNotificationService } from 'ng-zorro-antd'
 const data: any = require('./data.json')
 
@@ -11,6 +13,10 @@ const data: any = require('./data.json')
   styleUrls: ['./setting.component.scss'],
 })
 export class SettingComponent implements OnInit {
+  // serialPort: typeof SerialPort;
+  @ViewChild('quantityel', { static: false }) public quantityel: TemplateRef<any>;//productinput
+
+
   activeIndex = 0
   loadspin: boolean = false
   dialogs = data
@@ -37,16 +43,34 @@ export class SettingComponent implements OnInit {
   isconnectedtoserver: boolean = false
   device_type: string = ''
   datasavetype = '1'
+  testweight: string = "0.000"
+  // portModule: any
+
   constructor(
     public electronService: ElectronService,
     private auth: AuthService,
     private notification: NzNotificationService,
     private electronservice: ElectronService,
+    private printservice: PrintService,
   ) {
     // this.count = 1;
     this.device_type = localStorage.getItem('device_type')
     console.log(this.device_type)
     this.datasavetype = localStorage.getItem('datasavetype')
+    // if (this.electronservice.isElectronApp) {
+    //   this.serialPort = window.require('serialport');
+    //   this.serialPort.list().then((ports: any) => {
+    //     console.log(ports);
+
+    //   }).catch((err: any) => {
+    //     console.log(err);
+
+    //   })
+    // }
+
+    // this.portModule = this.electronservice.isElectronApp
+    //   ? this.electronservice.remote.require('./serilaPortBackEnd.js')
+    //   : new NotAnElectroApp(notification)
   }
 
   printersettings = {}
@@ -132,8 +156,24 @@ export class SettingComponent implements OnInit {
       },
     },
   ]
+  loginfo
+  CompanyId: any
+  StoreId: any
+  masterproduct: any
+  prod: any
+  id: any
+  batchentry = { barCode: null, code: '', barcodeId: null, quantity: null, price: null, expiarydate: "", companyid: 0, storeid: 0, productId: 0, product: null, batchno: 0, entrydatetime: "" }
 
   ngOnInit(): void {
+
+    this.auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.CompanyId = this.loginfo.CompanyId
+      this.StoreId = this.loginfo.StoreId
+      console.log(this.loginfo)
+      this.getBatchProduct()
+
+    })
     this.getprinters()
     this.getprintersetting()
 
@@ -157,6 +197,81 @@ export class SettingComponent implements OnInit {
     }
 
     console.log(this.printers)
+    this.getSerialPorts()
+  }
+  products: any = [];
+  inputValue: string = '';
+  batchno = 0;
+  filterproduct = [];
+  printOptions = {
+    "preview": false,
+    "width": "170px",
+    "margin": "0 0 0 0",
+    "copies": 1,
+    "printerName": "RP327 Printer",
+    "timeOutPerLine": 5000,
+    "silent": true,
+    "pageSize": { "height": 30100, "width": 90000 }
+  }
+  printData = [{
+    type: 'barCode',                 // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+    value: "",
+    height: 24,                     // height of barcode, applicable only to bar and QR codes
+    width: 2,                       // width of barcode, applicable only to bar and QR codes
+    displayValue: true,              // Display value below barcode
+    fontsize: 18,
+  }]
+  onInputAutocomplete() {
+    console.log(this.products);
+
+    this.filterproduct = this.products.filter(x => x.product.toLowerCase().includes(this.inputValue));
+  }
+
+  getBatchProduct() {
+    this.auth.getBarcodeProduct(this.loginfo.companyId, this.loginfo.storeId).subscribe(data => {
+      this.products = data["products"];
+      console.log(this.products);
+      this.batchno = data["lastbatchno"] + 1;
+    })
+  }
+
+  searchbyproduct(event) {
+    // console.log(event)
+    console.log(event.element.nativeElement.id)
+    var product = this.products.filter(x => x.barcodeId == +event.element.nativeElement.id)[0]
+    console.log(product);
+    this.printData[0].value = product.barCode
+
+    // this.inputValue = product.product;
+    // // document.getElementById("productautocomplete").nodeValue = product.Product;
+    // this.batchentry.product = product;
+    // this.batchentry.productId = product.productId;
+    // this.batchentry.barcodeId = product.barcodeId;
+    // this.batchentry.barCode = product.barCode;
+    // this.batchentry.code = this.batchentry.barCode
+    // this.quantityel['nativeElement'].focus()
+  }
+
+  comPorts: any = []
+  getSerialPorts() {
+    this.auth.getPortList().subscribe(data => {
+      console.log(data);
+      this.comPorts = data
+    })
+  }
+  configurePort(port) {
+    this.auth.configurePortList(port.path).subscribe(data => {
+      console.log(data);
+      // const parser = data["parser"]
+      // parser.on("data", (line) => console.log(line))
+    })
+  }
+
+  getweight() {
+    this.auth.getWeight().subscribe(data => {
+      console.log(data)
+      this.testweight = data["weight"]
+    })
   }
 
   changeDialog(index) {
@@ -294,5 +409,25 @@ export class SettingComponent implements OnInit {
   syncstorage() {
     localStorage.setItem('datasavetype', this.datasavetype)
     console.log(this.datasavetype)
+  }
+
+  printBarcode() {
+    // console.log("printing...", [this.bcprinter], this.barcode)
+    console.log(this.printOptions, this.printData)
+    this.printservice.printBarcode(this.printOptions, this.printData)
+  }
+}
+
+
+export class NotAnElectroApp {
+  constructor(private notificationS: NzNotificationService) { }
+  startServer(host) {
+    this.notificationS.error("Platform Error", "This ain't an Electron App")
+    return { error: true, message: "This ain't an Electron App" }
+  }
+
+  getAvailableAddresses() {
+    this.notificationS.error("Platform Error", "This ain't an Electron App")
+    return { error: true, message: "This ain't an Electron App" }
   }
 }
