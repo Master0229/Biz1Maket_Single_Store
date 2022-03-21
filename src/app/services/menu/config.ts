@@ -69,12 +69,12 @@ export const getMenuData: any[] = [
     icon: 'fe fe-grid',
     url: '/apps/products',
   },
-  {
-    title: 'Variant',
-    key: 'appsProductOptions',
-    icon : 'fe fe-copy',
-    url: '/apps/productoptions',
-  },
+  // {
+  //   title: 'Variant',
+  //   key: 'appsProductOptions',
+  //   icon : 'fe fe-copy',
+  //   url: '/apps/productoptions',
+  // },
   {
     title: 'Category',
     key: 'appsProfile',

@@ -95,7 +95,7 @@ export class CategoryComponent implements OnInit {
     this.Auth.getcategorybyid(id).subscribe(data => {
       this.category = data;
       console.log(this.category)
-      // this.show = !this.show;
+      this.show = !this.show;
     })
   }
   back() {
@@ -124,13 +124,13 @@ export class CategoryComponent implements OnInit {
         this.back()
         console.log(data);
         this.show = !this.show
-        this.getCategory();
+        this.getcatactive();
       })
     } else if (this.category.id > 0) {
       this.Auth.updatecategory(this.category).subscribe(data1 => {
         console.log(data1)
         this.show = !this.show
-        this.getCategory();
+        this.getcatactive();
       })
     }
   }
@@ -203,6 +203,7 @@ export class CategoryComponent implements OnInit {
       this.categoryact = data
       this.Category = this.categoryact.filter(x => x.isactive == !this.showInactive)
       console.log(this.categoryact);
+      this.show = true
     })
   }
 

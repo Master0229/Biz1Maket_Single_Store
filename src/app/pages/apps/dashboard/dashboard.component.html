@@ -1,10 +1,13 @@
 <div class="cui__utils__heading">
   <div class="row">
     <div class="col">
-      <strong>Store Name</strong>
+      <strong>Company: </strong>{{user.name}}
     </div>
-    <div class="col" style="text-align: right;">
-      <strong class="text-right">subscription plan : Trial</strong>
+    <div class="col" *ngFor="let item of store">
+      <strong>Store: </strong>{{item.name}}
+    </div>
+    <div class="col" style="text-align: right;" *ngFor="let item of store">
+      <strong class="text-right">subscription plan: </strong>{{item.plan.name}}
     </div>
   </div>
 
@@ -94,12 +97,7 @@
 
             <div *ngIf="showData">
               <div class="text-dark font-size-18 font-weight-bold mb-1">Day Wise Revenue</div>
-              <x-chartist
-                [data]="barchartData"
-                [type]="'Bar'"
-                [options]="chartOptions"
-                class="height-200 chart"
-              >
+              <x-chartist [data]="barchartData" [type]="'Bar'" [options]="chartOptions" class="height-200 chart">
               </x-chartist>
             </div>
 

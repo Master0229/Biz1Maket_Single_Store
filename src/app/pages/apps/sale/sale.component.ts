@@ -120,8 +120,9 @@ export class SaleComponent implements OnInit {
     phoneNo: '',
     email: '',
     address: '',
+    storeId : 0,
     companyId: 0,
-    datastatus: '',
+    datastatus: ''
   }
   @Input() sectionid: number = 0
   customers: any = []
@@ -165,8 +166,8 @@ export class SaleComponent implements OnInit {
       this.printersettings = data['printersettings'][0]
       this.orderkey = data["orderkeydb"][0]
       localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
-      this.CompanyId = this.loginfo.CompanyId
-      this.StoreId = this.loginfo.StoreId
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
       this.orderkeyValidation()
       console.log(this.loginfo)
     })
@@ -193,6 +194,7 @@ export class SaleComponent implements OnInit {
         phoneNo: '',
         email: '',
         address: '',
+        storeId : this.StoreId,
         companyId: this.CompanyId,
         datastatus: '',
       }
@@ -246,7 +248,7 @@ export class SaleComponent implements OnInit {
         charge.selected = false
       })
     }
-    this.order.StoreId = this.loginfo.StoreId
+    this.order.StoreId = this.loginfo.storeId
     this.orderlogging('create_order')
     this.show = false
     this.sectionid = 2
@@ -570,7 +572,7 @@ export class SaleComponent implements OnInit {
   //     transaction.Remaining = this.temporder.BillAmount - this.temporder.PaidAmount
   //     transaction.Amount = 0
   //     transaction.OrderId = this.temporder.OrderId
-  //     transaction.StoreId = this.loginfo.StoreId
+  //     transaction.StoreId = this.loginfo.storeId
   //     transaction.TransDate = moment().format('YYYY-MM-DD')
   //     transaction.TransDateTime = moment().format('YYYY-MM-DD HH:mm')
   //     transaction.TranstypeId = 1
@@ -601,7 +603,7 @@ export class SaleComponent implements OnInit {
     this.order.StoreId = this.loginfo.storeId
     this.printreceipt()
     this.order.CustomerDetails.CompanyId = this.loginfo.companyId
-    this.order.CustomerDetails.StoreId = this.loginfo.StoreId
+    this.order.CustomerDetails.StoreId = this.loginfo.storeId
     this.order.OrderedById = 18
     this.order.ProdStatus = '1'
     this.order.WipStatus = '1'
@@ -619,7 +621,7 @@ export class SaleComponent implements OnInit {
         transaction.TransDate = moment().format('YYYY-MM-DD')
         transaction.UserId = this.order.UserId
         transaction.CompanyId = this.loginfo.companyId
-        transaction.StoreId = this.loginfo.StoreId
+        transaction.StoreId = this.loginfo.storeId
         transaction.InvoiceNo = this.order.InvoiceNo
         transaction.saved = true
         transaction.StorePaymentTypeName = this.storePaymentTypes.filter(
@@ -632,7 +634,7 @@ export class SaleComponent implements OnInit {
         this.transactionlist.forEach(trxn => {
           trxn.InvoiceNo = this.order.InvoiceNo
           trxn.CompanyId = this.order.CompanyId
-          trxn.StoreId = this.loginfo.StoreId
+          trxn.StoreId = this.loginfo.storeId
           trxn.saved = true
           this.order.Transactions.push(trxn)
         })

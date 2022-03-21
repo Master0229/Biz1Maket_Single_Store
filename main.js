@@ -61,7 +61,7 @@ function createWindow() {
         },
         {
           role: 'toggledevtools',
-          // accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12', 
+          // accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12',
         },
         { type: 'separator' },
         { role: 'resetzoom' },
@@ -83,7 +83,7 @@ function createWindow() {
       submenu: [
         {
           label: 'Learn More',
-          click() { require('electron').shell.openExternal('https://www.pos.biz1book.com/') }
+          click() { require('electron').shell.openExternal('https://www.bizdom.co.in/') }
         }
       ]
     }

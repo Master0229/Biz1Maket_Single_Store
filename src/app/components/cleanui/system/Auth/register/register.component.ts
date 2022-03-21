@@ -20,6 +20,7 @@ export class RegisterComponent {
   constructor(private fb: FormBuilder, private store: Store<any>,private Auth: AuthService,private notification: NzNotificationService) {
     this.form = fb.group({
       Name: [, [Validators.required, Validators.minLength(4)]],
+      PhoneNo: [, [Validators.required, Validators.minLength(10)]],
       Email: [, [Validators.required]],
       Password: [, [Validators.required]],
       ConfirmPassword: ['', [Validators.required]]
@@ -45,6 +46,9 @@ export class RegisterComponent {
   }
   get name() {
     return this.form.controls.Name
+  }
+  get phoneno() {
+    return this.form.controls.PhoneNo
   }
   get confirmpassword() {
     return this.form.controls.ConfirmPassword

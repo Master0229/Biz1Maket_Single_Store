@@ -120,13 +120,21 @@ export class DashboardComponent implements OnInit {
       }),
     ],
   }
-
+  user: any
   constructor(private Auth: AuthService,) {
-
+    this.user = JSON.parse(localStorage.getItem("user"))
   }
-
+  loginfo
+  CompanyId: any
+  StoreId: any
   ngOnInit(): void {
-    this.getData()
+    this.Auth.getdbdata(['loginfo', 'orderkeydb']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
+      this.getData()
+    })
+
   }
 
   ngAfterViewChecked() {
@@ -158,6 +166,28 @@ export class DashboardComponent implements OnInit {
       this.companyId = data["companyId"]
       this.storeId = data["storeId"]
       this.getDashBoard()
+      this.stores()
+      this.accounts()
     })
   }
+  store: any
+  stores() {
+    this.Auth.getstores(this.loginfo.companyId).subscribe(data => {
+      this.store = data["storeList"]
+      this.store = this.store.filter(x => x.id == this.storeId)
+      console.log(this.store);
+    })
+  }
+  account: any
+  accounts() {
+    this.Auth.getusers(this.loginfo.storeId, this.loginfo.companyId).subscribe(data => {
+      this.account = data
+      this.account = this.account.filter(x => x.id == this.storeId)
+      console.log(this.account, this.storeId);
+
+    })
+
+  }
+
+
 }
