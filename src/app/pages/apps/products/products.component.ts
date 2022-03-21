@@ -93,8 +93,8 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
-      this.CompanyId = this.loginfo.CompanyId
-      this.StoreId = this.loginfo.StoreId
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
       this.getMasterproduct()
       this.gettax()
@@ -134,7 +134,9 @@ export class ProductsComponent implements OnInit {
     })
   }
 
+  showInactive: Boolean = false
   changefilter(bool) {
+    this.showInactive = bool
     console.log(bool)
     if (bool) {
       this.prod = this.masterproduct.products.filter(x => !x.isactive)
@@ -147,7 +149,7 @@ export class ProductsComponent implements OnInit {
   getMasterproduct() {
     this.Auth.getProduct(this.id, this.loginfo.companyId).subscribe(data => {
       this.masterproduct = data
-      this.prod = this.masterproduct.products.filter(x => x.isactive)
+      this.prod = this.masterproduct.products.filter(x => x.isactive == !this.showInactive)
       console.log(this.prod)
     })
   }
@@ -246,12 +248,13 @@ export class ProductsComponent implements OnInit {
       // kotGroupId: 0,
       price: null,
       productCode: null,
-      CompanyId: 1,
+      // CompanyId: 1,
       action: '',
     }
   }
   submitted: boolean = false
   addProduct() {
+    this.product.CompanyId = this.CompanyId;
     this.submitted = true
     if (this.validation()) {
       if (this.product.id == 0) {
@@ -268,6 +271,7 @@ export class ProductsComponent implements OnInit {
               this.Auth.updateproductdb().subscribe(data2 => {
                 this.notification.success('Product Added', 'Product Added Successfully')
                 this.show = !this.show
+                this.getMasterproduct()
               })
             })
           } else if (this.datasavetype == '2') {

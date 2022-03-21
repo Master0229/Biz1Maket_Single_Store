@@ -60,7 +60,7 @@ export const getMenuData: any[] = [
   {
     title: 'Add Stock',
     key: 'appsBatchEntry',
-    icon: 'fa fa-th-large',
+    icon: 'fe fe-layers',
     url: '/apps/batchentry',
   },
   {
@@ -68,6 +68,12 @@ export const getMenuData: any[] = [
     key: 'appsProfile',
     icon: 'fe fe-grid',
     url: '/apps/products',
+  },
+  {
+    title: 'Variant',
+    key: 'appsProductOptions',
+    icon : 'fe fe-copy',
+    url: '/apps/productoptions',
   },
   {
     title: 'Category',
@@ -282,7 +288,7 @@ export const getMenuData: any[] = [
   //   key: 'extraAppsWordpressAdd',
   //   url: '/apps/wordpress-add',
   // },
-    {
+  {
     title: 'Pricing Tables',
     key: 'pricingTables',
     icon: 'fe fe-command',
