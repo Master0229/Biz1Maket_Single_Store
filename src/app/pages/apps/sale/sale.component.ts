@@ -601,7 +601,6 @@ export class SaleComponent implements OnInit {
     console.log(this.order.InvoiceNo)
     this.order.CompanyId = this.loginfo.companyId
     this.order.StoreId = this.loginfo.storeId
-    this.printreceipt()
     this.order.CustomerDetails.CompanyId = this.loginfo.companyId
     this.order.CustomerDetails.StoreId = this.loginfo.storeId
     this.order.OrderedById = 18
@@ -639,6 +638,8 @@ export class SaleComponent implements OnInit {
           this.order.Transactions.push(trxn)
         })
       }
+      this.order.StorePaymentTypeName = this.order.Transactions[0].StorePaymentTypeName
+      this.printreceipt()
     }
     console.log(this.order.CustomerDetails)
     localStorage.setItem('lastorder', JSON.stringify(this.order))
@@ -840,7 +841,7 @@ export class SaleComponent implements OnInit {
               <td class="text-right">${extra.toFixed(2)}</td>
           </tr>
           <tr class="nb">
-              <td class="text-left"><strong>Paid</strong></td>
+              <td class="text-left"><strong>Paid:-(${this.order.StorePaymentTypeName})</strong></td>
               <td colspan="2"></td>
               <td class="text-right">${this.order.PaidAmount.toFixed(2)}</td>
           </tr>

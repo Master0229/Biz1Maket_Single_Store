@@ -57,7 +57,7 @@ export class BatchEntryComponent implements OnInit {
   }
   onInputAutocomplete() {
     console.log(this.products);
-    
+
     this.filterproduct = this.products.filter(x => x.product.toLowerCase().includes(this.inputValue));
   }
 
@@ -65,10 +65,6 @@ export class BatchEntryComponent implements OnInit {
     console.log(e, moment(e), this.date)
   }
 
-  // addNew() {
-  //   var obj = { name: "qweqweewe" }
-  //   this.dynamicRows.push(obj);
-  // }
   searchbybarcode() {
     var product = this.products.filter(x => x.barCode == this.batchentry.barCode)[0];
     console.log(this.batchentry.barCode, this.products, product)
@@ -91,7 +87,7 @@ export class BatchEntryComponent implements OnInit {
       this.inputValue = '';
       this.submitted = false;
       console.log(this.barcodeel);
-      
+
       this.barcodeel['nativeElement'].focus()
       console.log(this.batches)
     }
@@ -122,17 +118,9 @@ export class BatchEntryComponent implements OnInit {
     if (this.batchentry.price <= 0) isvalid = false;
     if (this.batchno == 0) isvalid = false;
     if (this.batchdate == null) isvalid = false;
-
-
-
-    // if (this.product.name == '') isvalid = false;
-    // console.log(isvalid)
     return isvalid;
   }
   saveBatch() {
-    // console.log(this.batches)
-    // this.submitted = true;
-    // if(this.validation()) {
     this.Auth.getbatchEntry(this.batches,20).subscribe(data => {
       // console.log(data)
       this.Auth.batchproductdb(data["products"]).subscribe(data1 => {
@@ -142,9 +130,5 @@ export class BatchEntryComponent implements OnInit {
         this.batchno = data["lastbatchno"] + 1;
       })
     })
-    // }else {
-    //   this.notification.error("Error", "Product Added UnSuccessfully")
-    // }
-
   }
 }

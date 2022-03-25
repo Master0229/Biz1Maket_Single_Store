@@ -78,7 +78,7 @@
     </div>
     <div *ngIf="order&&order.Items.length" class="btn-group ml-6 mb-2">
       <button *ngFor="let spt of storePaymentTypes" type="button" [class.active]="order.StorePaymentTypeId == spt.id"
-        (click)="order.StorePaymentTypeId = spt.id;order.PaidAmount = order.BillAmount" class="btn btn-squared">
+        (click)="order.StorePaymentTypeId = spt.id;order.PaidAmount = order.BillAmount" class="btn btn-outline-success">
         {{spt.name}}
       </button>
       <!-- <button type="button" [class.active]="order.StorePaymentTypeId == 0"

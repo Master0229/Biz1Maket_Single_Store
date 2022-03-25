@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { AuthService } from 'src/app/auth.service'
 import { NzNotificationService } from 'ng-zorro-antd'
 import { ActivatedRoute } from '@angular/router'
@@ -13,6 +13,7 @@ import * as moment from 'moment'
   styleUrls: ['./addproduct.component.scss'],
 })
 export class AddproductComponent implements OnInit {
+  @ViewChild('barcodeel', { static: false }) public barcodeel: TemplateRef<any>;//productinput
 
   constructor(
     private Auth: AuthService,
@@ -32,14 +33,12 @@ export class AddproductComponent implements OnInit {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
       this.CompanyId = this.loginfo.companyId
-     this.getprod()
+      this.getprod()
     })
-
-
   }
 
   prod: any
-  prods:any
+  prods: any
   product = {
     Name: '',
     Createddate: moment().format('YYYY-MM-DD HH:mm A'),
@@ -47,18 +46,30 @@ export class AddproductComponent implements OnInit {
   }
 
   addprod() {
-    this.product.CompanyId =this.loginfo.companyId
+    this.product.CompanyId = this.loginfo.companyId
     this.Auth.getneededproduct(this.product).subscribe(data => {
       this.prod = data["needProducts"]
       console.log(data)
+      // this.barcodeel['nativeElement'].focus()
+      this.barcodeel['nativeElement'].value = ' ';
       this.getprod()
+      console.log(this.barcodeel);
     })
   }
 
-  getprod(){
-    this.Auth.GetNeededProd(this.loginfo.companyId).subscribe(data =>{
+  getprod() {
+    this.Auth.GetNeededProd(this.loginfo.companyId).subscribe(data => {
       this.prods = data
       console.log(this.prods)
+    })
+  }
+  // 25-03-2022
+  getprodlist: any
+  deleteitem(Id) {
+    console.log('delete', Id)
+    this.Auth.deleteproduct({ id: Id, CompanyId: this.loginfo.companyId }).subscribe(data => {
+      this.getprodlist = data
+      this.getprod()
     })
   }
 

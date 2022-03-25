@@ -1,6 +1,6 @@
 {
   "name": "Biz1Pos",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "author": "Master",
   "description": "Biz1Pos",
@@ -29,12 +29,11 @@
   },
   "build": {
     "appId": "www.biz1pos.bizdom.co.in",
-    "productName": "Biz1Pos 0.0.3",
+    "productName": "Biz1Pos 0.0.4",
     "win": {
       "target": "nsis",
       "icon": "src/assets/images/256_Biz1pos.ico"
     },
-    "asar":  false,
     "nsis": {
       "installerIcon": "256_Biz1pos.ico",
       "uninstallerIcon": "256_Biz1pos.ico",

@@ -774,6 +774,10 @@ export class AuthService {
   GetNeededProd(companyid) {
     return this.http.get(this.base_url1 + 'Product/GetNeededProd?companyid=' + companyid)
   }
+  // 25-03-2022
+  deleteproduct(Id) {
+    return this.http.post(this.base_url1 + 'Product/Deleteprod', Id)
+  }
 
 }
 

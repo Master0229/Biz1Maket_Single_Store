@@ -1,50 +1,52 @@
 <div>
   <div class="cui__utils__heading">
-      <strong>Wanted Products</strong>
+    <strong>Wanted Products</strong>
   </div>
   <div class="col d-flex justify-content-center">
-      <div class="card" style="width: 40rem;">
-          <div class="card-header card-header-flex">
-              <!-- <div class="d-flex flex-column justify-content-center mr-3">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header card-header-flex">
+        <!-- <div class="d-flex flex-column justify-content-center mr-3">
                   <nz-range-picker></nz-range-picker>
               </div> -->
-              <div class="d-flex flex-column justify-content-center mr-10" style="padding-left:500px;">
-                  <button class=" btn btn-success pull-right" (click)=" electronPrint()" href="javascript: void(0);">
-                      Print
-                  </button>
-              </div>
-          </div>
-          <nz-table #middleTable nzSize="middle" class="kit__utils__table mb-4">
-              <!-- <thead>
+        <div class="d-flex flex-column justify-content-center mr-10" style="padding-left:500px;">
+          <button class=" btn btn-success pull-right" (click)=" electronPrint()" href="javascript: void(0);">
+            Print
+          </button>
+        </div>
+      </div>
+      <nz-table #middleTable nzSize="middle" class="kit__utils__table mb-4" [nzData]="prods">
+        <!-- <thead>
                   <tr>
                       <th><strong>Barcode</strong></th>
                   </tr>
               </thead> -->
-              <tbody>
-                  <tr>
-                      <td>
-                          <input class="form-control" #barcodeel type="text" [(ngModel)]="product.Name"
-                              placeholder="Enter Product" min="1" />
-                      </td>
+        <tbody>
+          <tr>
+            <td>
+              <input class="form-control" #barcodeel type="text" [(ngModel)]="product.Name" placeholder="Enter Product"
+                min="1" />
+            </td>
 
-                      <td>
-                          <a #add href="javascript: void(0);" (click)="addprod()" class="btn btn-sm btn-primary">
-                              <i class="fe fe-plus fa-lg"></i>
-                          </a>
-                      </td>
-                  </tr>
-                  <tr *ngFor="let item of prods">
-                      <td>
-                          {{item.name}}
-                      </td>
+            <td>
+              <a #add href="javascript: void(0);" (click)="addprod()" class="btn btn-sm btn-primary">
+                <i class="fe fe-plus fa-lg"></i>
+              </a>
+            </td>
+          </tr>
+          <tr *ngFor="let item of middleTable.data">
+            <td>
+              {{item.name}}
+            </td>
 
-                      <td>
-
-                      </td>
-                  </tr>
-              </tbody>
-          </nz-table>
-      </div>
+            <td>
+              <a href="javascript: void(0);" class="btn btn-sm btn-light" (click)="deleteitem(item.id)">
+                <i class="fe fe-trash"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
   </div>
 
 </div>

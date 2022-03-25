@@ -64,6 +64,7 @@ export class OrderModule {
   SplitTableId: number
   subtotal: number
   StorePaymentTypeId: number
+  StorePaymentTypeName: string
   SuppliedById: number
   SpecialOrder: boolean = false
   Subtotal: number
@@ -129,6 +130,7 @@ export class OrderModule {
     this.StoreId = 0
     this.subtotal = 0
     this.StorePaymentTypeId = 0
+    this.StorePaymentTypeName = ''
     this.Source = ''
     this.SplitTableId = 0
     this.SuppliedById = 0
@@ -158,6 +160,7 @@ export class OrderModule {
     this.Subtotal = 0
     this.TaxAmount = 0
     this.StorePaymentTypeId = 0
+
     this.Tax1 = 0
     this.Tax2 = 0
     this.Tax3 = 0

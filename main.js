@@ -38,99 +38,33 @@ function createWindow() {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
-  const template = [
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'delete' },
-        { role: 'selectall' }
-      ]
+
+  var menu = Menu.buildFromTemplate([{
+    label: 'Biz1Pos',
+    submenu: [{
+      label: 'Reload',
+      // accelerator: "F5",
+      accelerator: process.platform === 'darwin' ? 'Ctrl+R' : 'F5',
+      click() { redirect(); }
     },
     {
-      label: 'Biz1Pos POS',
-      submenu: [
-        {
-          label: 'Reload',
-          // accelerator: process.platform === 'darwin' ? 'Ctrl+R' : 'F5',
-          // click() { redirect(); }
-        },
-        {
-          role: 'toggledevtools',
-          // accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12',
-        },
-        { type: 'separator' },
-        { role: 'resetzoom' },
-        { role: 'zoomin' },
-        { role: 'zoomout' },
-        { type: 'separator' },
-        { role: 'togglefullscreen' }
-      ]
+      role: 'toggledevtools',
+      accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'F12',
+
     },
+    { role: 'togglefullscreen' },
     {
-      role: 'window',
-      submenu: [
-        { role: 'minimize' },
-        { role: 'close' }
-      ]
+      role: 'close',
+      accelerator: process.platform === 'darwin' ? 'F10' : 'Ctrl+Q',
     },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click() { require('electron').shell.openExternal('https://www.bizdom.co.in/') }
-        }
-      ]
-    }
-  ]
-
-  if (process.platform === 'darwin') {
-    template.unshift({
-      label: app.getName(),
-      submenu: [
-        { role: 'about' },
-        { type: 'separator' },
-        { role: 'services', submenu: [] },
-        { type: 'separator' },
-        { role: 'hide' },
-        { role: 'hideothers' },
-        { role: 'unhide' },
-        { type: 'separator' },
-        { role: 'quit' }
-      ]
-    })
-
-    // Edit menu
-    template[1].submenu.push(
-      { type: 'separator' },
-      {
-        label: 'Speech',
-        submenu: [
-          { role: 'startspeaking' },
-          { role: 'stopspeaking' }
-        ]
-      }
-    )
-
-    // Window menu
-    template[3].submenu = [
-      { role: 'close' },
-      { role: 'minimize' },
-      { role: 'zoom' },
-      { type: 'separator' },
-      { role: 'front' }
+    { role: 'zoomIn' },
+    { role: 'zoomOut' }
     ]
-  }
-
-  menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-
+  }])
+  Menu.setApplicationMenu(menu);
 }
+
+
 
 app.on('ready', createWindow)
 
