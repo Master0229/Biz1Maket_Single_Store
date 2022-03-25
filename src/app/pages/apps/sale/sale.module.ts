@@ -154,7 +154,7 @@ export class OrderModule {
     this.AllItemTaxDisc = 0
     this.AllItemTotalDisc = 0
     this.BillAmount = 0
-    this.DiscAmount = 0
+    this.DiscAmount = this.DiscAmount ? this.DiscAmount : 0
     this.Subtotal = 0
     this.TaxAmount = 0
     this.StorePaymentTypeId = 0

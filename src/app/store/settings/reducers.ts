@@ -38,6 +38,7 @@ export const initialState: object = {
     isCardShadow: true,
     isSquaredBorders: false,
     isBorderless: false,
+    stockchnageid: ""
   }),
 }
 

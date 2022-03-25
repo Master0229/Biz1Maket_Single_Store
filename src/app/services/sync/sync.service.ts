@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core'
 import { AuthService } from 'src/app/auth.service'
 import { EventService } from '../event/event.service'
+import { select, Store } from '@ngrx/store'
+import * as SettingsActions from 'src/app/store/settings/actions'
+import * as Reducers from 'src/app/store/reducers'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +14,7 @@ export class SyncService {
   cansavependingorder: boolean = true
   preorders: any = []
   cansavepreorder: boolean = true
-  constructor(private auth: AuthService, private event: EventService) {}
+  constructor(private auth: AuthService, private event: EventService, private store: Store<any>,) { }
   sync() {
     if (this.cansaveorder) {
       this.getorders()
@@ -109,12 +112,25 @@ export class SyncService {
   // }
   saveorders() {
     var order = this.pendingorders.shift()
-    this.auth.saveorder({"OrderJson": JSON.stringify (order)}).subscribe(data => {
+    this.auth.saveorder({ "OrderJson": JSON.stringify(order) }).subscribe(data => {
       if (data["status"] == 200 || data["status"] == 409) {
         this.auth.getstoredata(order.CompanyId, order.StoreId, 1).subscribe(data1 => {
           console.log(data1)
-          this.auth.getstoredatadb(data1).subscribe(d => {})
-          this.auth.deleteorderfromnedb(order._id, data["stockBatches"]).subscribe(ddata => { this.getorders() })
+          this.auth.getstoredatadb(data1).subscribe(d => {
+            this.store.dispatch(
+              new SettingsActions.SetStateAction({
+                stockchnageid: Guid.newGuid(),
+              }),
+            )
+          })
+          this.auth.deleteorderfromnedb(order._id, data["stockBatches"]).subscribe(ddata => {
+            this.getorders()
+            this.store.dispatch(
+              new SettingsActions.SetStateAction({
+                stockchnageid: Guid.newGuid(),
+              }),
+            )
+          })
         })
       } else {
         this.getorders()
@@ -171,6 +187,16 @@ export class SyncService {
   //   }
   // }
   logresponse(logdata) {
-    this.auth.logordersaveresponse(logdata).subscribe(data => {})
+    this.auth.logordersaveresponse(logdata).subscribe(data => { })
+  }
+}
+
+class Guid {
+  static newGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 }

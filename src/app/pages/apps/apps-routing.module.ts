@@ -98,7 +98,7 @@ const routes: Routes = [
     data: { title: 'Customer App' },
   },
   {
-    path: 'addproduct/:id',
+    path: 'addproduct',
     component: AddproductComponent,
     data: { title: 'Addproduct App' },
   },

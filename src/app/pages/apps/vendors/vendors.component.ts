@@ -8,6 +8,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./vendors.component.scss']
 })
 export class VendorsComponent implements OnInit {
+  loginfo: any
+  CompanyId: number
+  StoreId: number
   vendorsitem: any = [];
   show = true;
   term: string = '';
@@ -18,13 +21,20 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.Auth.getdbdata(['loginfo']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
+      console.log(this.loginfo)
+    })
+
+    this.Auth.getloginfo().subscribe(data => {
+      this.loginfo = data
+    })
     this.getVendorList();
-    // if (this.vendorid > 0) {
-    //   this.getvendorbyid();
-    // }
   }
   getVendorList() {
-    this.Auth.getvendors(1).subscribe(data => {
+    this.Auth.getvendors(this.CompanyId).subscribe(data => {
       this.vendorsitem = data;
       console.log(this.vendorsitem)
       this.filteredvalues = this.vendorsitem;
@@ -55,9 +65,6 @@ export class VendorsComponent implements OnInit {
   }
   back() {
     this.show = !this.show;
-    // this.submitted = false;
-    // this.variant = { id: 0, name: "", description: "", price: 0, sortOrder: -1, variantGroupId: 0, companyId: 1, action: "", count: "", variantGroup: null }
-    // this.variantgroup = { id: 0, name: "", description: "", sortOrder: -1, companyId: 1, action: "" }
     this.vendors = { id: 0, name: "", phoneNo: "", address: "", city: "", postalCode: null, email: '', companyId: 1 }
   }
   filteredvalues:any = [];

@@ -152,6 +152,11 @@ app.get('/getproducts', function (req, res) {
         res.send(docs)
     });
 })
+app.get('/getendangeredproducts', function (req, res) {
+  db.productdb.find({ quantity: { $lt: 4 } }, function (err, docs) {
+      res.send(docs)
+  });
+})
 app.get('/getbarcodeproduct', function (req, res) {
     db.barcodeproductdb.find({}, function (err, docs) {
         res.send(docs)

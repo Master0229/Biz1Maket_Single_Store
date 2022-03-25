@@ -88,6 +88,24 @@ export const getMenuData: any[] = [
     url: '/apps/taxgroup',
   },
   {
+    title: 'Purchase Entry',
+    key: 'appsSetting',
+    icon: 'fe fe-shopping-bag',
+    url: '/apps/purchaseentry',
+  },
+  {
+    title: 'Wanted',
+    key: 'appsaddproduct',
+    icon: 'fa fa-object-group',
+    url: '/apps/addproduct',
+  },
+  // {
+  //   title: 'Vendors',
+  //   key: 'appsSetting',
+  //   icon: 'fe fe-user-check',
+  //   url: '/apps/vendors',
+  // },
+  {
     title: 'Setting',
     key: 'appsSetting',
     icon: 'fa fa-cogs',
@@ -181,12 +199,7 @@ export const getMenuData: any[] = [
   //   icon: 'fe fe-user-check',
   //   url: '/apps/vendors',
   // },
-  // {
-  //   title: 'Purchase Entry',
-  //   key: 'appsSetting',
-  //   icon: 'fe fe-shopping-bag',
-  //   url: '/apps/purchaseentry',
-  // },
+
   // {
   //   title: 'ProductOptions',
   //   icon: 'fa fa-object-group',

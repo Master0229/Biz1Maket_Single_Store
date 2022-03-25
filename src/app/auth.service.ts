@@ -614,7 +614,7 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'Customer/Delete?Id=' + Id)
   }
 
-  getDashboard(storeId, companyId, fromDate, toDate, toDay){
+  getDashboard(storeId, companyId, fromDate, toDate, toDay) {
     return this.http.get(this.base_url1 + `Login/DashBoard?storeId=${storeId}&companyId=${companyId}&fromDate=${fromDate}&toDate=${toDate}&toDay=${toDay}`)
   }
   ///////////////////////////////////////// Receipts data ///////////////////////////////////////
@@ -679,7 +679,7 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'Customer/GetCustomerByPhone?Phone=' + Phone)
   }
   getstorepaymentType(storeid) {
-    return this.http.get(this.base_url1 + 'PaymentType/getstorepaymenttype?StoreId=26')
+    return this.http.get(this.base_url1 + 'PaymentType/getstorepaymenttype?StoreId=' + storeid)
   }
 
   ///////////////////////////////////////// Setting data///////////////////////////////////////
@@ -762,4 +762,19 @@ export class AuthService {
   getaccess(CompanyId, storeid, planid) {
     return this.http.get(this.base_url1 + 'Sale/GetAccess?companyid=' + CompanyId + '&storeid=' + storeid + '&planid=' + planid)
   }
+  // 24-03-2022
+  getendangeredproducts() {
+    return this.http.get(this.dburl + 'getendangeredproducts')
+  }
+
+  getneededproduct(product) {
+    return this.http.post(this.base_url1 + 'Product/addneededproduct', product
+    )
+  }
+  GetNeededProd(companyid) {
+    return this.http.get(this.base_url1 + 'Product/GetNeededProd?companyid=' + companyid)
+  }
+
 }
+
+

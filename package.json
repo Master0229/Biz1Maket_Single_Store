@@ -9,7 +9,6 @@
     "ng": "ng",
     "start": "ng serve --open",
     "hmr": "ng serve --configuration=hmr --open",
-    "build": "ng build --prod --build-optimizer",
     "build-demo": "ng build --prod --build-optimizer --configuration=demo",
     "test": "ng test",
     "e2e": "ng e2e",
@@ -24,7 +23,26 @@
     "start:electron": "ng build --base-href ./ && electron .",
     "run:electron": "electron .",
     "gen": "node gen.js",
+    "build": "electron-packager . --out=dist --asar --overwrite --all",
+    "build-installer": "electron-builder",
     "setup-win": "electron-packager . Biz1Pos --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/images/256_Biz1pos.ico --prune=true --out=release-builds --version-string.CompanyName=BizDom --version-string.FileDescription=POS --version-string.ProductName=\"Biz1Pos\""
+  },
+  "build": {
+    "appId": "www.biz1pos.bizdom.co.in",
+    "productName": "Biz1Pos 0.0.3",
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/images/256_Biz1pos.ico"
+    },
+    "asar":  false,
+    "nsis": {
+      "installerIcon": "256_Biz1pos.ico",
+      "uninstallerIcon": "256_Biz1pos.ico",
+      "uninstallDisplayName": "Biz1Pos Uninstall",
+      "license": "src/assets/license.txt",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "husky": {
     "hooks": {
@@ -75,7 +93,6 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "daterangepicker": "^3.1.0",
-    "electron-compile": "^6.4.4",
     "electron-installer-windows": "^3.0.0",
     "electron-packager": "^15.4.0",
     "electron-pos-printer": "^1.2.4",

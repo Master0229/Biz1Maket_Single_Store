@@ -677,7 +677,7 @@ export class SaleComponent implements OnInit {
 
   storePaymentTypes: any = []
   GetStorePaymentType() {
-    this.Auth.getstorepaymentType(0).subscribe(data => {
+    this.Auth.getstorepaymentType(this.loginfo.storeId).subscribe(data => {
       console.log(data)
       this.storePaymentTypes = data
     })

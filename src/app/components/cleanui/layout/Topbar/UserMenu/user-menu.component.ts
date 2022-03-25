@@ -5,6 +5,7 @@ import * as Reducers from 'src/app/store/reducers'
 import { ConstantsService } from "../../../../../services/constants/constants.service";
 import { NzNotificationService } from 'ng-zorro-antd'
 import { AuthService } from 'src/app/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class TopbarUserMenuComponent {
   datasavetype: string = '1';
   user: any
   constructor(private store: Store<any>, private globals: ConstantsService,
-    private notification: NzNotificationService, private Auth: AuthService) {
+    private notification: NzNotificationService, private Auth: AuthService, private router: Router) {
     this.user = JSON.parse(localStorage.getItem("user"))
     // this.store.pipe(select(Reducers.getUser)).subscribe(state => {
     this.name = this.user?.name
@@ -47,7 +48,7 @@ export class TopbarUserMenuComponent {
       this.CompanyId = this.loginfo.CompanyId
       this.StoreId = this.loginfo.StoreId
       console.log(this.loginfo)
-      this.sync()
+      // this.sync()
     })
   }
   loginfo
@@ -57,7 +58,9 @@ export class TopbarUserMenuComponent {
   sync() {
     this.Auth.getstoredata(this.loginfo.companyId, this.loginfo.storeId, 1).subscribe(data1 => {
       console.log(data1)
-      this.Auth.getstoredatadb(data1).subscribe(d => {})
+      this.Auth.getstoredatadb(data1).subscribe(d => {
+        this.router.navigateByUrl('/auth/pinscreen')
+      })
     })
   }
 }
