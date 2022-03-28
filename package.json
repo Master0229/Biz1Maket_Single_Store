@@ -40,7 +40,9 @@
       "uninstallDisplayName": "Biz1Pos Uninstall",
       "license": "src/assets/license.txt",
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut" : true,
+      "createStartMenuShortcut" : true
     }
   },
   "husky": {
@@ -98,6 +100,7 @@
     "express": "^4.17.3",
     "firebase": "^7.14.4",
     "hammerjs": "^2.0.8",
+    "http-server": "^14.1.0",
     "local-devices": "^3.1.0",
     "lodash": "^4.17.15",
     "moment": "^2.29.1",

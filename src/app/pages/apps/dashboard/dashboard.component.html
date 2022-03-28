@@ -9,6 +9,8 @@
     <div class="col" style="text-align: right;" *ngFor="let item of store">
       <strong class="text-right">subscription plan: </strong>{{item.plan.name}}
     </div>
+    <button class="btn btn-primary" (click)="electronPrint()"
+    style="height: fit-content;margin-top: -7px;">Print</button>
   </div>
 
   <div class="card card-body">

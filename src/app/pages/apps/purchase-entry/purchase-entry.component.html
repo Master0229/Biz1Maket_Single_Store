@@ -43,6 +43,9 @@
           <th>
             <strong> Bar Code</strong>
           </th>
+          <th>
+            <strong>Expairy Date</strong>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -58,6 +61,9 @@
           </td>
           <td>
             {{product.barCode}}
+          </td>
+          <td>
+            {{product.expiaryDate | date: 'MMM d, y'}}
           </td>
 
           <!-- <td>

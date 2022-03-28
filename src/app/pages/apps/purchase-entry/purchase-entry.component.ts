@@ -138,6 +138,8 @@ export class PurchaseEntryComponent implements OnInit {
         <thead>
             <tr>
                 <th style="width: 100px;"><strong>Products</strong></th>
+                <th style="width: 100px;"><strong>Quantity</strong></th>
+
             </tr>
         </thead>
         <tbody>`
@@ -146,6 +148,8 @@ export class PurchaseEntryComponent implements OnInit {
         element +
         `<tr>
       <td style="width: 100px;">${item.product}</td>
+      <td class="text-left" style="padding:5px">${item.quantity}</td>
+
       </tr>`
     })
     element =
@@ -248,6 +252,7 @@ export class PurchaseEntryComponent implements OnInit {
         <thead class="nb">
         <th class="text-left" style="width:50px;">S.No</th>
         <th class="text-left" >Products</th>
+        <th class="text-left" >Quantity</th>
         </thead>
         <tr>
       </tr>
@@ -257,6 +262,7 @@ export class PurchaseEntryComponent implements OnInit {
       <tr class="nb">
       <td>.</td>
           <td class="text-left" style="padding:5px">${item.product}</td>
+          <td class="text-left" >${item.quantity}</td>
       </tr>`
     })
     printtemplate += `
