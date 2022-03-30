@@ -6,7 +6,7 @@ const installer = require('electron-installer-windows')
 
 const options = {
     src: './Biz1Pos-win32-ia32/Biz1Pos.exe',
-    dest: './BizDom/Master/Biz1Maket_Single_Store/Installers',
+    dest: './Installers',
     icon: path.join(__dirname, './256_Biz1pos.ico'),
     authors: ['BizDom Soltions Pvt Ltd.'],
     exe: 'Biz1POS-0.0.3.exe',

@@ -9,8 +9,12 @@
     <div class="col" style="text-align: right;" *ngFor="let item of store">
       <strong class="text-right">subscription plan: </strong>{{item.plan.name}}
     </div>
-    <button class="btn btn-primary" (click)="electronPrint()"
-    style="height: fit-content;margin-top: -7px;">Print</button>
+    <!-- <button class="btn btn-primary" (click)="electronPrint()"
+    style="height: fit-content;margin-top: -7px;">Print</button> -->
+    <a class="btn btn-link border" (click)="electronPrint()">
+      <i class="fa fa-print"></i> Print
+    </a>
+
   </div>
 
   <div class="card card-body">
@@ -107,6 +111,36 @@
 
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div>
+    <div class="cui__utils__heading">
+      <strong>Product Wise Sale</strong>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <nz-table #psales [nzData]="prodwisesales">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ProductName</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prod of psales.data; let i = index;">
+              <td><code>#{{i+1}}</code></td>
+              <td>{{prod.product}}</td>
+              <td>{{prod.orderQuantity}}</td>
+              <td>{{prod.totalAmount}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
       </div>
     </div>
   </div>

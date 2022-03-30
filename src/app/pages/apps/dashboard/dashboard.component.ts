@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit {
     if (this.showData)
       this.chart.chart.generateLegend()
   }
-
+  prodwisesales = []
   getDashBoard() {
     this.Auth.getDashboard(this.storeId, this.companyId, this.fromDate, this.toDate, this.toDay).subscribe(data => {
       console.log(data);
@@ -166,6 +166,7 @@ export class DashboardComponent implements OnInit {
       this.newcustomer = data["customerData"][0]["newCustomers"]
       this.oldCustomer = data["customerData"][0]["oldCustomers"]
 
+      this.prodwisesales = data["prodsalesreport"]
       this.showData = true
     })
   }

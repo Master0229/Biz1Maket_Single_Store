@@ -120,7 +120,7 @@ export class SaleComponent implements OnInit {
     phoneNo: '',
     email: '',
     address: '',
-    storeId : 0,
+    storeId: 0,
     companyId: 0,
     datastatus: ''
   }
@@ -194,7 +194,7 @@ export class SaleComponent implements OnInit {
         phoneNo: '',
         email: '',
         address: '',
-        storeId : this.StoreId,
+        storeId: this.StoreId,
         companyId: this.CompanyId,
         datastatus: '',
       }
@@ -274,13 +274,13 @@ export class SaleComponent implements OnInit {
   setproductbybarcode(code) {
     this.barcodeMode = false
     console.log(code, this.products.filter(x => x.barCode == code));
-    var product = this.products.filter(x => x.barCode == code)[0];
+    var product = this.products.filter(x => x.barCode == code && x.quantity > 0)[0];
     if (product) {
       console.log(product);
       this.temporaryItem = product;
       this.temporaryItem.Quantity = 1;
       this.temporaryItem.DiscAmount = 0
-      this.addItem()
+      this.addItem("barcodereader")
     }
   }
 
@@ -375,9 +375,9 @@ export class SaleComponent implements OnInit {
   }
 
   submitted: boolean = false
-  batches:any = [];
+  batches: any = [];
   batchno = 0;
-  addItem() {
+  addItem(from) {
     this.submitted = true
     this.barcodeMode = false
     if (this.validation()) {
@@ -399,7 +399,8 @@ export class SaleComponent implements OnInit {
 
 
       this.temporaryItem = { DiscAmount: 0, Quantity: null, DiscPercent: 0 }
-      this.productinput['nativeElement'].focus()
+      if (from == "user")
+        this.productinput['nativeElement'].focus()
       this.model = ''
       this.filteredvalues = []
       this.submitted = false
@@ -652,11 +653,11 @@ export class SaleComponent implements OnInit {
     this.addcustomer()
     this.notification.success('Ordered Saved successfully!', `Ordered Saved successfully.`)
   }
-  syncDB(){
-      this.Auth.getstoredata(this.CompanyId, this.StoreId, 1).subscribe(data1 => {
-        console.log(data1)
-        this.Auth.getstoredatadb(data1).subscribe(d => {})
-      })
+  syncDB() {
+    this.Auth.getstoredata(this.CompanyId, this.StoreId, 1).subscribe(data1 => {
+      console.log(data1)
+      this.Auth.getstoredatadb(data1).subscribe(d => { })
+    })
   }
   crossclick() {
     this.temporaryItem = { DiscAmount: 0, Quantity: null, DiscPercent: 0 }

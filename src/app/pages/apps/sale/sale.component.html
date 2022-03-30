@@ -27,7 +27,7 @@
                     <input #quantityel type="number"
                       [ngClass]="{'is-invalid':submitted &&temporaryItem.Quantity <= 0 || temporaryItem.Quantity > temporaryItem.quantity}"
                       [(ngModel)]="temporaryItem.Quantity" onfocus="this.select()" placeholder="Qty"
-                      class="form-control" (keyup.enter)="addItem()" min="1" />
+                      class="form-control" (keyup.enter)="addItem('user')" min="1" />
                   </div>
                 </td>
                 <td>
@@ -39,8 +39,8 @@
                 </td>
                 <td>
                   <button nz-button [disabled]="temporaryItem.Quantity <= 0" nzType="default"
-                    class="mr-3 mt-2 pull-right" nzSize="small" (click)="addItem()"> <i
-                      class="fe fe-plus fa-lg mb-1"></i></button>
+                    class="mr-3 mt-2 pull-right" nzSize="small" (click)="addItem('user')">
+                    <i class="fe fe-plus fa-lg mb-1"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -272,8 +272,9 @@
               <td>
 
                 <input type="number" nz-input [(ngModel)]="item.OrderQuantity" (keyup)="quantitychange(item,$event);"
-                  (change)="quantitychange(item,$event);" onfocus="this.select()">
-
+                  (change)="quantitychange(item,$event);" class="w-50" onfocus="this.select()">
+                <span class="font-x-large">/</span>
+                <span class="font-x-large">{{item.maxQty - item.OrderQuantity}}</span>
               </td>
               <td>
                 &#8377; {{item.Price}}

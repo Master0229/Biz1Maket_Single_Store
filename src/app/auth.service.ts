@@ -66,7 +66,7 @@ export class AuthService {
     )
   }
   getStockProduct(CompanyId, StoreId) {
-    return this.http.get(this.base_url1 + 'Product/getStockProduct?CompanyId=1&StoreId=26')
+    return this.http.get(this.base_url1 + 'Product/getStockProduct?CompanyId' + CompanyId + '&StoreId=' + StoreId)
   }
   getstockEntry(stockBatches) {
     return this.http.post(this.base_url1 + 'Product/stockEntry', stockBatches)

@@ -1,314 +1,310 @@
 <div class="row" hidden>
-    <div class="col-xl-8 ml-5">
-        <div class="card">
-            <div class="card-header card-header-flex flex-column">
-                <nz-tabset class="kit-tabs kit-tabs-bold" (nzSelectedIndexChange)="changeKey($event)">
-                    <nz-tab nzTitle="Printer"></nz-tab>
-                    <nz-tab nzTitle="Server-Client"></nz-tab>
-                    <nz-tab nzTitle="Personal Information"></nz-tab>
-                </nz-tabset>
+  <div class="col-xl-8 ml-5">
+    <div class="card">
+      <div class="card-header card-header-flex flex-column">
+        <nz-tabset class="kit-tabs kit-tabs-bold" (nzSelectedIndexChange)="changeKey($event)">
+          <nz-tab nzTitle="Printer"></nz-tab>
+          <nz-tab nzTitle="Server-Client"></nz-tab>
+          <nz-tab nzTitle="Personal Information"></nz-tab>
+        </nz-tabset>
+      </div>
+      <div *ngIf="activeKey === 1">
+        <nz-spin nzTip="Scanning..." [nzSpinning]="total_devices > 0 && checked_devices != total_devices">
+          <div class="card-body">
+            <div>
+              <div class="text-uppercase mb-10 pull-left">Available Servers</div>
+              <button class="pull-right" (click)="scan()" nz-button nzType="primary" nzSearch>Scan</button>
+              <div class="table-responsive">
+                <table class="table table-borderless text-gray-6 mb-0">
+                  <tbody>
+                    <tr *ngFor="let server of available_servers">
+                      <td class="pl-0 font-weight-bold">{{server.ip}}</td>
+                      <td class="text-right text-muted">
+                        <button nz-button nzType="primary" nzSearch>Join</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div *ngIf="activeKey === 1">
-                <nz-spin nzTip="Scanning..." [nzSpinning]="total_devices > 0 && checked_devices != total_devices">
-                    <div class="card-body">
-                        <div>
-                            <div class="text-uppercase mb-10 pull-left">Available Servers</div>
-                            <button class="pull-right" (click)="scan()" nz-button nzType="primary"
-                                nzSearch>Scan</button>
-                            <div class="table-responsive">
-                                <table class="table table-borderless text-gray-6 mb-0">
-                                    <tbody>
-                                        <tr *ngFor="let server of available_servers">
-                                            <td class="pl-0 font-weight-bold">{{server.ip}}</td>
-                                            <td class="text-right text-muted">
-                                                <button nz-button nzType="primary" nzSearch>Join</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </nz-spin>
-            </div>
+          </div>
+        </nz-spin>
+      </div>
 
-        </div>
     </div>
+  </div>
 </div>
 <!-- /////////////////////////////////////////sidemenu///////////////////////////////////// -->
 
 <div>
-    <div class="cui__utils__heading">
-        <strong>Setting</strong>
+  <div class="cui__utils__heading">
+    <strong>Setting</strong>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <div class="dialogs">
+        <perfect-scrollbar style="height: 100%">
+          <a *ngFor="let item of dialogs; let i = index;" [ngClass]="['item', i === activeIndex ? 'current' : '']"
+            class="d-flex flex-nowrap align-items-center" (click)="changeDialog(i)">
+            <div class="flex-grow-1 info">
+              <div class="font-weight-bold text-truncate my-3 pl-2">
+                <i nz-icon nzType="{{item.icon}}"></i> {{item.name}}
+              </div>
+            </div>
+            <div *ngIf="item.unread" class="flex-shrink-0 align-self-start unread">
+              <div class="badge badge-success">{{item.unread}}</div>
+            </div>
+          </a>
+        </perfect-scrollbar>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-12 col-md-3">
-            <div class="dialogs">
-                <perfect-scrollbar style="height: 100%">
-                    <a *ngFor="let item of dialogs; let i = index;"
-                        [ngClass]="['item', i === activeIndex ? 'current' : '']"
-                        class="d-flex flex-nowrap align-items-center" (click)="changeDialog(i)">
-                        <div class="flex-grow-1 info">
-                            <div class="font-weight-bold text-truncate my-3 pl-2">
-                                <i nz-icon nzType="{{item.icon}}"></i> {{item.name}}
-                            </div>
-                        </div>
-                        <div *ngIf="item.unread" class="flex-shrink-0 align-self-start unread">
-                            <div class="badge badge-success">{{item.unread}}</div>
-                        </div>
-                    </a>
-                </perfect-scrollbar>
-            </div>
-        </div>
-        <div *ngIf="dialogid == 1" class="col-12 col-md-9">
-            <div class="card">
-                <div class="card-header card-header-flex align-items-center">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0 mr-2 ">
-                            {{name}}
-                        </h5>
-                    </div>
-                    <button type="button" class="btn btn-success pull-right"
-                        (click)="saveprintersettings()">Save</button>
+    <div *ngIf="dialogid == 1" class="col-12 col-md-9">
+      <div class="card">
+        <div class="card-header card-header-flex align-items-center">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0 mr-2 ">
+              {{name}}
+            </h5>
+          </div>
+          <button type="button" class="btn btn-success pull-right" (click)="saveprintersettings()">Save</button>
 
-                </div>
-                <div>
-                    <div class="card">
-                        <nz-table class="kit__utils__table" nzSize="small">
-                            <div class="p-4">
-                                <ul class="list-group">
-                                    <a href="javascript:void(0);" (click)="printersettings.receiptprinter = ''"
-                                        [class.active]="printersettings.receiptprinter == ''"
-                                        class="list-group-item-action list-group-item">None</a>
-                                    <a href="javascript:void(0);"
-                                        (click)="printersettings.receiptprinter = printer.name"
-                                        *ngFor="let printer of printers"
-                                        [class.active]="printersettings.receiptprinter == printer.name"
-                                        class="list-group-item-action list-group-item">{{printer.name}}</a>
-                                </ul>
-                            </div>
-                        </nz-table>
-                    </div>
+        </div>
+        <div>
+          <div class="card">
+            <nz-table class="kit__utils__table" nzSize="small">
+              <div class="p-4">
+                <ul class="list-group">
+                  <a href="javascript:void(0);" (click)="printersettings.receiptprinter = ''"
+                    [class.active]="printersettings.receiptprinter == ''"
+                    class="list-group-item-action list-group-item">None</a>
+                  <a href="javascript:void(0);" (click)="printersettings.receiptprinter = printer.name"
+                    *ngFor="let printer of printers" [class.active]="printersettings.receiptprinter == printer.name"
+                    class="list-group-item-action list-group-item">{{printer.name}}</a>
+                </ul>
+              </div>
+            </nz-table>
+          </div>
 
-                </div>
-            </div>
         </div>
-        <div *ngIf="dialogid == 2" class="col-12 col-md-9">
-            <div class="card">
-                <div class="card-header card-header-flex align-items-center">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0 mr-2 ">
-                            {{name}}
-                        </h5>
-                    </div>
-                    <div>
-                        <a *ngIf="system_type == 1 || system_type == 2" href="javascript: void(0);"
-                            (click)="system_type = 0" class="btn btn-sm btn-light mr-2">
-                            <i class="fe fe-arrow-left"></i>
-                        </a>
-                        <a *ngIf="system_type == 1" href="javascript: void(0);" class="btn btn-sm btn-success mr-2"
-                            nz-tooltip nzTooltipTitle="Scan Server" nzTooltipPlacement="top" (click)="scan()">
-                            Scan
-                        </a>
-                    </div>
-                </div>
-                <div *ngIf="system_type == 0" class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless text-gray-6 mb-0">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" (click)="system_type = 2"
-                                            class="btn btn-rounded btn-primary btn-block mr-2 mb-2">
-                                            Create Server
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" (click)="system_type = 1"
-                                            class="btn btn-rounded btn-success btn-block mr-2 mb-2">
-                                            Join Server
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div *ngIf="system_type == 2" class="card-body">
-                    <button *ngIf="!server" style="margin-left: 200px;" nz-button [nzLoading]="loadspin"
-                        (click)="startserver();" class=" btn btn-rounded btn-success btn-block mr-2 mb-2 w-50">Start
-                        Server</button>
-                    <div class="card-body">
-                        <div class="pt-3 widget-container" *ngIf="server">
-                            <div class="bg-success status"></div>
-                            <div class="d-flex flex-nowrap align-items-center pb-3 pl-4 pr-4">
-                                <div class="mr-auto">
-                                    <div class="text-uppercase font-weight-bold  text-dark">Main Server</div>
-                                    <div>Server is running in the address http://{{server?.address}}:{{server?.port}}
-                                    </div>
-                                </div>
-                                <div class="ml-1 text-danger" nz-tooltip nzTooltipTitle="Stop Server"
-                                    nzTooltipPlacement="top">
-                                    <a class="btn btn-link text-danger mr-2 mb-2"
-                                        (click)="stopserver(); server = null;loadspin = false"> <i
-                                            class="fe fe-x-circle font-size-30"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="server">
-                        <h6 class="mb-4 text-uppercase">
-                            <strong>Clients</strong>
-                        </h6>
-                        <div class="mb-5">
-                            <div class="card mb-3" *ngFor="let client of clients">
-                                <div class="card-body py-2">
-                                    <div class="d-flex align-items-center flex-wrap">
-                                        <div class="d-flex flex-nowrap align-items-center width-200 flex-shrink-1 mr-2">
-                                            <div
-                                                class="kit__utils__donut kit__utils__donut--success mr-2 flex-shrink-0">
-                                            </div>
-                                            <a href="javascript: void(0);"
-                                                class="font-weight-bold text-blue text-nowrap">Client A </a>
-                                        </div>
-                                        <div class="flex-grow-1 mr-auto">{{client.ip}}
-                                        </div>
-                                        <div class="flex-grow-1 mr-2">Connected</div>
-                                        <button type="button" class="btn btn-light" nz-dropdown [nzDropdownMenu]="menu"
-                                            nzTrigger="click" nzPlacement="bottomRight"
-                                            (click)="removeclient(client._id)">
-                                            <i nz-icon nzType="delete"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <p *ngIf="!clients.length" class="text-center">NO CLIENTS CONNECTED!</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div *ngIf="system_type == 1" class="card-body">
-                    <nz-spin nzTip="Scanning..." [nzSpinning]="total_devices > 0 && checked_devices != total_devices">
-                        <div class="card-body">
-                            <div>
-                                <div class="card-body">
-                                    <div class="pt-3 widget-container" *ngFor="let server of available_servers">
-                                        <div class="bg-primary status"></div>
-                                        <div class="d-flex flex-nowrap align-items-center pb-3 pl-4 pr-4">
-                                            <div class="mr-auto">
-                                                <div class="text-uppercase font-weight-bold  text-dark">Clients
-                                                </div>
-                                                <div>{{server.ip}}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <a *ngIf="!server.connected" class="btn btn-sm  mr-2 btn-primary"
-                                                    (click)="joinserver(server.ip)">Join</a>
-                                                <a *ngIf="server.connected" class="btn btn-sm  mr-2 btn-danger"
-                                                    (click)="joinserver(server.ip)">Disconnect</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-center" *ngIf="available_servers.length == 0">
-                                        <span>NO SERVER FOUND!</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </nz-spin>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="dialogid == 3" class="col-12 col-md-9">
-            <div class="card">
-                <div class="card-header card-header-flex align-items-center">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0 mr-2 ">
-                            {{name}}
-                        </h5>
-                    </div>
-                    <button class="btn btn-success pull-right" href="javascript: void(0);" (click)=" syncstorage()">
-                        Save
-                    </button>
-                </div>
-                <div class="card-body text-center">
-                    <nz-radio-group [(ngModel)]="datasavetype">
-                        <label nz-radio nzValue="1">Live Storage</label>
-                        <label nz-radio nzValue="2">Sync Storage</label>
-                    </nz-radio-group>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="dialogid == 4" class="col-12 col-md-9">
-            <div class="card">
-                <div class="card-header card-header-flex align-items-center">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0 mr-2 ">
-                            {{name}}
-                        </h5>
-                    </div>
-                    <span class="mr-3">({{testweight}} kg)</span>
-                    <button class="btn btn-success pull-right" href="javascript: void(0);" (click)="getweight()">
-                        Get Weight
-                    </button>
-                </div>
-                <div class="card-body text-center">
-                    <nz-table class="kit__utils__table" nzSize="small">
-                        <div class="p-4">
-                            <ul class="list-group">
-                                <a href="javascript:void(0);" *ngFor="let port of comPorts"
-                                    (click)="configurePort(port)"
-                                    class="list-group-item-action list-group-item">{{port.friendlyName}}</a>
-                            </ul>
-                        </div>
-                    </nz-table>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf="dialogid == 5" class="col-12 col-md-9">
-            <div class="card">
-                <div class="card-header card-header-flex align-items-center">
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0 mr-2 ">
-                            <!-- {{name}} -->
-                        </h5>
-                    </div>
-                    <input class="form-control" placeholder="Select" [(ngModel)]="inputValue"
-                        (input)="onInputAutocomplete()" [nzAutocomplete]="auto" />
-                    <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
-                        <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
-                            [nzValue]="product.product">
-                            {{ product.product }}
-                        </nz-auto-option>
-                    </nz-autocomplete>
-                </div>
-                <div class="card-body text-center">
-                    <nz-table class="kit__utils__table" nzSize="small">
-                        <div class="p-4">
-                            <div class="form-group">
-                                <strong>Barcode</strong>
-                                <input type="text" class="form-control" [(ngModel)]="printData[0].value">
-                            </div>
-                            <div class="form-group">
-                                <strong>Copies</strong>
-                                <input type="number" class="form-control" [(ngModel)]="printOptions.copies">
-                            </div>
-                            <div class="form-group">
-                                <strong>Printer</strong>
-                                <select class="form-control" [(ngModel)]="printOptions.printerName">
-                                    <option value="{{printer.name}}" *ngFor="let printer of printers">{{printer.name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary" (click)="printBarcode()">Print</button>
-                            </div>
-                        </div>
-                    </nz-table>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div *ngIf="dialogid == 2" class="col-12 col-md-9">
+      <div class="card">
+        <div class="card-header card-header-flex align-items-center">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0 mr-2 ">
+              {{name}}
+            </h5>
+          </div>
+          <div>
+            <a *ngIf="system_type == 1 || system_type == 2" href="javascript: void(0);" (click)="system_type = 0"
+              class="btn btn-sm btn-light mr-2">
+              <i class="fe fe-arrow-left"></i>
+            </a>
+            <a *ngIf="system_type == 1" href="javascript: void(0);" class="btn btn-sm btn-success mr-2" nz-tooltip
+              nzTooltipTitle="Scan Server" nzTooltipPlacement="top" (click)="scan()">
+              Scan
+            </a>
+          </div>
+        </div>
+        <div *ngIf="system_type == 0" class="card-body">
+          <div class="table-responsive">
+            <table class="table table-borderless text-gray-6 mb-0">
+              <tbody>
+                <tr>
+                  <td>
+                    <button type="button" (click)="system_type = 2"
+                      class="btn btn-rounded btn-primary btn-block mr-2 mb-2">
+                      Create Server
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" (click)="system_type = 1"
+                      class="btn btn-rounded btn-success btn-block mr-2 mb-2">
+                      Join Server
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="system_type == 2" class="card-body">
+          <button *ngIf="!server" style="margin-left: 200px;" nz-button [nzLoading]="loadspin" (click)="startserver();"
+            class=" btn btn-rounded btn-success btn-block mr-2 mb-2 w-50">Start
+            Server</button>
+          <div class="card-body">
+            <div class="pt-3 widget-container" *ngIf="server">
+              <div class="bg-success status"></div>
+              <div class="d-flex flex-nowrap align-items-center pb-3 pl-4 pr-4">
+                <div class="mr-auto">
+                  <div class="text-uppercase font-weight-bold  text-dark">Main Server</div>
+                  <div>Server is running in the address http://{{server?.address}}:{{server?.port}}
+                  </div>
+                </div>
+                <div class="ml-1 text-danger" nz-tooltip nzTooltipTitle="Stop Server" nzTooltipPlacement="top">
+                  <a class="btn btn-link text-danger mr-2 mb-2" (click)="stopserver(); server = null;loadspin = false">
+                    <i class="fe fe-x-circle font-size-30"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="server">
+            <h6 class="mb-4 text-uppercase">
+              <strong>Clients</strong>
+            </h6>
+            <div class="mb-5">
+              <div class="card mb-3" *ngFor="let client of clients">
+                <div class="card-body py-2">
+                  <div class="d-flex align-items-center flex-wrap">
+                    <div class="d-flex flex-nowrap align-items-center width-200 flex-shrink-1 mr-2">
+                      <div class="kit__utils__donut kit__utils__donut--success mr-2 flex-shrink-0">
+                      </div>
+                      <a href="javascript: void(0);" class="font-weight-bold text-blue text-nowrap">Client A </a>
+                    </div>
+                    <div class="flex-grow-1 mr-auto">{{client.ip}}
+                    </div>
+                    <div class="flex-grow-1 mr-2">Connected</div>
+                    <button type="button" class="btn btn-light" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click"
+                      nzPlacement="bottomRight" (click)="removeclient(client._id)">
+                      <i nz-icon nzType="delete"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p *ngIf="!clients.length" class="text-center">NO CLIENTS CONNECTED!</p>
+            </div>
+
+          </div>
+        </div>
+        <div *ngIf="system_type == 1" class="card-body">
+          <nz-spin nzTip="Scanning..." [nzSpinning]="total_devices > 0 && checked_devices != total_devices">
+            <div class="card-body">
+              <div>
+                <div class="card-body">
+                  <div class="pt-3 widget-container" *ngFor="let server of available_servers">
+                    <div class="bg-primary status"></div>
+                    <div class="d-flex flex-nowrap align-items-center pb-3 pl-4 pr-4">
+                      <div class="mr-auto">
+                        <div class="text-uppercase font-weight-bold  text-dark">Clients
+                        </div>
+                        <div>{{server.ip}}
+                        </div>
+                      </div>
+                      <div>
+                        <a *ngIf="!server.connected" class="btn btn-sm  mr-2 btn-primary"
+                          (click)="joinserver(server.ip)">Join</a>
+                        <a *ngIf="server.connected" class="btn btn-sm  mr-2 btn-danger"
+                          (click)="joinserver(server.ip)">Disconnect</a>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center" *ngIf="available_servers.length == 0">
+                    <span>NO SERVER FOUND!</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nz-spin>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="dialogid == 3" class="col-12 col-md-9">
+      <div class="card">
+        <div class="card-header card-header-flex align-items-center">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0 mr-2 ">
+              {{name}}
+            </h5>
+          </div>
+          <button class="btn btn-success pull-right" href="javascript: void(0);" (click)=" syncstorage()">
+            Save
+          </button>
+        </div>
+        <div class="card-body text-center">
+          <nz-radio-group [(ngModel)]="datasavetype">
+            <label nz-radio nzValue="1">Live Storage</label>
+            <label nz-radio nzValue="2">Sync Storage</label>
+          </nz-radio-group>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="dialogid == 4" class="col-12 col-md-9">
+      <div class="card">
+        <div class="card-header card-header-flex align-items-center">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0 mr-2 ">
+              {{name}}
+            </h5>
+          </div>
+          <span class="mr-3">({{testweight}} kg)</span>
+          <button class="btn btn-success pull-right" href="javascript: void(0);" (click)="getweight()">
+            Get Weight
+          </button>
+        </div>
+        <div class="card-body text-center">
+          <nz-table class="kit__utils__table" nzSize="small">
+            <div class="p-4">
+              <ul class="list-group">
+                <a href="javascript:void(0);" *ngFor="let port of comPorts" (click)="configurePort(port)"
+                  class="list-group-item-action list-group-item">{{port.friendlyName}}</a>
+              </ul>
+            </div>
+          </nz-table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="dialogid == 5" class="col-12 col-md-9">
+      <div class="card">
+        <div class="card-header card-header-flex align-items-center">
+          <div class="d-flex flex-column justify-content-center mr-auto">
+            <h5 class="mb-0 mr-2 ">
+            Barcode Printer
+            </h5>
+          </div>
+        </div>
+        <div class="card-body text-center">
+          <nz-table class="kit__utils__table" nzSize="small">
+            <div class="p-4">
+              <div class="form-group">
+                <strong>Product Name</strong>
+                <input class="form-control" placeholder="Search Product by Name..." [(ngModel)]="inputValue" (input)="onInputAutocomplete()"
+                [nzAutocomplete]="auto" />
+              <nz-autocomplete nzBackfill #auto (selectionChange)="searchbyproduct($event);">
+                <nz-auto-option id="{{product.barcodeId}}" *ngFor="let product of filterproduct"
+                  [nzValue]="product.product">
+                  {{ product.product }}
+                </nz-auto-option>
+              </nz-autocomplete>
+              </div>
+              <div class="form-group">
+                <!-- <strong>Height</strong>
+                <input type="text" class="form-control" [(ngModel)]="printData[0].height">
+                <strong>width</strong>
+                <input type="text" class="form-control" [(ngModel)]="printData[0].width"> -->
+                <strong>Barcode Name</strong>
+                <input type="text" class="form-control" [(ngModel)]="printData[0].value">
+              </div>
+              <div class="form-group">
+                <strong>No of Copies</strong>
+                <input type="number" class="form-control" [(ngModel)]="printOptions.copies">
+              </div>
+              <div class="form-group">
+                <strong>Select Barcode Printer</strong>
+                <select class="form-control" [(ngModel)]="printOptions.printerName">
+                  <option value="{{printer.name}}" *ngFor="let printer of printers">{{printer.name}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary" (click)="printBarcode()">Print</button>
+              </div>
+            </div>
+          </nz-table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -26,6 +26,8 @@
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "build-installer": "electron-builder",
     "setup-win": "electron-packager . Biz1Pos --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/images/256_Biz1pos.ico --prune=true --out=release-builds --version-string.CompanyName=BizDom --version-string.FileDescription=POS --version-string.ProductName=\"Biz1Pos\""
+
+
   },
   "build": {
     "appId": "www.biz1pos.bizdom.co.in",

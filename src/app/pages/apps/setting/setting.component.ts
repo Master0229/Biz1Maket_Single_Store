@@ -216,11 +216,12 @@ export class SettingComponent implements OnInit {
   printData = [{
     type: 'barCode',                 // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
     value: "",
-    height: 24,                     // height of barcode, applicable only to bar and QR codes
-    width: 2,                       // width of barcode, applicable only to bar and QR codes
+    height: 60,                     // height of barcode, applicable only to bar and QR codes
+    width: 1,                       // width of barcode, applicable only to bar and QR codes
     displayValue: true,              // Display value below barcode
     fontsize: 18,
   }]
+
   onInputAutocomplete() {
     console.log(this.products);
 
@@ -259,6 +260,7 @@ export class SettingComponent implements OnInit {
       this.comPorts = data
     })
   }
+
   configurePort(port) {
     this.auth.configurePortList(port.path).subscribe(data => {
       console.log(data);
@@ -363,7 +365,9 @@ export class SettingComponent implements OnInit {
       )
     })
   }
+
   server
+
   startserver() {
     this.loadspin = true
     var server = this.electronService.remote.getGlobal('database')()
@@ -381,12 +385,14 @@ export class SettingComponent implements OnInit {
     })
     this.electronService.remote.getGlobal('startserver')()
   }
+
   getclients() {
     this.auth.getclientlist(this.server.address).subscribe(data => {
       console.log(data)
       this.clients = data['clients']
     })
   }
+
   joinserver(ip) {
     this.auth.joinserver(ip).subscribe(data => {
       console.log(data)
@@ -397,10 +403,12 @@ export class SettingComponent implements OnInit {
       this.available_servers.filter(x => x.ip == ip)[0].connected = true
     })
   }
+
   removeclient(id) {
     this.electronService.remote.getGlobal('removeclient')(id)
     this.getclients()
   }
+
   stopserver(msg) {
     this.electronService.remote.getGlobal('stopserver')()
     // this.getclients();

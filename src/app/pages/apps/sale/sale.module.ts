@@ -146,6 +146,7 @@ export class OrderModule {
   }
 
   addproduct(product,showname) {
+    console.log(product)
     this.Items.push(new OrderItemModule(product, showname))
     this.setbillamount()
   }
@@ -295,8 +296,10 @@ export class OrderItemModule {
   VarianceReasonStr: string
   VarianceReasonDesc: string
   quantity: number
+  maxQty: number = 0
   constructor(product, showname) {
     console.log(product)
+    this.maxQty = product.maxqty
     this.Amount = 0
     this.BillId = 0
     this.BarcodeId = product.barcodeId

@@ -14,7 +14,7 @@ export class VendorsComponent implements OnInit {
   vendorsitem: any = [];
   show = true;
   term: string = '';
-  vendors: any = { id: 0, name: "", phoneNo: "", address: "", city: "", postalCode: null, email: '', companyId: 1 }
+  vendors: any = { id: 0, name: "", phoneNo: "", address: "", city: "", postalCode: null, email: '', companyId: 0 }
   vendorid = 0;
   constructor(private Auth: AuthService, public location: Location, private _avRoute: ActivatedRoute) {
     this.vendorid = +this._avRoute.snapshot.params["id"];
@@ -26,6 +26,7 @@ export class VendorsComponent implements OnInit {
       this.CompanyId = this.loginfo.companyId
       this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
+      console.log(this.CompanyId)
     })
 
     this.Auth.getloginfo().subscribe(data => {
@@ -36,13 +37,15 @@ export class VendorsComponent implements OnInit {
   getVendorList() {
     this.Auth.getvendors(this.CompanyId).subscribe(data => {
       this.vendorsitem = data;
-      console.log(this.vendorsitem)
+      console.log(data)
       this.filteredvalues = this.vendorsitem;
       this.show = true
     })
   }
   addVendor() {
     if(this.vendors.id == 0) {
+      this.vendors.companyId = this.CompanyId
+      this.vendors.postalCode = +this.vendors.postalCode
       this.Auth.addvendors(this.vendors).subscribe(data => {
         // console.log(data)
         this.show = !this.show
@@ -65,7 +68,7 @@ export class VendorsComponent implements OnInit {
   }
   back() {
     this.show = !this.show;
-    this.vendors = { id: 0, name: "", phoneNo: "", address: "", city: "", postalCode: null, email: '', companyId: 1 }
+    this.vendors = { id: 0, name: "", phoneNo: "", address: "", city: "", postalCode: null, email: '', companyId: 0 }
   }
   filteredvalues:any = [];
   filtersearch(): void {

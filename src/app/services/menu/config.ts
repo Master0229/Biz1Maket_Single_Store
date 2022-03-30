@@ -94,7 +94,7 @@ export const getMenuData: any[] = [
     url: '/apps/purchaseentry',
   },
   {
-    title: 'Wanted',
+    title: 'Needed Products',
     key: 'appsaddproduct',
     icon: 'fa fa-object-group',
     url: '/apps/addproduct',
