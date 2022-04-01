@@ -64,6 +64,12 @@ export const getMenuData: any[] = [
     url: '/apps/batchentry',
   },
   {
+    title: 'Stock',
+    key: 'appsSetting',
+    icon: 'fe fe-shopping-bag',
+    url: '/apps/Stock',
+  },
+  {
     title: 'Product',
     key: 'appsProfile',
     icon: 'fe fe-grid',
@@ -94,17 +100,18 @@ export const getMenuData: any[] = [
     url: '/apps/purchaseentry',
   },
   {
+    title: 'Vendors',
+    key: 'appsSetting',
+    icon: 'fe fe-user-check',
+    url: '/apps/vendors',
+  },
+  {
     title: 'Needed Products',
     key: 'appsaddproduct',
     icon: 'fa fa-object-group',
     url: '/apps/addproduct',
   },
-  // {
-  //   title: 'Vendors',
-  //   key: 'appsSetting',
-  //   icon: 'fe fe-user-check',
-  //   url: '/apps/vendors',
-  // },
+
   {
     title: 'Setting',
     key: 'appsSetting',

@@ -1,77 +1,87 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
+import { Component, OnInit, TemplateRef, ViewChild, ElementRef, HostListener } from '@angular/core'
+import * as moment from 'moment'
+import { FormControl, Validators } from '@angular/forms'
+import { NzModalService } from 'ng-zorro-antd/modal'
+import { NgbModal, ModalDismissReasons, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap'
 import { AuthService } from 'src/app/auth.service'
 import { NzNotificationService } from 'ng-zorro-antd'
-import { ActivatedRoute } from '@angular/router'
-import { Location } from '@angular/common'
+import { merge, Observable, Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { PrintService } from 'src/app/services/print/print.service'
-import * as moment from 'moment'
-
 
 @Component({
-  selector: 'app-addproduct',
-  templateUrl: './addproduct.component.html',
-  styleUrls: ['./addproduct.component.scss'],
+  selector: 'app-stock',
+  templateUrl: './stock.component.html',
+  styleUrls: ['./stock.component.scss']
 })
-export class AddproductComponent implements OnInit {
-  @ViewChild('barcodeel', { static: false }) public barcodeel: TemplateRef<any>;//productinput
+export class StockComponent implements OnInit {
+  model: any = 'QWERTY'
+  inputValue: string = ''
+  @ViewChild('instance', { static: true }) instance: NgbTypeahead
+  focus$ = new Subject<string>()
+  click$ = new Subject<string>()
+
+
+  @ViewChild('quantityel', { static: false }) public quantityel: TemplateRef<any> //productinput
+  @ViewChild('discper', { static: false }) public discperel: TemplateRef<any>
+  @ViewChild('disc', { static: false }) public discel: TemplateRef<any>
+  @ViewChild('productautocomplete', { static: false }) public productinput: TemplateRef<any>
+  @ViewChild('scrollframe', { static: false }) scrollFrame: ElementRef
+  // @ViewChild('cardnumber', { static: false }) cardnumber: ElementRef;
+
+
 
   constructor(
+    private modalService: NgbModal,
     private Auth: AuthService,
-    public location: Location,
     private notification: NzNotificationService,
-    private _avRoute: ActivatedRoute,
     private printservice: PrintService,
-  ) {
+  ) { }
 
-  }
-  https = 0
+  prod: any
+  term: ''
+  products: any
+  item: any
   loginfo
-  CompanyId: any
 
   ngOnInit(): void {
     this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
-      this.CompanyId = this.loginfo.companyId
-      this.getprod()
+    })
+    this.getproducts()
+  }
+
+  getproducts() {
+    this.Auth.getproducts().subscribe(data => {
+      this.products = data
+      this.prod = this.products
+      console.log(this.products)
     })
   }
 
-  prod: any
-  prods: any
-  product = {
-    Name: '',
-    Createddate: moment().format('YYYY-MM-DD HH:mm A'),
-    CompanyId: 0
+
+  showInactive: Boolean = false
+  changefilter(bool) {
+    this.showInactive = bool
+    console.log(bool)
+    if (bool) {
+      this.prod = this.products.filter(x => x.quantity < 6)
+    } else {
+      this.prod = this.products.filter(x => x.quantity)
+
+    }
+    console.log(this.prod.length)
   }
 
-  addprod() {
-    this.product.CompanyId = this.loginfo.companyId
-    this.Auth.getneededproduct(this.product).subscribe(data => {
-      this.prod = data["needProducts"]
-      console.log(data)
-      // this.barcodeel['nativeElement'].focus()
-      this.barcodeel['nativeElement'].value = ' ';
-      this.getprod()
-      console.log(this.barcodeel);
-    })
+  filteredvalues = [];
+  filtersearch(): void {
+    this.prod = this.term
+      ? this.prod.filter(x => x.product.toLowerCase().includes(this.term.toLowerCase()))
+      : this.prod;
+    console.log(this.prod)
   }
 
-  getprod() {
-    this.Auth.GetNeededProd(this.loginfo.companyId).subscribe(data => {
-      this.prods = data
-      console.log(this.prods)
-    })
-  }
-  // 25-03-2022
-  getprodlist: any
-  deleteitem(Id) {
-    console.log('delete', Id)
-    this.Auth.deleteproduct({ id: Id, CompanyId: this.loginfo.companyId }).subscribe(data => {
-      this.getprodlist = data
-      this.getprod()
-    })
-  }
 
   print(): void {
     let printContents, popupWin
@@ -113,9 +123,7 @@ export class AddproductComponent implements OnInit {
         }
         </style>
       </head>
-      <body onload="window.print();window.close()">
-        ${printContents}
-      </body>
+  <body onload="window.print();window.close()">${printContents}</body>
     </html>`)
     popupWin.document.close()
   }
@@ -128,17 +136,24 @@ export class AddproductComponent implements OnInit {
         <thead>
             <tr>
                 <th style="width: 100px;"><strong>Products</strong></th>
+                <th style="width: 100px;"><strong>Quantity</strong></th>
+
             </tr>
         </thead>
         <tbody>`
-         this.prods.forEach(item => {
-         element =
-         element +
-         `<tr><td style="width: 100px;">${item.name}</td></tr>`
-          })
-          element =
-          element +
-       `</tbody>
+    this.products.filter(x => x.quantity < 6).forEach(item => {
+      element =
+        element +
+        `<tr>
+      <td style="width: 100px;">${item.product}</td>
+      <td class="text-left" style="padding:5px">${item.quantity}</td>
+
+      </tr>`
+    })
+    element =
+      element +
+      `
+        </tbody>
     </table>
     <hr>
 </div>
@@ -223,23 +238,29 @@ export class AddproductComponent implements OnInit {
   </style>`
 
   printreceipt() {
+
+
+    // console.log(this.item.product,this.products);
+
     var printtemplate = `
     <div id="printelement">
-    <strong style="margin-left:50px;font-size:18px";>Needed Product</strong>
+    <strong style="margin-left:50px;font-size:18px";>Purchase List</strong>
     <hr>
     <table class="item-table">
         <thead class="nb">
         <th class="text-left" style="width:50px;">S.No</th>
         <th class="text-left" >Products</th>
+        <th class="text-left" >Quantity</th>
         </thead>
         <tr>
       </tr>
         <tbody>`
-    this.prods.forEach(item => {
+    this.products.filter(x => x.quantity < 6).forEach(item => {
       printtemplate += `
       <tr class="nb">
       <td>.</td>
-          <td class="text-left" style="padding:5px">${item.name}</td>
+          <td class="text-left" style="padding:5px">${item.product}</td>
+          <td class="text-left" >${item.quantity}</td>
       </tr>`
     })
     printtemplate += `
@@ -256,4 +277,5 @@ export class AddproductComponent implements OnInit {
     if (this.printersettings)
       this.printservice.print(printtemplate, [this.printersettings.receiptprinter])
   }
+
 }

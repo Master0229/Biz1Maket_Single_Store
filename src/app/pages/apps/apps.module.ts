@@ -72,6 +72,7 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 import { ChartModule } from 'angular2-chartjs'
 import { ChartistModule } from 'ng-chartist'
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { StockComponent } from './stock/stock.component';
 
 const COMPONENTS = [
   AppsMessagingComponent,
@@ -148,6 +149,7 @@ const COMPONENTS = [
     BankaccountdetailComponent,
     BillbyvendorComponent,
     DashboardComponent,
+    StockComponent,
   ],
 
   providers: [

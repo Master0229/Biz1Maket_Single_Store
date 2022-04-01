@@ -9,41 +9,25 @@
       <li nz-menu-item>
         <strong>{{ 'topBar.profileMenu.hello' | translate }}, {{name || 'Anonymous'}}</strong>
         <div>
-          <strong class="mr-1">
-            {{ 'topBar.profileMenu.billingPlan' | translate }}:
-          </strong>
-          Professional
-        </div>
-        <div>
           <strong>
             {{ 'topBar.profileMenu.role' | translate }}:
           </strong>
           {{role || '—'}}
         </div>
       </li>
-      <li nz-menu-divider></li>
-      <li nz-menu-item>
-        <div>
-          <strong>{{ 'topBar.profileMenu.email' | translate }}: </strong>
-          {{email || '—'}}
-          <br />
-          <strong>{{ 'topBar.profileMenu.phone' | translate }}: </strong>
-          {{phone || '—'}}
-        </div>
-      </li>
-      <li nz-menu-divider></li>
-      <li nz-menu-item>
+      <!-- <li nz-menu-divider></li> -->
+      <!-- <li nz-menu-item>
         <a href="javascript: void(0);">
           <i class="fe fe-user mr-2"></i>
           {{ 'topBar.profileMenu.editProfile' | translate }}:
         </a>
-      </li>
-      <li nz-menu-item>
-        <a (click) = "sync()" href="javascript: void(0);">
+      </li> -->
+      <!-- <li nz-menu-item>
+        <a (click)="sync()" href="javascript: void(0);">
           <i class="fe fe-refresh-ccw mr-2"></i>
-         Sync
+          Sync
         </a>
-      </li>
+      </li> -->
       <!-- <li nz-menu-itemn>
         <a (click) = "sync()"href="javascript: void(0);" >
           <i class="fe fe-refresh-ccw mr-2"></i>

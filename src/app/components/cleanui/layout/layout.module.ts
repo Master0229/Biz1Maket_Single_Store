@@ -8,7 +8,7 @@ import { TopbarComponent } from './Topbar/topbar.component'
 import { TopbarActionsComponent } from './Topbar/Actions/actions.component'
 import { TopbarLanguageSwitcherComponent } from './Topbar/LanguageSwitcher/language-switcher.component'
 import { TopbarIssuesHistoryComponent } from './Topbar/IssuesHistory/issues-history.component'
-// import { TopbarSearchComponent } from './Topbar/Search/search.component'
+import { TopbarSearchComponent } from './Topbar/Search/search.component'
 import { TopbarUserMenuComponent } from './Topbar/UserMenu/user-menu.component'
 import { TopbarProjectManagementComponent } from './Topbar/ProjectManagement/project-management.component'
 import { TopbarFavPagesComponent } from './Topbar/FavPages/fav-pages.component'
@@ -22,7 +22,7 @@ import { SupportChatComponent } from './SupportChat/support-chat.component'
 const COMPONENTS = [
   TopbarComponent,
   TopbarIssuesHistoryComponent,
-  // TopbarSearchComponent,
+  TopbarSearchComponent,
   TopbarUserMenuComponent,
   TopbarProjectManagementComponent,
   TopbarActionsComponent,

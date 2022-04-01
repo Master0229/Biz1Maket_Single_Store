@@ -25,6 +25,10 @@ export class DashboardComponent implements OnInit {
   totalCustomers: number = 0
   oldCustomer: number = 0
   newcustomer: number = 0
+  prodfromdate : string = moment().format("YYYY-MM-DD")
+  prodtodate :  string = moment().format("YYYY-MM-DD")
+  dateRange = []
+
 
   chartData = {
     "labels": ["New Customer", "Old Customer"],
@@ -147,9 +151,15 @@ export class DashboardComponent implements OnInit {
     if (this.showData)
       this.chart.chart.generateLegend()
   }
+  onChange(result: Date): void {
+    console.log('onChange: ', result)
+    this.prodfromdate = moment(result[0]).format('YYYY-MM-DD')
+    this.prodtodate = moment(result[1]).format('YYYY-MM-DD')
+    this.getDashBoard()
+  }
   prodwisesales = []
   getDashBoard() {
-    this.Auth.getDashboard(this.storeId, this.companyId, this.fromDate, this.toDate, this.toDay).subscribe(data => {
+    this.Auth.getDashboard(this.storeId, this.companyId, this.fromDate, this.toDate, this.toDay, this.prodfromdate, this.prodtodate).subscribe(data => {
       console.log(data);
       this.chartData.datasets[0].data[0] = data["customerData"][0]["newCustomers"]
       this.chartData.datasets[0].data[1] = data["customerData"][0]["oldCustomers"]

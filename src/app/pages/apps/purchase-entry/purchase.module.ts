@@ -259,33 +259,33 @@ export class OrderItemDetailModule {
     VarianceReasonStr: string;
     VarianceReasonDesc: string
     constructor(product, options, showname) {
-this.OrderItemDetailId = 0;
-this.Id = 0;
-this.ActualProdId = 0;
-this.BatchId = 0;
-this.BillId = 0;
-this.OrdProdType = 0;
-this.StorageStoreId = 0;
-this.ContatinerId = 0;
-this.ContainerCount = 0;
-this.Quantity = 0;
-this.UnitPrice = 0;
-this.Tax1 = 0;
-this.Tax2 = 0;
-this.Amount = 0;
-this.TaxAmount = 0;
-this.Date = '';
-this.DateTime = '';
-this.RelatedOrderId = '';
-this.CreatedDate = '';
-this.CreatedBy = 0;
-this.DiscAmount = 0;
-this.DiscPercent = 0;
-this.DiscPerQty = 0;
-this.AutoOrderId = 0;
-this.CompanyId = 0;
-this.VarianceReasonStr = '';
-this.VarianceReasonDesc = '';
+        this.OrderItemDetailId = 0;
+        this.Id = 0;
+        this.ActualProdId = 0;
+        this.BatchId = 0;
+        this.BillId = 0;
+        this.OrdProdType = 0;
+        this.StorageStoreId = 0;
+        this.ContatinerId = 0;
+        this.ContainerCount = 0;
+        this.Quantity = 0;
+        this.UnitPrice = 0;
+        this.Tax1 = 0;
+        this.Tax2 = 0;
+        this.Amount = 0;
+        this.TaxAmount = 0;
+        this.Date = '';
+        this.DateTime = '';
+        this.RelatedOrderId = '';
+        this.CreatedDate = '';
+        this.CreatedBy = 0;
+        this.DiscAmount = 0;
+        this.DiscPercent = 0;
+        this.DiscPerQty = 0;
+        this.AutoOrderId = 0;
+        this.CompanyId = 0;
+        this.VarianceReasonStr = '';
+        this.VarianceReasonDesc = '';
     }
 }
 
@@ -340,30 +340,31 @@ export class CurrentItemModule {
     VarianceReasonDesc: string;
     constructor(product) { }
 }
-export class CustomerModule {
-    Id: number;
-    Name: string;
-    Email: string;
-    PhoneNo: string;
-    Address: string;
-    City: string;
-    PostalCode: number;
-    googlemapurl: string;
-    CompanyId: number;
-    StoreId: number;
-    Sync: number;
-    val: number;
+
+
+export class purchaselistmodule {
+    OrderNo: number
+    ProductName: string
+    ProductQty: number
+    ProductPrice: number
+    ProductTax: number
+    BillAmount: number
+    PaidAmount: number
+    VendorName: string
+    VendorNumber: number
+    VendorAddress: string
+    ReceviedDate: ""
     constructor() {
-        this.Id = null;
-        this.Name = "";
-        this.Email = "";
-        this.PhoneNo = "";
-        this.Address = "";
-        this.City = "";
-        this.PostalCode = null;
-        this.googlemapurl = "";
-        this.CompanyId = 0;
-        this.StoreId = 0;
-        this.Sync = 0;
+        this.OrderNo = 0
+        this.ProductName = ""
+        this.ProductQty = 0
+        this.ProductPrice = 0
+        this.ProductTax = 0
+        this.BillAmount = 0
+        this.PaidAmount = 0
+        this.VendorName = ""
+        this.VendorNumber = 0
+        this.VendorAddress = ""
+        this.ReceviedDate = ""
     }
 }

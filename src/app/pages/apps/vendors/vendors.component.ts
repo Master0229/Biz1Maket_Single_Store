@@ -27,12 +27,13 @@ export class VendorsComponent implements OnInit {
       this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
       console.log(this.CompanyId)
+      this.getVendorList();
     })
 
     this.Auth.getloginfo().subscribe(data => {
       this.loginfo = data
     })
-    this.getVendorList();
+
   }
   getVendorList() {
     this.Auth.getvendors(this.CompanyId).subscribe(data => {
@@ -40,6 +41,8 @@ export class VendorsComponent implements OnInit {
       console.log(data)
       this.filteredvalues = this.vendorsitem;
       this.show = true
+      console.log(this.vendorsitem);
+
     })
   }
   addVendor() {

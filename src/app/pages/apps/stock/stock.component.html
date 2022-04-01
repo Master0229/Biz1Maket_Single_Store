@@ -1,0 +1,79 @@
+<div>
+  <div class="cui__utils__heading">
+    <strong>Stocks</strong>
+  </div>
+  <div class="card">
+    <div class="card-header card-header-flex">
+      <div class="d-flex flex-column justify-content-center mr-auto">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" [(ngModel)]="term" nz-input placeholder="Search Products" (input)="filtersearch()" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+      </div>
+      <div class="form-group row py-3 mr-5">
+        <strong class="p-2" style="font-size: medium;">Show Quantity 0 - 5 :</strong>
+        <input type="checkbox" style=" width: 18px; height: calc(1.5em + 0.75rem + 2px);"
+          (change)="changefilter($event.target.checked)">
+      </div>
+      <button class="btn btn-primary" (click)="electronPrint()"
+        style="height: fit-content;margin-top: 19px;">Print</button>
+
+    </div>
+    <!-- <div class="card-body"> -->
+    <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" [nzData]="prod">
+      <thead>
+        <tr>
+          <th>
+            <strong>
+              Name
+            </strong>
+          </th>
+          <th>
+            <strong>
+              Quantity
+            </strong>
+          </th>
+          <th>
+            <strong>
+              Price
+            </strong>
+          </th>
+          <th>
+            <strong> Bar Code</strong>
+          </th>
+          <th>
+            <strong>Expairy Date</strong>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of basicTable.data">
+          <td>
+            {{product.product}}
+          </td>
+          <td>
+            {{product.quantity}}
+          </td>
+          <td>
+            &#8377; {{product.price}}
+          </td>
+          <td>
+            {{product.barCode}}
+          </td>
+          <td>
+            {{product.expiaryDate | date: 'MMM d, y'}}
+          </td>
+
+          <!-- <td>
+              <a class="px-10">
+                <input type="checkbox" [(ngModel)]="product.isactive" (click)="active(product.id,!product.isactive)">
+              </a>
+            </td> -->
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+

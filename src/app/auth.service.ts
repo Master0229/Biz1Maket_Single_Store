@@ -614,8 +614,8 @@ export class AuthService {
     return this.http.get(this.base_url1 + 'Customer/Delete?Id=' + Id)
   }
 
-  getDashboard(storeId, companyId, fromDate, toDate, toDay) {
-    return this.http.get(this.base_url1 + `Login/DashBoard?storeId=${storeId}&companyId=${companyId}&fromDate=${fromDate}&toDate=${toDate}&toDay=${toDay}`)
+  getDashboard(storeId, companyId, fromDate, toDate, toDay, prodfromdate, prodtodate) {
+    return this.http.get(this.base_url1 + `Login/DashBoard?storeId=${storeId}&companyId=${companyId}&fromDate=${fromDate}&toDate=${toDate}&toDay=${toDay}&prodfromDate=${prodfromdate}&prodtoDate=${prodtodate}`)
   }
   ///////////////////////////////////////// Receipts data ///////////////////////////////////////
   GetReceipts(Storeid, fromdate, todate, invoice) {
@@ -778,6 +778,18 @@ export class AuthService {
   deleteproduct(Id) {
     return this.http.post(this.base_url1 + 'Product/Deleteprod', Id)
   }
+  savepurchaselist(payload) {
+    return this.http.post(this.base_url1 + 'PurchaseList/SaveReceivePurchaseList', payload)
+  }
+
+  purchaselist() {
+    return this.http.get(this.base_url1 + 'PurchaseList/purchaselist')
+  }
+
+  getidpurchase(orderno) {
+    return this.http.get(this.base_url1 + 'PurchaseList/getbyid?orderNo=' + orderno)
+  }
+
 
 }
 
