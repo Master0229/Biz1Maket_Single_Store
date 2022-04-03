@@ -782,10 +782,9 @@ export class AuthService {
     return this.http.post(this.base_url1 + 'PurchaseList/SaveReceivePurchaseList', payload)
   }
 
-  purchaselist() {
-    return this.http.get(this.base_url1 + 'PurchaseList/purchaselist')
+  purchaselist(storeId) {
+    return this.http.get(this.base_url1 + 'PurchaseList/purchaselist?Storeid=' + storeId)
   }
-
   getidpurchase(orderno) {
     return this.http.get(this.base_url1 + 'PurchaseList/getbyid?orderNo=' + orderno)
   }

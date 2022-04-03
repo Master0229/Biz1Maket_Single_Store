@@ -53,7 +53,7 @@ export class PurchaseEntryComponent implements OnInit {
       ),
     )
 
-  formattervendor = (x: { name: string }) => x.name
+  formattervendor = (x: { businessName: string }) => x.businessName
 
   @ViewChild('quantityel', { static: false }) public quantityel: TemplateRef<any> //productinput
   @ViewChild('discper', { static: false }) public discperel: TemplateRef<any>
@@ -138,8 +138,9 @@ export class PurchaseEntryComponent implements OnInit {
 
       this.products = []
       this.vendors = []
+      this.getpurchaselist()
     })
-    this.getpurchaselist()
+
 
     this.temporaryItem.quantity = null
     this.products.forEach(product => {
@@ -423,8 +424,9 @@ export class PurchaseEntryComponent implements OnInit {
   purchase_list = []
 
   getpurchaselist() {
-    this.Auth.purchaselist().subscribe(data => {
+    this.Auth.purchaselist(this.StoreId).subscribe(data => {
       this.list = data
+
 
       console.log(this.list)
       // this.show = true
