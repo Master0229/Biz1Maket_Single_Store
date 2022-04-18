@@ -788,8 +788,4 @@ export class AuthService {
   getidpurchase(orderno) {
     return this.http.get(this.base_url1 + 'PurchaseList/getbyid?orderNo=' + orderno)
   }
-
-
 }
-
-

@@ -12,7 +12,7 @@
                       <ngb-highlight [result]="r.product" [term]="t"></ngb-highlight>
                     </ng-template>
                     <input #productautocomplete id="typeahead-template" onfocus="this.select()"
-                      [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}" #productautocomplete
+                      [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}"
                       style="height: 84%;" #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model"
                       placeholder="Search Product..." [ngbTypeahead]="search" [resultTemplate]="rt"
                       [inputFormatter]="formatter"
@@ -80,6 +80,10 @@
       <button *ngFor="let spt of storePaymentTypes" type="button" [class.active]="order.StorePaymentTypeId == spt.id"
         (click)="order.StorePaymentTypeId = spt.id;order.PaidAmount = order.BillAmount" class="btn btn-outline-success">
         {{spt.name}}
+      </button>
+      <button class="btn btn-warning ml-3" [disabled]="order&&order.Items.length == 0" (click)="draftOrder()">
+        <i class="fa fa-save"></i>
+        Draft
       </button>
       <!-- <button type="button" [class.active]="order.StorePaymentTypeId == 0"
                 (click)="order.StorePaymentTypeId = 0;order.PaidAmount = 0" class="btn btn-squared">
@@ -235,10 +239,19 @@
         <div class="justify-content-center mr-auto mt-3">
           <div class="row">
             <strong for="fname" style="margin-top: 10px;">Order No :</strong><br>
-            <h4 class="text-success" style="margin-left: 3px; font-weight: 900;margin-top: 7px;" [(ngModel)]="orderkey.orderno ">
+            <h4 class="text-success" style="margin-left: 3px; font-weight: 900;margin-top: 7px;"
+              [(ngModel)]="orderkey.orderno ">
               {{orderkey.orderno}}</h4>
 
             <button class="btn btn-link"><i class="fa fa-qrcode" style="font-size: xx-large;"></i></button>
+            <div *ngFor="let dorder of draftOrders" class="btn-group">
+              <ul class="list-group">
+                <a style="height: 35px;" href="javascript:void(0);" (click)="loadDraftOrder(dorder)"
+                  [class.cat-active]="selectedDraftIndex == dorder.draftIndex" class="btn btn-outline-danger">
+                  <code>[{{dorder.draftIndex}}]</code>{{dorder.draftName}}
+                </a>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="d-flex flex-column justify-content-center ">
