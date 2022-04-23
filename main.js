@@ -15,6 +15,7 @@ function redirect() {
 }
 
 
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -64,9 +65,61 @@ function createWindow() {
   Menu.setApplicationMenu(menu);
 }
 
+function createTray() {
+  const iconPath = path.resolve(__dirname, 'Bizdomlogo.png')
+
+  tray = new Tray(iconPath)
+
+  const trayMenu = Menu.buildFromTemplate([
+    {
+      label: 'Preferences...',
+      click: () => {
+        win.show()
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Quit',
+      click: () => {
+        app.quit()
+      }
+    }
+  ])
+  tray.setContextMenu(trayMenu)
+}
+
+const startAutoUpdater = (squirrelUrl) => {
+  // The Squirrel application will watch the provided URL
+  autoUpdater.setFeedURL(squirrelUrl);
+
+  autoUpdater.addListener("update-available", () => {
+      console.log("update-available")
+      mainWindow.webContents.send("update-available", true)
+  })
+  // Display a success message on successful update
+  autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName) => {
+      console.log(`The release ${releaseName} has been downloaded`)
+      mainWindow.webContents.send("update-downloaded", true)
+      // ipcMain.emit("update-downloaded", true)
+      // dialog.showMessageBox({ "message": `The release ${releaseName} has been downloaded` });
+  });
+
+  // Display an error message on update error
+  autoUpdater.addListener("error", (error) => {
+      console.log(error)
+      mainWindow.webContents.send("update-error", error)
+      // ipcMain.emit("update-error", error)
+      // dialog.showMessageBox({ "message": "Auto updater error: " + error });
+  });
+
+  // tell squirrel to check for updates
+  autoUpdater.checkForUpdates();
+}
 
 
-app.on('ready', createWindow)
+app.on('ready', createWindow, createTray)
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()

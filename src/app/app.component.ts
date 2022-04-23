@@ -8,6 +8,7 @@ import { select, Store } from '@ngrx/store'
 import store from 'store'
 import * as SettingsActions from 'src/app/store/settings/actions'
 import * as Reducers from 'src/app/store/reducers'
+import { UpdateService } from './services/update/update.service'
 
 import english from './locales/en-US'
 import french from './locales/fr-FR'
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private updateS: UpdateService,
     private store: Store<any>,
     translate: TranslateService,
   ) {

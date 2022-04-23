@@ -788,4 +788,9 @@ export class AuthService {
   getidpurchase(orderno) {
     return this.http.get(this.base_url1 + 'PurchaseList/getbyid?orderNo=' + orderno)
   }
+
+  checkForUpdates() {
+    return this.http.get('https://api.github.com/repos/Master0229/Biz1Market_Releases/releases/latest')
+  }
+
 }

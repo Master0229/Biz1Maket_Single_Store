@@ -57,6 +57,7 @@ import { BankaccountdetailComponent } from './bankaccountdetail/bankaccountdetai
 import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { StockComponent } from './stock/stock.component'
+import { AboutusComponent } from './aboutus/aboutus.component'
 
 
 
@@ -65,6 +66,11 @@ import { StockComponent } from './stock/stock.component'
 
 
 const routes: Routes = [
+  {
+    path: 'aboutus',
+    component: AboutusComponent,
+    data: { title: 'Home' }
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

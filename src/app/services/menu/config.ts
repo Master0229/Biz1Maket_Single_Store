@@ -314,6 +314,12 @@ export const getMenuData: any[] = [
     icon: 'fe fe-command',
     url: '/advanced/pricing-tables',
   },
+  {
+    title: 'AboutUs',
+    key: 'Update',
+    icon: 'fe fe-alert-octagon',
+    url: '/apps/aboutus',
+  },
   // {
   //   title: 'About Us',
   //   icon: 'fe fe-alert-octagon',
