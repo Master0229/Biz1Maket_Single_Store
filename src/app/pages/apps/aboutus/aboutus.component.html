@@ -4,6 +4,24 @@
 
 <div class="card">
   <div class="card-body">
+
+    <div class="d-flex flex-wrap flex-column align-items-center">
+      <div class="mb-3">
+        <img src="assets/images/favicon.png" alt="BizDom" width="110" height="100"/>
+      </div>
+      <div class="text-center">
+        <div class="text-dark font-weight-bold font-size-18">BizDom Solutions</div>
+        <div class="text-uppercase font-size-12 mb-3">Enriching Your Business Kingdom !</div>
+        <!-- <button type="button" class="btn btn-primary btnWithAddon">
+          <span class="btnAddon">
+            <i class="btnAddonIcon fe fe-plus-circle"></i>
+          </span>
+          Request Access
+        </button> -->
+      </div>
+    </div>
+
+
     <div class="card card-borderless w-50 m-auto">
       <div class="card-header card-header-flex">
         <div class="d-flex flex-column justify-content-center w-50 mr-auto relative-container">
@@ -15,8 +33,8 @@
           <span *ngIf="updateS.updateStatus == 0 && updateS.lastChecked" class="sub-header">Last Checked: {{
             updateS.lastChecked |
             date : 'MMM d, y, h:mm a'}}</span>
-          <span *ngIf="updateS.updateStatus == 1" class="sub-header">Click <code>Update Now</code> to update in
-            background</span>
+          <!-- <span *ngIf="updateS.updateStatus == 1" class="sub-header">Click <code>Update Now</code> to update in
+            background</span> -->
         </div>
         <div class="d-flex flex-column justify-content-center">
           <button *ngIf="updateS.updateStatus == 0" class="btn btn-success" (click)="checkForUpdates()">
