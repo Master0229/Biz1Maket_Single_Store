@@ -1,12 +1,13 @@
 const path = require('path')
 const moment = require('moment')
 const installer = require('electron-installer-windows')
+const { version } = require('./package.json')
 
 const options = {
   name: 'Biz1Pos-BizDom',
-  version: '0.0.5',
+  version: version,
   src: 'biz1pos-bizdom-win32-ia32/',
-  dest: 'Installers/',
+  dest: 'D:/Installers/',
   icon: path.join(__dirname, 'fa.ico'),
   authors: ['BizDom Soltions Pvt Ltd.'],
   description: 'SuperMarket POS Billing Software',

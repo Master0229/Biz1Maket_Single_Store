@@ -19,7 +19,7 @@
     "postinstall": "ngcc",
     "electron-r": "ng build --base-href ./",
     "build-electron-win": "electron-packager ./ --platform=win32 --arch=ia32 --overwrite --asar --icon=src/assets/images/256_Biz1pos.ico",
-    "assemble": "npm run electron-r && npm run build-electron-win && npm run gen",
+    "assemble": "npm version patch && npm run electron-r && npm run build-electron-win && npm run gen",
     "start:electron": "ng build --base-href ./ && electron .",
     "run:electron": "electron .",
     "gen": "node gen.js",
