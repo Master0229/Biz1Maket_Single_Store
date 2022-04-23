@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, webFrame, Notification, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, webFrame, Notification, ipcMain, autoUpdater } = require('electron')
 const url = require("url");
 const path = require("path");
 const electron = require('electron');
