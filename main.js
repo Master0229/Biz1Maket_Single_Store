@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, webFrame, Notification } = require('electron')
+const { app, BrowserWindow, Menu, webFrame, Notification, ipcMain } = require('electron')
 const url = require("url");
 const path = require("path");
 const electron = require('electron');
@@ -188,3 +188,11 @@ global.barcodePrint = function (options, data) {
     console.log(error);
   });
 }
+ipcMain.on('start-update', (event, updateUrl) => {
+  startAutoUpdater(updateUrl)
+})
+
+ipcMain.on('app-relaunch', (event, args) => {
+  // console.log(args)
+  autoUpdater.quitAndInstall()
+})

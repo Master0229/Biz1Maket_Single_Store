@@ -1,39 +1,47 @@
-<div class="card card-borderless w-50 m-auto">
-  <div class="card-header card-header-flex">
-      <div class="d-flex flex-column justify-content-center w-50 mr-auto relative-container">
+<div class="cui__utils__heading">
+  <strong>About Us</strong>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="card card-borderless w-50 m-auto">
+      <div class="card-header card-header-flex">
+        <div class="d-flex flex-column justify-content-center w-50 mr-auto relative-container">
           <h5 *ngIf="updateS.updateStatus == 0" class="mb-0">You're up to date</h5>
           <h5 *ngIf="updateS.updateStatus == 1" class="mb-0">Update Available!</h5>
           <h5 *ngIf="updateS.updateStatus == 2" class="mb-0">Update Downloading...</h5>
           <h5 *ngIf="updateS.updateStatus == 3" class="mb-0">Update Downloaded!</h5>
           <br>
           <span *ngIf="updateS.updateStatus == 0 && updateS.lastChecked" class="sub-header">Last Checked: {{
-              updateS.lastChecked |
-              date : 'MMM d, y, h:mm a'}}</span>
+            updateS.lastChecked |
+            date : 'MMM d, y, h:mm a'}}</span>
           <span *ngIf="updateS.updateStatus == 1" class="sub-header">Click <code>Update Now</code> to update in
-              background</span>
-      </div>
-      <div class="d-flex flex-column justify-content-center">
+            background</span>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
           <button *ngIf="updateS.updateStatus == 0" class="btn btn-success" (click)="checkForUpdates()">
-              Check For Updates
+            Check For Updates
           </button>
           <button *ngIf="updateS.updateStatus == 1" class="btn btn-warning" (click)="startUpdate()">
-              Update Now
+            Update Now
           </button>
           <button *ngIf="updateS.updateStatus == 2" class="btn btn-warning" (click)="startUpdate()" disabled>
-              Updating...
+            Updating...
           </button>
           <button *ngIf="updateS.updateStatus == 3" class="btn btn-warning" (click)="quintAndInstallUpdate()"
-              [disabled]="loading">
-              Quint & Install
+            [disabled]="loading">
+            Quint & Install
           </button>
+        </div>
       </div>
-  </div>
-  <div class="card-body">
-      <div *ngIf="updateS.updateStatus == 0" class="row">
+      <div class="card-body">
+        <div *ngIf="updateS.updateStatus == 0" class="row">
           <h5><code>Current Version: </code></h5> {{version}} <br>
-      </div>
-      <div *ngIf="updateS.updateStatus != 0" class="row">
+        </div>
+        <div *ngIf="updateS.updateStatus != 0" class="row">
           <h5><code>Available Version: </code></h5> {{updateS.availableVersion}} <br>
+        </div>
       </div>
+    </div>
   </div>
 </div>
