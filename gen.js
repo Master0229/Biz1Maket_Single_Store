@@ -7,7 +7,7 @@ const options = {
   name: 'Biz1Pos-BizDom',
   version: version,
   src: 'biz1pos-bizdom-win32-ia32/',
-  dest: 'D:/BizDom/Master/Installers/',
+  dest: 'D:/Installers/',
   icon: path.join(__dirname, 'fa.ico'),
   authors: ['BizDom Soltions Pvt Ltd.'],
   description: 'SuperMarket POS Billing Software',
