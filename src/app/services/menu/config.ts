@@ -113,6 +113,44 @@ export const getMenuData: any[] = [
   },
 
   {
+    title: 'Report Management',
+    key: 'apps',
+    icon: 'fa fa-sticky-note',
+    children: [
+
+      {
+        title: 'Sales Report',
+        key: 'appsSetting',
+        icon: 'fa fa-calendar-check-o',
+        url: '/apps/Daywisesale',
+      },
+
+      {
+        title: 'ProductwiseSales',
+        key: 'appsSetting',
+        icon: 'fa fa-product-hunt',
+        url: '/apps/ProductwiseSales',
+      },
+
+      {
+        title: 'CategorywiseSales',
+        key: 'appsSetting',
+        icon: 'fa fa-sitemap',
+        url: '/apps/CatawiseSales',
+      },
+
+      {
+        title: 'Paymenttypes',
+        key: 'appsSetting',
+        icon: 'fa fa-money',
+        url: '/apps/Paymenttypes',
+      },
+
+
+    ]
+  },
+
+  {
     title: 'Setting',
     key: 'appsSetting',
     icon: 'fa fa-cogs',

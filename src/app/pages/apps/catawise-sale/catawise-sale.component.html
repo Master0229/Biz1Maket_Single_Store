@@ -1,0 +1,60 @@
+<div>
+  <div class="cui__utils__heading">
+    <strong>CategoryWise Sales</strong>
+  </div>
+  <div class="card">
+    <div class="card-header card-header-flex" style="border-bottom: 0;">
+
+      <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                  <input type="text" nz-input placeholder="Search Products" />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                  <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+              </ng-template>
+          </div> -->
+
+
+
+      <div class="col-xl-4" style="margin-top: 15px;">
+        <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)">
+        </nz-range-picker>
+      </div>
+    </div>
+
+    <nz-table #Prodrpt class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="getcategory">
+      <thead>
+        <tr>
+          <th style="text-align: center;">
+            <strong>
+              #
+            </strong>
+          </th>
+          <th style="text-align: center;">
+            <strong>
+              Category Name
+            </strong>
+          </th>
+          <th style="text-align: center;">
+            <strong>
+              Amount
+            </strong>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pt of Prodrpt.data; let i = index">
+          <td style="text-align: center;">
+            {{i+1}}
+          </td>
+          <td style="text-align: center;">
+            {{pt.category}}
+          </td>
+          <td style="text-align: center;">
+            {{pt.totalSales}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

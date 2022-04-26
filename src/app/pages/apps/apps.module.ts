@@ -74,6 +74,11 @@ import { ChartistModule } from 'ng-chartist'
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { StockComponent } from './stock/stock.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
+import { DaywiseSaleComponent } from './daywise-sale/daywise-sale.component'
+import { PaymenttypesComponent } from './paymenttypes/paymenttypes.component'
+import { ProductwiseSalesComponent } from './productwise-sales/productwise-sales.component'
+import { PercentagePipe } from '../../pipes/percentage/percentage.pipe';
+import { CatawiseSaleComponent } from './catawise-sale/catawise-sale.component';
 
 const COMPONENTS = [
   AppsMessagingComponent,
@@ -152,6 +157,11 @@ const COMPONENTS = [
     DashboardComponent,
     StockComponent,
     AboutusComponent,
+    DaywiseSaleComponent,
+    PaymenttypesComponent,
+    ProductwiseSalesComponent,
+    PercentagePipe,
+    CatawiseSaleComponent,
   ],
 
   providers: [
@@ -159,4 +169,4 @@ const COMPONENTS = [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
 })
-export class AppsModule {}
+export class AppsModule { }

@@ -793,4 +793,43 @@ export class AuthService {
     return this.http.get('https://api.github.com/repos/Master0229/Biz1Market_Releases/releases/latest')
   }
 
+  daywise(fromdate, todate, storeId, companyId, sourceid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetDaywiseRpt?storeId=' + storeId + '&fromdate=' + fromdate + '&todate=' + todate + '&companyId=' + companyId + '&sourceid=' + sourceid)
+  }
+  orderwise(fromdate, todate, Storeid, Companyid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/Ordwise?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+
+  GetTrans(fromdate, todate, Storeid, Companyid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetTransRpt?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+  GetTransType(fromdate, todate, Storeid, Companyid, ptypeid, sourceid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetTransSaleType?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid + '&ptypeid=' + ptypeid + '&sourceid=' + sourceid)
+  }
+
+  GetMonthRpt(fromdate, todate, Storeid, Companyid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetMonthWise?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+
+  GetProdRpt(fromdate, todate, Storeid, Companyid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetProductWise?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+  GetCataRpt(fromdate, todate, Storeid, Companyid) {
+    return this.http.get(
+      this.base_url1 +
+      'Daywise/GetCataWise?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+
 }

@@ -58,6 +58,10 @@ import { BillbyvendorComponent } from './billbyvendor/billbyvendor.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { StockComponent } from './stock/stock.component'
 import { AboutusComponent } from './aboutus/aboutus.component'
+import { DaywiseSaleComponent } from './daywise-sale/daywise-sale.component'
+import { PaymenttypesComponent } from './paymenttypes/paymenttypes.component'
+import { ProductwiseSalesComponent } from './productwise-sales/productwise-sales.component'
+import { CatawiseSaleComponent } from './catawise-sale/catawise-sale.component';
 
 
 
@@ -70,6 +74,26 @@ const routes: Routes = [
     path: 'aboutus',
     component: AboutusComponent,
     data: { title: 'Home' }
+  },
+  {
+    path: 'Daywisesale',
+    component: DaywiseSaleComponent,
+    data: { title: 'Daywisesale App' },
+  },
+  {
+    path: 'CatawiseSales',
+    component: CatawiseSaleComponent,
+    data: { title: 'CatawiseSales App' },
+  },
+  {
+    path: 'ProductwiseSales',
+    component: ProductwiseSalesComponent,
+    data: { title: 'ProductwiseSales App' },
+  },
+  {
+    path: 'Paymenttypes',
+    component: PaymenttypesComponent,
+    data: { title: 'Paymenttypes App' },
   },
   {
     path: 'dashboard',
