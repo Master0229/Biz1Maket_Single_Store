@@ -11,7 +11,7 @@ import { PrintService } from 'src/app/services/print/print.service'
 })
 export class PaymenttypesComponent implements OnInit {
 
-  constructor(private Auth: AuthService, private printservice: PrintService,) { }
+  constructor(private Auth: AuthService,private printservice: PrintService,) { }
   trans: any
   strdate: string
   enddate: string
@@ -26,7 +26,7 @@ export class PaymenttypesComponent implements OnInit {
   paymenttype: any = [];
 
   ngOnInit(): void {
-    this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
+    this.Auth.getdbdata(['loginfo','printersettings']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
       this.CompanyId = this.loginfo.companyId
@@ -43,7 +43,7 @@ export class PaymenttypesComponent implements OnInit {
   gettransrpt() {
     this.Auth.GetTrans(this.strdate, this.enddate, this.loginfo.storeId, this.loginfo.companyId).subscribe(data => {
       this.trans = data
-      this.storepayment = data['pos_transactions'];
+      this.storepayment = data['transactions'];
       this.transpayment = [];
       console.log(this.trans);
       console.log(this.transpayment)

@@ -26,9 +26,7 @@
                 <p class="text-uppercase text-dark font-weight-bold mb-1">
                   Tolal Payment
                 </p>
-                <!-- <p class="text-gray-5 mb-0">
-                                  Average Weekly Profit
-                              </p> -->
+
               </div>
               <p class="text-success font-weight-bold font-size-24 mb-0">
                 ₹ {{totalpayments}}
@@ -45,12 +43,9 @@
                 <p class="text-uppercase text-dark font-weight-bold mb-1">
                   Refunds
                 </p>
-                <!-- <p class="text-gray-5 mb-0">
-                                  Average Weekly Profit
-                              </p> -->
               </div>
               <p class="text-danger font-weight-bold font-size-24 mb-0">
-                {{totalrefund}}
+                ₹ {{totalrefund}}
               </p>
             </div>
           </div>
@@ -63,9 +58,7 @@
         <div>
           <input type="text" class="form-control" placeholder="Search Receipt.." [(ngModel)]="term"
             (input)="onKeySearch()">
-          <!-- <div style="height: fit-content;" class="input-group-append">
-            <button class="btn btn-primary"><i class="fe fe-search" (input)="onKeySearch()"></i></button>
-          </div> -->
+
           <div class="form-group hidden">
             <div class="input-group">
               <input name="datepicker" class="form-control hidden" ngbDatepicker #datepicker="ngbDatepicker"
@@ -114,17 +107,20 @@
               <tbody>
                 <tr *ngFor="let orders of receipts.receipts ;let i=index">
                   <td><button type="button" class="btn btn-link"
-                      (click)="parseOrder(orders.orderJson)">{{orders.invoiceNo}}</button>
+                      (click)="parseOrder(orders)">{{orders.invoiceNo}}</button>
                   </td>
-                  <td>{{orders.billAmount}}</td>
+                  <td>
+                    {{orders.orderStatusId==-1?'Refunded &#8377;'+orders.billAmount+'
+                    /-':'&#8377;'+orders.billAmount+' /-' }}
+                  </td>
                   <td>{{orders.paidAmount}}</td>
                   <td>
-                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount == orders.PaidAmount"
+                    <span *ngIf="orders.orderStatusId != -1 && orders.billAmount == orders.paidAmount"
                       class="badge badge-success mr-10">Paid</span>
-                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount > orders.PaidAmount"
+                    <span *ngIf="orders.orderStatusId != -1 && orders.billAmount > orders.paidAmount"
                       class="badge badge-warning mr-10">Pending</span>
-                    <span *ngIf="orders.OrderStatusId == -1" class="badge badge-danger mr-10">Cancelled</span>
-                    <span *ngIf="orders.OrderStatusId != -1 && orders.BillAmount < orders.PaidAmount"
+                    <span *ngIf="orders.orderStatusId == -1" class="badge badge-danger mr-10">Cancelled</span>
+                    <span *ngIf="orders.orderStatusId != -1 && orders.billAmount < orders.paidAmount"
                       class="badge badge-danger mr-10">Refundable</span>
                   </td>
                   <!-- <td><span *ngIf="orders.OrderStatusId == 5">Completed</span>
@@ -160,7 +156,7 @@
       </h4>
       <div class="mb-10 text-right col-xl-6 float-right"><button class="btn btn-link"
           (click)="show=0">Back</button>|<button class="btn btn-link" (click)="electronPrint()">print</button>
-        <span *ngIf="OrderStatus != -1&&roleid == 1"> |<button class="btn btn-link"
+        <span *ngIf="order.OrderStatusId != -1&&roleid == 1"> |<button class="btn btn-link"
             (click)="openOrderpopup(CancelReceipt)">Cancel</button></span>
       </div>
     </div>
@@ -170,14 +166,14 @@
         <div class="row col-xl-12">
           <div class="col-xl-6 mt-5">
             <div class="mb-2 ml-0 row">
-              <strong>CustomerName :</strong><span>{{order.CustomerDetails.Name}} |
-                {{order.CustomerDetails.PhoneNo}}</span>
+              <strong>CustomerName :</strong><span>{{order.CustomerDetails?.Name}} |
+                {{order.CustomerDetails?.PhoneNo}}</span>
             </div>
             <div class="mb-2 ml-0 row">
-              <strong>CustomerAddress :</strong><span>{{order.CustomerDetails.Address}}</span>
+              <strong>CustomerAddress :</strong><span>{{order.CustomerDetails?.Address}}</span>
             </div>
             <div class="mb-2 ml-0 row">
-              <strong>City :</strong><span>{{order.CustomerDetails.City}}</span>
+              <strong>City :</strong><span>{{order.CustomerDetails?.City}}</span>
             </div>
 
             <div class="mb-2">
@@ -260,3 +256,55 @@
       </section>
     </div>
   </div>
+
+
+  <ng-template #CancelReceipt let-modal aria-label="modal-basic-title">
+    <div class="modal d-block position-static overflow-show" tabindex="-1" role="dialog">
+      <div class="modal-dialog ma-0" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Refund!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center pl-100">
+            <div class="row" style="margin-left: 17px">
+              <span>
+                <span>
+                  <button (click)="transaction.PaymentTypeId = 1" type="button" class="btn btn-outline-success">
+                    <span *ngIf="transaction.PaymentTypeId == 1"
+                      class="glyphicon glyphicon-ok sp-option-selected"></span>Cash</button></span>
+
+                <span>
+                  <button type="button" class="btn btn-outline-success" (click)="transaction.PaymentTypeId = 2">
+                    <span *ngIf="transaction.PaymentTypeId == 2"
+                      class="glyphicon glyphicon-ok sp-option-selected"></span>Online</button></span>
+
+                <span>
+                  <button type="button" class="btn btn-outline-success" (click)="transaction.PaymentTypeId = 3">
+                    <span *ngIf="transaction.PaymentTypeId == 3"
+                      class="glyphicon glyphicon-ok sp-option-selected"></span>DebitCard</button></span>
+
+                <span>
+                  <button type="button" class="btn btn-outline-success" (click)="transaction.PaymentTypeId = 4">
+                    <span *ngIf="transaction.PaymentTypeId == 4"
+                      class="glyphicon glyphicon-ok sp-option-selected"></span>Cheque</button></span>
+
+                <span>
+                  <button type="button" class="btn btn-outline-success" (click)="transaction.PaymentTypeId = 5">
+                    <span *ngIf="transaction.PaymentTypeId == 5"
+                      class="glyphicon glyphicon-ok sp-option-selected"></span>Credit Card</button></span>
+
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary float-right"
+              (click)="cancel(PaidAmount);modal.close()">Ok(Esc)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-template>

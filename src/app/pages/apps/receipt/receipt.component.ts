@@ -46,7 +46,7 @@ export class ReceiptComponent implements OnInit {
     this.strdate = moment(result[0]).format('YYYY-MM-DD')
     this.enddate = moment(result[1]).format('YYYY-MM-DD')
     this.getReceipt()
-    this.gettrans()
+    // this.gettrans()
   }
   getWeek(result: Date): void {
     console.log('week: ', getISOWeek(result))
@@ -81,14 +81,13 @@ export class ReceiptComponent implements OnInit {
   hoveredDate: NgbDate | null = null
   fromDate: NgbDate
   toDate: NgbDate | null = null
-  order: any = null
   invoice = null
   totalsales: number = 0
   totalpayments: number = 0
   transactionpayment = 0
   totalrefund: number = 0
   paymentpercent
-  transaction: any
+  transactions: any
   OrderId = null
   Discount: number
   address: any
@@ -99,6 +98,7 @@ export class ReceiptComponent implements OnInit {
   PaidAmount: any
   masterdata = []
 
+
   constructor(
     private i18n: NzI18nService,
     private Auth: AuthService,
@@ -107,24 +107,51 @@ export class ReceiptComponent implements OnInit {
     public formatter: NgbDateParserFormatter,
     private printservice: PrintService,
   ) {
-    this.UserId = null
+
+
+
 
     this.fromDate = calendar.getToday()
     this.toDate = calendar.getToday()
   }
 
+  transaction: {
+    Amount: number
+    OrderId: number
+    CompanyId: number
+    StoreId: number
+    PaymentTypeId: number
+    CustomerId: number
+    UserId: number
+    ContactId: number
+  }
+
   ngOnInit(): void {
     this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
+      const user = JSON.parse(localStorage.getItem("user"))
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
       this.CompanyId = this.loginfo.companyId
       this.StoreId = this.loginfo.storeId
+      this.roleid = user.roleId
+      console.log(this.roleid)
       console.log(this.loginfo)
+      this.transaction = {
+        Amount: 0,
+        OrderId: 0,
+        CompanyId: this.CompanyId,
+        StoreId: this.StoreId,
+        PaymentTypeId: 0,
+        CustomerId: 0,
+        UserId: this.UserId,
+        ContactId: null
+      }
+
     })
     this.strdate = moment().format('YYYY-MM-DD')
     this.enddate = moment().format('YYYY-MM-DD')
     this.getReceipt()
-    this.gettrans()
+    // this.gettrans()
 
     this.Auth.getloginfo().subscribe(data => {
       this.loginfo = data
@@ -167,32 +194,143 @@ export class ReceiptComponent implements OnInit {
     }
   }
 
+
+
   getReceipt() {
     this.Auth.GetReceipts(this.StoreId, this.strdate, this.enddate, this.invoice).subscribe(
       data => {
+        this.totalsales = 0
+        this.totalpayments = 0
+        this.totalrefund = 0
         this.receipts = data
         this.transactionpayment = 0
         console.log(this.receipts)
+
         this.receipts.receipts.forEach(rec => {
           this.totalsales += +rec.totalSales.toFixed(0)
           this.totalpayments += +rec.totalPayment.toFixed(0)
           this.totalrefund += +rec.totalRefund.toFixed(0)
         })
+        console.log(this.totalsales)
+        console.log(this.totalpayments)
+        console.log(this.totalrefund)
         this.masterdata = this.receipts.receipts
       },
     )
   }
-  gettrans() {
-    this.Auth.gettransaction(this.OrderId).subscribe(data => {
-      this.transaction = data
-      console.log(this.transaction)
-    })
-  }
-  parseOrder(json_string) {
-    this.order = JSON.parse(json_string)
+  // gettrans() {
+  //   this.Auth.gettransaction(this.OrderId).subscribe(data => {
+  //     this.transactions = data
+  //     console.log(this.transactions)
+  //   })
+  // }
+
+  parseOrder(order) {
+    this.order = { ...JSON.parse(order.orderJson), OrderId: order.orderId }
     console.log(this.order)
     this.show = 1
   }
+
+
+
+  cancel() {
+    this.transaction.Amount = -this.order.BillAmount
+    this.transaction.OrderId = this.order.OrderId
+    this.transaction.CompanyId = this.order.CompanyId
+    // this.transaction.PaymentTypeId = 2
+    this.transaction.CustomerId = this.order.CustomerDetails?.Id
+    this.transaction.ContactId = this.order.CustomerDetails?.Id
+    this.transaction.UserId = this.order.UserId
+    var data = { value: this.transaction }
+    console.log(this.transaction.OrderId, this.transaction.Amount, this.transaction.CustomerId)
+    // return
+    this.Auth.refund(data).subscribe(data => {
+      console.log(data)
+      this.getReceipt()
+      this.show = 0
+    })
+  }
+
+
+  CGST: number = 0
+  SGST: number = 0
+  IGST: number = 0
+  ordertype = ''
+  remaining: number
+
+  order: OrderModule = null
+  filter(id, PaidAmount) {
+    console.log(this.order)
+    this.PaidAmount = PaidAmount
+    this.Subtotal = 0
+    this.CGST = +(this.receipts.receipts.filter(x => x.Id == id)[0].Tax1).toFixed(2)
+    this.SGST = +(this.receipts.receipts.filter(x => x.Id == id)[0].Tax2).toFixed(2)
+    this.IGST = this.receipts.receipts.filter(x => x.Id == id)[0].Tax3
+    this.address = this.receipts.receipts.filter(x => x.Id == id)[0].Address
+    this.city = this.receipts.receipts.filter(x => x.Id == id)[0].City
+    this.phone = this.receipts.receipts.filter(x => x.Id == id)[0].PhoneNo
+    this.orderedDate = this.receipts.receipts.filter(x => x.Id == id)[0].OrderedDateTime
+    this.Total = 0
+    this.Discount = this.receipts.receipts.filter(x => x.Id == id)[0].DiscAmount
+    this.orderno = this.receipts.receipts.filter(x => x.Id == id)[0].InvoiceNo
+    this.ordertype = this.receipts.receipts.filter(x => x.Id == id)[0].OrderType
+
+    var ordItemArr = JSON.parse(
+      JSON.stringify(this.receipts.orderItems.filter(x => x.OrderId == id)),
+    )
+    this.orderitem = []
+    console.log(ordItemArr)
+    ordItemArr.forEach(element => {
+      if (this.orderitem.some(x => x.Description === element.Description)) {
+        if (element.StatusId == -1) {
+          this.orderitem.filter(x => x.Description === element.Description)[0].Quantity =
+            this.orderitem.filter(x => x.Description === element.Description)[0].Quantity +
+            element.Quantity
+          this.orderitem.filter(x => x.Description === element.Description)[0].Price =
+            this.orderitem.filter(x => x.Description === element.Description)[0].Price -
+            element.Price
+        } else {
+          this.orderitem.filter(x => x.Description === element.Description)[0].Quantity =
+            this.orderitem.filter(x => x.Description === element.Description)[0].Quantity +
+            element.Quantity
+          this.orderitem.filter(x => x.Description === element.Description)[0].Price =
+            this.orderitem.filter(x => x.Description === element.Description)[0].Price +
+            element.Price
+        }
+      } else {
+        this.orderitem.push(element)
+      }
+    })
+    this.orderitem = this.orderitem.filter(x => x.Quantity + x.ComplementryQty > 0)
+
+    this.transactions = this.receipts.Transaction.filter(x => x.OrderId == id)
+    if (this.transactions[0] != undefined) {
+      this.customer = this.receipts.Customers.filter(
+        x => x.Id == this.transactions[0].CustomerId,
+      )[0]
+    }
+    if (this.customer == undefined) {
+      this.customer = { Name: '-', PhoneNo: '-', Address: '-', City: '-' }
+    }
+    for (let i = 0; i < this.transactions.length; i++) {
+      this.transactions[i].TransDateTime = moment(this.transactions[i].TransDateTime).format('LLL')
+    }
+    console.log(this.customer)
+    var st = 0
+    for (let i = 0; i < this.orderitem.length; i++) {
+      this.Subtotal += this.orderitem[i].Quantity > 0 ? this.orderitem[i].TotalAmount : 0
+      st += this.orderitem[i].Quantity > 0 ? this.orderitem[i].TotalAmount : 0
+      console.log(this.orderitem[i].Quantity, this.orderitem[i].TotalAmount, st, this.Subtotal)
+    }
+
+    this.Total =
+      this.CGST + this.SGST + this.IGST + this.Subtotal - this.Discount
+    this.Total = +this.Total.toFixed(0)
+    this.transaction.Amount = this.Total - this.PaidAmount
+    this.remaining = this.Total - this.PaidAmount
+    this.element = document.getElementById('qqq') as HTMLElement
+  }
+
 
   print1() {
     var PrintCommandObject = null
@@ -277,7 +415,7 @@ export class ReceiptComponent implements OnInit {
             text-align: center;
           }
           th{
-            text-align: left 
+            text-align: left
         }
           body   { font-family: 'Courier New', Courier, monospace; width: 300px }
           br {
@@ -292,7 +430,7 @@ export class ReceiptComponent implements OnInit {
             width: 100%;
             border: none;
             border-top: dashed 1px #aaa;
-        } 
+        }
         tr.print
           {
             border-bottom: 1px solid #000;;
@@ -453,7 +591,7 @@ export class ReceiptComponent implements OnInit {
     padding-left: 0px;
   }
   th{
-    text-align: left 
+    text-align: left
   }
   hr{
     border-top: 1px dashed black
@@ -478,13 +616,13 @@ export class ReceiptComponent implements OnInit {
         </p>
     </div>
     <hr>
-    <div ${this.order.CustomerDetails.PhoneNo ? '' : 'hidden'} class="header">
-        <h3 ${this.order.CustomerDetails.Name ? '' : 'hidden'}>${this.order.CustomerDetails.Name
+    <div ${this.order.CustomerDetails?.PhoneNo ? '' : 'hidden'} class="header">
+        <h3 ${this.order.CustomerDetails?.Name ? '' : 'hidden'}>${this.order.CustomerDetails?.Name
       }</h3>
-        <p>${this.order.CustomerDetails.Address ? this.order.CustomerDetails.Address + '<br>' : ''
-      }${this.order.CustomerDetails.City ? this.order.CustomerDetails.City + ',' : ''}${this.order.CustomerDetails.PhoneNo
+        <p>${this.order.CustomerDetails?.Address ? this.order.CustomerDetails?.Address + '<br>' : ''
+      }${this.order.CustomerDetails?.City ? this.order.CustomerDetails?.City + ',' : ''}${this.order.CustomerDetails?.PhoneNo
       }</p>
-    </div>    
+    </div>
     <hr>
     <table class="item-table">
         <thead class="nb">
@@ -495,7 +633,7 @@ export class ReceiptComponent implements OnInit {
         </thead>
         <tr>
         <td colspan="4"><hr></td>
-      </tr> 
+      </tr>
         <tbody>`
     var extra = 0
     this.order.Items.forEach(item => {

@@ -8,8 +8,8 @@ import { throwError } from 'rxjs'
   providedIn: 'root',
 })
 export class AuthService {
-  base_url = 'https://localhost:44315/api/'
-  base_url1 = 'http://biz1retail.azurewebsites.net/api/'
+  base_url1 = 'https://localhost:44315/api/'
+  base_url = 'http://biz1retail.azurewebsites.net/api/'
   server_ip = 'http://localhost'
   dburl = 'http://localhost:8081/'
   constructor(private http: HttpClient) {
@@ -830,6 +830,10 @@ export class AuthService {
     return this.http.get(
       this.base_url1 +
       'Daywise/GetCataWise?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
+  }
+
+  refund(data) {
+    return this.http.post(this.base_url1 + 'Receipt/Pay', data)
   }
 
 }

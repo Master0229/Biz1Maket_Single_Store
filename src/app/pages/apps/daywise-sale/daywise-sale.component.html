@@ -1,224 +1,224 @@
 <div>
-    <div class="cui__utils__heading">
-        <strong>Sales Report</strong>
-    </div>
-    <nz-tabset class="kit-tabs-bordered">
-        <nz-tab nzTitle="Daywise Sales">
+  <div class="cui__utils__heading">
+      <strong>Sales Report</strong>
+  </div>
+  <nz-tabset class="kit-tabs-bordered">
+      <nz-tab nzTitle="Daywise Sales">
 
-            <div class="card">
-                <div class="card-header card-header-flex" style="border-bottom: 0;">
-                    <!-- <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0">Latest Orders</h5>
-                    </div> -->
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-                            <input type="text" nz-input placeholder="Search Products" />
-                        </nz-input-group>
-                        <ng-template #suffixIconButton>
-                            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-                        </ng-template>
-                    </div>
-                    <div class="col-xl-4" style="margin-top: 15px;">
-                        <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange"
-                            (ngModelChange)="onChange($event)">
-                        </nz-range-picker>
-                    </div>
-
-
-                </div>
-                <!-- <div class="card-body"> -->
-                <nz-table #daywisesale class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="daysales">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Order Date
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Receipt Count
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Total Sales
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong> Total Payments</strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Taxes
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Discount
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Cash Payments
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Card Payments
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Gpay
-                                </strong>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of daywisesale.data">
-                            <td>
-                                {{item.orderedDate | date: 'MMM d yyyy'}}
-                            </td>
-                            <td>
-                                {{item.receiptCount}}
-                            </td>
-                            <td>
-                                &#8377;{{item.totalSales}}
-                            </td>
-
-                            <td>
-                                &#8377; {{item.totalPayments}}
-                            </td>
-                            <td>
-                                &#8377; {{item.taxes}}
-                            </td>
-                            <td>
-                                &#8377; {{item.discount}}
-                            </td>
-                            <td>
-                                &#8377; {{item.cashPayment}}
-                            </td>
-                            <td>
-                                &#8377; {{item.cardPayment}}
-                            </td>
-                            <td>
-                                &#8377; {{item.gpay}}
-                            </td>
-                        </tr> <br> <br>
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="font-11"><strong> TotalSales </strong></td>
-                            <td class="font-11"><strong> &#8377;{{TotalSales | number:".2"}}
-                                </strong> </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="font-11"><strong> TotalPayments </strong></td>
-                            <td class="font-11"> <strong>
-                                    &#8377;{{TotalPayments | number:".2"}} </strong></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </nz-table>
-            </div>
-
-        </nz-tab>
-        <nz-tab nzTitle="MonthWise Sales">
-
-            <div class="card">
-                <div class="card-header card-header-flex" style="border-bottom: 0;">
-                    <!-- <div class="d-flex flex-column justify-content-center mr-auto">
-                        <h5 class="mb-0">Latest Orders</h5>
-                    </div> -->
-                    <div class="d-flex flex-column justify-content-center mr-auto">
-                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-                            <input type="text" nz-input placeholder="Search Products" />
-                        </nz-input-group>
-                        <ng-template #suffixIconButton>
-                            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-                        </ng-template>
-                    </div>
-                    <div class="col-xl-4" style="margin-top: 15px;">
-                        <nz-range-picker style="width: inherit;" [(ngModel)]="daterangemonth"
-                            (ngModelChange)="onChangemonth($event)">
-                        </nz-range-picker>
-                    </div>
+          <div class="card">
+              <div class="card-header card-header-flex" style="border-bottom: 0;">
+                  <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+                      <h5 class="mb-0">Latest Orders</h5>
+                  </div> -->
+                  <div class="d-flex flex-column justify-content-center mr-auto">
+                      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                          <input type="text" nz-input placeholder="Search Products" />
+                      </nz-input-group>
+                      <ng-template #suffixIconButton>
+                          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                      </ng-template>
+                  </div>
+                  <div class="col-xl-4" style="margin-top: 15px;">
+                      <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange"
+                          (ngModelChange)="onChange($event)">
+                      </nz-range-picker>
+                  </div>
 
 
-                </div>
-                <!-- <div class="card-body"> -->
-                <nz-table #monthwisesale class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="monthrpt">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Total Sales
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    DailyAvg
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Year
-                                </strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong> Month</strong>
-                            </th>
-                            <th style="text-align: center;">
-                                <strong>
-                                    Variable%
-                                </strong>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of monthwisesale.data">
-                            <td>
-                                &#8377; {{item.totalSale}}
-                            </td>
-                            <td>
-                                &#8377; {{item.aVgSales | number: ".2"}}
-                            </td>
-                            <td>
-                                {{item.year}}
-                            </td>
+              </div>
+              <!-- <div class="card-body"> -->
+              <nz-table #daywisesale class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="daysales">
+                  <thead>
+                      <tr>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Order Date
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Receipt Count
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Total Sales
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong> Total Payments</strong>
+                          </th>
+                          <!-- <th style="text-align: center;">
+                              <strong>
+                                  Taxes
+                              </strong>
+                          </th> -->
+                          <th style="text-align: center;">
+                              <strong>
+                                  Discount
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Cash Payments
+                              </strong>
+                          </th>
+                          <!-- <th style="text-align: center;">
+                              <strong>
+                                  Card Payments
+                              </strong>
+                          </th> -->
+                          <th style="text-align: center;">
+                              <strong>
+                                 Online Payments
+                              </strong>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of daywisesale.data">
+                          <td>
+                              {{item.orderedDate | date: 'MMM d yyyy'}}
+                          </td>
+                          <td>
+                              {{item.receiptCount}}
+                          </td>
+                          <td>
+                              &#8377;{{item.totalSales}}
+                          </td>
 
-                            <td>
-                                {{item.month}}
+                          <td>
+                              &#8377; {{item.totalPayments}}
+                          </td>
+                          <!-- <td>
+                              &#8377; {{item.taxes}}
+                          </td> -->
+                          <td>
+                              &#8377; {{item.discount}}
+                          </td>
+                          <td>
+                              &#8377; {{item.cash}}
+                          </td>
+                          <!-- <td>
+                              &#8377; {{item.cardPayment}}
+                          </td> -->
+                          <td>
+                              &#8377; {{item.online}}
+                          </td>
+                      </tr> <br> <br>
 
-                            </td>
-                            <td>
-                                0
+                      <tr>
+                          <td></td>
+                          <td></td>
+                          <td class="font-11"><strong> TotalSales </strong></td>
+                          <td class="font-11"><strong> &#8377;{{TotalSales | number:".2"}}
+                              </strong> </td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                      </tr>
+                      <tr>
+                          <td></td>
+                          <td></td>
+                          <td class="font-11"><strong> TotalPayments </strong></td>
+                          <td class="font-11"> <strong>
+                                  &#8377;{{TotalPayments | number:".2"}} </strong></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                      </tr>
+                  </tbody>
+              </nz-table>
+          </div>
 
-                            </td>
+      </nz-tab>
+      <nz-tab nzTitle="MonthWise Sales">
 
-                        </tr>
+          <div class="card">
+              <div class="card-header card-header-flex" style="border-bottom: 0;">
+                  <!-- <div class="d-flex flex-column justify-content-center mr-auto">
+                      <h5 class="mb-0">Latest Orders</h5>
+                  </div> -->
+                  <div class="d-flex flex-column justify-content-center mr-auto">
+                      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                          <input type="text" nz-input placeholder="Search Products" />
+                      </nz-input-group>
+                      <ng-template #suffixIconButton>
+                          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+                      </ng-template>
+                  </div>
+                  <div class="col-xl-4" style="margin-top: 15px;">
+                      <nz-range-picker style="width: inherit;" [(ngModel)]="daterangemonth"
+                          (ngModelChange)="onChangemonth($event)">
+                      </nz-range-picker>
+                  </div>
 
-                    </tbody>
-                </nz-table>
-            </div>
 
-        </nz-tab>
-    </nz-tabset>
+              </div>
+              <!-- <div class="card-body"> -->
+              <nz-table #monthwisesale class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="monthrpt">
+                  <thead>
+                      <tr>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Total Sales
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  DailyAvg
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Year
+                              </strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong> Month</strong>
+                          </th>
+                          <th style="text-align: center;">
+                              <strong>
+                                  Variable%
+                              </strong>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of monthwisesale.data">
+                          <td>
+                              &#8377; {{item.totalSale}}
+                          </td>
+                          <td>
+                              &#8377; {{item.aVgSales | number: ".2"}}
+                          </td>
+                          <td>
+                              {{item.year}}
+                          </td>
+
+                          <td>
+                              {{item.month}}
+
+                          </td>
+                          <td>
+                              0
+
+                          </td>
+
+                      </tr>
+
+                  </tbody>
+              </nz-table>
+          </div>
+
+      </nz-tab>
+  </nz-tabset>
 
 
 </div>

@@ -12,8 +12,8 @@
                       <ngb-highlight [result]="r.product" [term]="t"></ngb-highlight>
                     </ng-template>
                     <input #productautocomplete id="typeahead-template" onfocus="this.select()"
-                      [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}"
-                      style="height: 84%;" #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model"
+                      [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}" style="height: 84%;"
+                      #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model"
                       placeholder="Search Product..." [ngbTypeahead]="search" [resultTemplate]="rt"
                       [inputFormatter]="formatter"
                       (selectItem)="selectedItem(batchproductmodal, $event.item.barcodeId)" />
@@ -53,7 +53,7 @@
       <div class="mb-4 ">
         <div class=" col-lg">
           <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input type="text" [(ngModel)]="order.CustomerDetails.PhoneNo" nz-input placeholder="Customer No"
+            <input type="text" [(ngModel)]="order.CustomerDetails.PhoneNo" nz-input placeholder="Customer PhoneNo"
               (keyup.enter)="getCustomer()" />
           </nz-input-group>
           <ng-template #suffixIconButton>

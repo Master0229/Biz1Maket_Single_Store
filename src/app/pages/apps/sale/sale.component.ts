@@ -18,6 +18,9 @@ import { debounceTime, map } from 'rxjs/operators'
 import { OrderItemModule, OrderModule, AdditionalCharge, Transaction } from './sale.module'
 import { SyncService } from 'src/app/services/sync/sync.service'
 import { PrintService } from 'src/app/services/print/print.service'
+import { select, Store } from '@ngrx/store'
+import * as SettingsActions from 'src/app/store/settings/actions'
+import * as Reducers from 'src/app/store/reducers'
 
 @Component({
   selector: 'app-sale',
@@ -152,6 +155,7 @@ export class SaleComponent implements OnInit {
     private sync: SyncService,
     config: NgbModalConfig,
     private printservice: PrintService,
+    private store: Store<any>,
   ) {
     config.backdrop = 'static'
     config.keyboard = false
@@ -161,16 +165,7 @@ export class SaleComponent implements OnInit {
   orderkey = { orderno: 1, timestamp: 0, GSTno: '' }
 
   ngOnInit(): void {
-    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb']).subscribe(data => {
-      this.loginfo = data['loginfo'][0]
-      this.printersettings = data['printersettings'][0]
-      this.orderkey = data["orderkeydb"][0]
-      localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
-      this.CompanyId = this.loginfo.companyId
-      this.StoreId = this.loginfo.storeId
-      this.orderkeyValidation()
-      console.log(this.loginfo)
-    })
+    this.getData()
     // this.orderkey = localStorage.getItem('orderkey')
     //   ? JSON.parse(localStorage.getItem('orderkey'))
     //   : { orderno: 1, timestamp: 0, GSTno: '' }
@@ -238,6 +233,26 @@ export class SaleComponent implements OnInit {
     this.Auth.logorderevent(logdata).subscribe(data => {
 
       console.log(data)
+    })
+
+    this.store.pipe(select(Reducers.getSettings)).subscribe(state => {
+      // if(this.stockchnageid != state.stockchnageid) {
+      this.getData()
+      // }
+    })
+
+  }
+  getData() {
+    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb', 'additionalchargesdb']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.printersettings = data['printersettings'][0]
+      this.orderkey = data["orderkeydb"][0]
+      this.charges = data["additionalchargesdb"]
+      localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
+      this.orderkeyValidation()
+      console.log(this.loginfo)
     })
 
   }
@@ -409,6 +424,7 @@ export class SaleComponent implements OnInit {
       this.model = ''
       this.filteredvalues = []
       this.submitted = false
+      this.groupProduct()
       return
     }
 

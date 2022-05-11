@@ -15,18 +15,18 @@ export const getMenuData: any[] = [
     icon: 'fa fa-area-chart',
     url: '/apps/dashboard',
   },
-  // {
-  //   title: 'Sale',
-  //   key: 'appsProfile',
-  //   icon: 'fe fe-shopping-cart',
-  //   url: '/apps/sale',
-  // },
-  // {
-  //   title: 'Receipts',
-  //   icon: 'fa fa-pencil-square-o',
-  //   key: 'appsSetting',
-  //   url: '/apps/receipt',
-  // },
+  {
+    title: 'Sale',
+    key: 'appsProfile',
+    icon: 'fe fe-shopping-cart',
+    url: '/apps/sale',
+  },
+  {
+    title: 'Receipts',
+    icon: 'fa fa-pencil-square-o',
+    key: 'appsSetting',
+    url: '/apps/receipt',
+  },
   // {
   //   title: 'Orders',
   //   icon: 'fa fa-server',
@@ -45,66 +45,66 @@ export const getMenuData: any[] = [
   //   key: 'appsStockEntry',
   //   url: '/apps/stockentry',
   // },
-  // {
-  //   title: 'Customers',
-  //   key: 'appsSetting',
-  //   icon: 'fe fe-users',
-  //   url: '/apps/customer',
-  // },
+  {
+    title: 'Customers',
+    key: 'appsSetting',
+    icon: 'fe fe-users',
+    url: '/apps/customer',
+  },
   // {
   //   title: 'Internal Transfer',
   //   key: 'appsInternalTransfer',
   //   icon: 'fa fa-code-fork',
   //   url: '/apps/internaltransfer',
   // },
-  // {
-  //   title: 'Add Stock',
-  //   key: 'appsBatchEntry',
-  //   icon: 'fe fe-layers',
-  //   url: '/apps/batchentry',
-  // },
+  {
+    title: 'Add Stock',
+    key: 'appsBatchEntry',
+    icon: 'fe fe-layers',
+    url: '/apps/batchentry',
+  },
   {
     title: 'Stock',
     key: 'appsSetting',
     icon: 'fe fe-shopping-bag',
     url: '/apps/Stock',
   },
-  // {
-  //   title: 'Product',
-  //   key: 'appsProfile',
-  //   icon: 'fe fe-grid',
-  //   url: '/apps/products',
-  // },
+  {
+    title: 'Product',
+    key: 'appsProfile',
+    icon: 'fe fe-grid',
+    url: '/apps/products',
+  },
   // {
   //   title: 'Variant',
   //   key: 'appsProductOptions',
   //   icon : 'fe fe-copy',
   //   url: '/apps/productoptions',
   // },
-  // {
-  //   title: 'Category',
-  //   key: 'appsProfile',
-  //   icon: 'fa fa-sitemap',
-  //   url: '/apps/category',
-  // },
-  // {
-  //   title: 'TaxGroup',
-  //   key: 'appsSetting',
-  //   icon: 'fa fa-calculator',
-  //   url: '/apps/taxgroup',
-  // },
-  // {
-  //   title: 'Purchase Entry',
-  //   key: 'appsSetting',
-  //   icon: 'fe fe-shopping-bag',
-  //   url: '/apps/purchaseentry',
-  // },
-  // {
-  //   title: 'Vendors',
-  //   key: 'appsSetting',
-  //   icon: 'fe fe-user-check',
-  //   url: '/apps/vendors',
-  // },
+  {
+    title: 'Category',
+    key: 'appsProfile',
+    icon: 'fa fa-sitemap',
+    url: '/apps/category',
+  },
+  {
+    title: 'TaxGroup',
+    key: 'appsSetting',
+    icon: 'fa fa-calculator',
+    url: '/apps/taxgroup',
+  },
+  {
+    title: 'Purchase Entry',
+    key: 'appsSetting',
+    icon: 'fe fe-shopping-bag',
+    url: '/apps/purchaseentry',
+  },
+  {
+    title: 'Vendors',
+    key: 'appsSetting',
+    icon: 'fe fe-user-check',
+    url: '/apps/vendors',
+  },
   {
     title: 'Needed Products',
     key: 'appsaddproduct',
@@ -150,12 +150,12 @@ export const getMenuData: any[] = [
     ]
   },
 
-  // {
-  //   title: 'Setting',
-  //   key: 'appsSetting',
-  //   icon: 'fa fa-cogs',
-  //   url: '/apps/setting',
-  // },
+  {
+    title: 'Setting',
+    key: 'appsSetting',
+    icon: 'fa fa-cogs',
+    url: '/apps/setting',
+  },
 
   // {
   //   title: 'Dashboards',
@@ -213,12 +213,12 @@ export const getMenuData: any[] = [
   //   url: '/apps/category',
   // },
 
-  // // {
-  // //   title: 'Receipt',
-  // //   key: 'appsSetting',
-  // //   icon:'fe fe-book-open',
-  // //   url: '/apps/receipt',
-  // // },
+  // {
+  //   title: 'Receipt',
+  //   key: 'appsSetting',
+  //   icon:'fe fe-book-open',
+  //   url: '/apps/receipt',
+  // },
 
   // {
   //   title: 'TaxGroup',
@@ -352,12 +352,12 @@ export const getMenuData: any[] = [
     icon: 'fe fe-command',
     url: '/advanced/pricing-tables',
   },
-  // {
-  //   title: 'AboutUs',
-  //   key: 'Update',
-  //   icon: 'fe fe-alert-octagon',
-  //   url: '/apps/aboutus',
-  // },
+  {
+    title: 'AboutUs',
+    key: 'Update',
+    icon: 'fe fe-alert-octagon',
+    url: '/apps/aboutus',
+  },
   // {
   //   title: 'About Us',
   //   icon: 'fe fe-alert-octagon',

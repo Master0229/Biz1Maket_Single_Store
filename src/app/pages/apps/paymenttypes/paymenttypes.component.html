@@ -1,122 +1,123 @@
 <div>
   <div class="cui__utils__heading">
-    <strong>PaymentTypeWise Sales</strong>
+      <strong>PaymentTypeWise Sales</strong>
   </div>
   <div class="card">
-    <div class="card-header card-header-flex" style="border-bottom: 0;">
+      <div class="card-header card-header-flex" style="border-bottom: 0;">
 
-      <div class="d-flex flex-column justify-content-center mr-auto">
-        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-          <input type="text" nz-input placeholder="Search Products" />
-        </nz-input-group>
-        <ng-template #suffixIconButton>
-          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-        </ng-template>
+          <div class="d-flex flex-column justify-content-center mr-auto">
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                  <input type="text" nz-input placeholder="Search Products" />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                  <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+              </ng-template>
+          </div>
+
+
+          <div class="col-xl-4" style="margin-top: 15px;">
+              <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)">
+              </nz-range-picker>
+          </div>
+
+          <button class="btn btn-primary" (click)="electronPrint()"
+              style="height: fit-content;margin-top: 14px;">Print</button>
+
+
       </div>
+      <!-- <div class="card-body"> -->
+      <nz-table #basicTable class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="storepayment">
+          <thead>
+              <tr>
+                  <th style="text-align: center;">
+                      <strong>
+                          #
+                      </strong>
+                  </th>
+                  <th style="text-align: center;">
+                      <strong>
+                          Payment Type
+                      </strong>
+                  </th>
+
+                  <th style="text-align: center;">
+                      <strong> Amount</strong>
+                  </th>
+                  <th style="text-align: center;">
+                      <strong> Action</strong>
+                  </th>
+
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let sp of basicTable.data;let i = index ">
+                  <td>
+                      {{i+1}}
+                  </td>
+                  <td>
+                      {{sp.paymenttype}}
+                  </td>
+                  <td>
+                      {{sp.amount}}
+                  </td>
+                  <td>
+                      <i class="fa fa-download" aria-hidden="true"
+                          (click)="gettranstype(0,sp.storePaymentTypeId,sp)"></i>
+
+                  </td>
 
 
-      <div class="col-xl-4" style="margin-top: 15px;">
-        <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)">
-        </nz-range-picker>
-      </div>
+              </tr>
+          </tbody>
+      </nz-table>
+      <nz-table #TypeTrans class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="transpayment">
+          <thead>
+              <tr>
+                  <th style="text-align: center;">
+                      <strong>
+                          #
+                      </strong>
+                  </th>
+                  <th style="text-align: center;">
+                      <strong>
+                          Invoice
+                      </strong>
+                  </th>
 
-      <button class="btn btn-primary" (click)="electronPrint()"
-        style="height: fit-content;margin-top: 14px;">Print</button>
+                  <th style="text-align: center;">
+                      <strong> Amount</strong>
+                  </th>
+                  <th style="text-align: center;">
+                      <strong> TransDateTime</strong>
+                  </th>
+                  <th style="text-align: center;">
+                      <strong> Action</strong>
+                  </th>
 
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let Type of TypeTrans.data;let i = index ">
+                  <td>
+                      {{i+1}}
+                  </td>
+                  <td>
+                      {{Type.invoiceNo}}
+                  </td>
+                  <td>
+                      {{Type.amount}}
+                  </td>
+                  <td>
+                      {{Type.transDateTime | date:'MMM d, y, h:mm:ss a'}}
 
-    </div>
-    <!-- <div class="card-body"> -->
-    <nz-table #basicTable class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="storepayment">
-      <thead>
-        <tr>
-          <th style="text-align: center;">
-            <strong>
-              #
-            </strong>
-          </th>
-          <th style="text-align: center;">
-            <strong>
-              Payment Type
-            </strong>
-          </th>
-
-          <th style="text-align: center;">
-            <strong> Amount</strong>
-          </th>
-          <th style="text-align: center;">
-            <strong> Action</strong>
-          </th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let sp of basicTable.data;let i = index ">
-          <td>
-            {{i+1}}
-          </td>
-          <td>
-            {{sp.paymentType}}
-          </td>
-          <td>
-            {{sp.amount}}
-          </td>
-          <td>
-            <i class="fa fa-download" aria-hidden="true" (click)="gettranstype(0,sp.storePaymentTypeId,sp)"></i>
-
-          </td>
+                  </td>
+                  <td>
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </td>
 
 
-        </tr>
-      </tbody>
-    </nz-table>
-    <nz-table #TypeTrans class="kit__utils__table mb-4 px-4" nzSize="small" [nzData]="transpayment">
-      <thead>
-        <tr>
-          <th style="text-align: center;">
-            <strong>
-              #
-            </strong>
-          </th>
-          <th style="text-align: center;">
-            <strong>
-              Invoice
-            </strong>
-          </th>
-
-          <th style="text-align: center;">
-            <strong> Amount</strong>
-          </th>
-          <th style="text-align: center;">
-            <strong> TransDateTime</strong>
-          </th>
-          <th style="text-align: center;">
-            <strong> Action</strong>
-          </th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let Type of TypeTrans.data;let i = index ">
-          <td>
-            {{i+1}}
-          </td>
-          <td>
-            {{Type.invoiceNo}}
-          </td>
-          <td>
-            {{Type.amount}}
-          </td>
-          <td>
-            {{Type.transDateTime | date:'MMM d, y, h:mm:ss a'}}
-
-          </td>
-          <td>
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-          </td>
-
-
-        </tr>
-      </tbody>
-    </nz-table>
+              </tr>
+          </tbody>
+      </nz-table>
   </div>
 </div>

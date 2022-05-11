@@ -49,7 +49,7 @@ export class OrderModule {
   OrderTaxDisc: number
   OrderTotDisc: number
   OrderedById: number
-  // OrderStatus: number
+  OrderStatus: number
   OrderType: number
   ProdStatus: string
   PreviousStatusId: number
@@ -109,7 +109,7 @@ export class OrderModule {
     this.ItemJson = ''
     this.ModifiedDate = ''
     this.OrderedById = 0
-    // this.OrderStatus = 0
+    this.OrderStatus = 0
     this.OrderId = 0
     this.OrderStatusId = 0
     this.OrderNo = 0

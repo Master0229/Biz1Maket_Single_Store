@@ -18,7 +18,7 @@ export class DaywiseSaleComponent implements OnInit {
   CompanyId: any
   StoreId: any
   dateRange = []
-  daterangemonth =[]
+  daterangemonth = []
   loginfo
   date: { year: number; month: number }
   sourceid: any
@@ -44,17 +44,22 @@ export class DaywiseSaleComponent implements OnInit {
   }
 
   daywisesale() {
-    this.Auth.daywise(this.strdate, this.enddate, this.StoreId, this.CompanyId, this.sourceid).subscribe(data => {
+    this.Auth.daywise(this.strdate, this.enddate, this.StoreId, this.CompanyId, 0).subscribe(data => {
       this.daysales = data["order"]
       console.log(this.daysales)
-
       this.TotalPayments = 0;
       this.TotalSales = 0;
-      for (let i = 0; i < this.daysales.length; i++) {
-        this.daysales[i].OrderedDate = moment(this.daysales[i].orderedDate).format('ll');
-        this.TotalPayments = this.TotalPayments + this.daysales[i].totalPayments;
-        this.TotalSales = this.TotalSales + this.daysales[i].totalSales;
-      }
+      if (this.daysales)
+        this.daysales.forEach(ds => {
+          ds.OrderedDate = moment(ds.orderedDate).format('ll');
+          this.TotalPayments = this.TotalPayments + ds.totalPayments;
+          this.TotalSales = this.TotalSales + ds.totalSales;
+        });
+      // for (let i = 0; i < this.daysales.length; i++) {
+      //   this.daysales[i].OrderedDate = moment(this.daysales[i].orderedDate).format('ll');
+      //   this.TotalPayments = this.TotalPayments + this.daysales[i].totalPayments;
+      //   this.TotalSales = this.TotalSales + this.daysales[i].totalSales;
+      // }
       this.TotalSales = +(this.TotalSales.toFixed(2))
       this.TotalPayments = +(this.TotalPayments.toFixed(2))
       var response: any = data
@@ -78,7 +83,7 @@ export class DaywiseSaleComponent implements OnInit {
     this.strdate = moment(result[0]).format('YYYY-MM-DD')
     this.enddate = moment(result[1]).format('YYYY-MM-DD')
 
-    this. getmonthwise()
+    this.getmonthwise()
 
   }
 
