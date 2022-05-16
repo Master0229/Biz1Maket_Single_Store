@@ -16,6 +16,12 @@
             <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
           </ng-template>
         </div>
+<!-- 16-05-2022 -->
+        <div class="col-xl-4" style="margin-top: 25px;">
+          <nz-range-picker  [(ngModel)]="dateRange" (ngModelChange)="onChange($event)">
+          </nz-range-picker>
+        </div>
+
         <div class="col-sm-auto row">
 
           <div class="form-group row py-3 mr-5">

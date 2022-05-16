@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth.service'
 import { Location } from '@angular/common'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-products',
@@ -146,8 +147,21 @@ export class ProductsComponent implements OnInit {
     console.log(this.prod.length)
   }
 
+  strdate: string
+  enddate: string
+  date: { year: number; month: number }
+  dateRange = []
+
+  onChange(result: Date): void {
+    console.log('onChange: ', result)
+    this.strdate = moment(result[0]).format('YYYY-MM-DD')
+    this.enddate = moment(result[1]).format('YYYY-MM-DD')
+    this.getMasterproduct()
+  }
+
+
   getMasterproduct() {
-    this.Auth.getProduct(this.id, this.loginfo.companyId).subscribe(data => {
+    this.Auth.getProduct(this.id, this.loginfo.companyId, this.strdate, this.enddate,).subscribe(data => {
       this.masterproduct = data
       this.prod = this.masterproduct.products.filter(x => x.isactive == !this.showInactive)
       console.log(this.prod)

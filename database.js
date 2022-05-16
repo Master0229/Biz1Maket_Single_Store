@@ -197,6 +197,14 @@ app.post('/batchproduct', function (req, res) {
   });
 })
 
+app.post('/updatestock', function (req, res) {
+  console.dir(req.body);
+  db.stockbatchdb.update({ _id: req.body._id }, req.body, { upsert: true }, function (err, newDoc) {
+      console.log(newDoc) // Callback is optional
+      res.send({ message: 'yes iam the server' })
+  });
+})
+
 app.get('/getlocal', function (req, res) {
   var product = req.query.getproducts
   console.log(req.params)

@@ -8,6 +8,7 @@ import { NzNotificationService } from 'ng-zorro-antd'
 import { merge, Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { PrintService } from 'src/app/services/print/print.service'
+import { SyncService } from 'src/app/services/sync/sync.service'
 
 @Component({
   selector: 'app-stock',
@@ -27,7 +28,6 @@ export class StockComponent implements OnInit {
   @ViewChild('disc', { static: false }) public discel: TemplateRef<any>
   @ViewChild('productautocomplete', { static: false }) public productinput: TemplateRef<any>
   @ViewChild('scrollframe', { static: false }) scrollFrame: ElementRef
-  // @ViewChild('cardnumber', { static: false }) cardnumber: ElementRef;
 
 
 
@@ -36,6 +36,7 @@ export class StockComponent implements OnInit {
     private Auth: AuthService,
     private notification: NzNotificationService,
     private printservice: PrintService,
+    private sync: SyncService,
   ) { }
 
   prod: any
@@ -43,20 +44,54 @@ export class StockComponent implements OnInit {
   products: any
   item: any
   loginfo
+  strdate: string = null
+  enddate: string = null
+  CompanyId: any
+  StoreId: any
+  date: { year: number; month: number }
+  dateRange = []
+  daterangemonth = []
+
+
+
 
   ngOnInit(): void {
     this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
+      this.sync.sync()
+      this.getproducts()
     })
+  }
+
+  onChange(result: Date): void {
+    console.log('onChange: ', result)
+    this.strdate = moment(result[0]).format('YYYY-MM-DD')
+    this.enddate = moment(result[1]).format('YYYY-MM-DD')
     this.getproducts()
   }
 
+
   getproducts() {
-    this.Auth.getproducts().subscribe(data => {
+    this.Auth.getstockbatch(this.strdate, this.enddate, this.loginfo.storeId, this.loginfo.companyId).subscribe(data => {
       this.products = data
       this.prod = this.products
       console.log(this.products)
+    })
+  }
+
+
+  saveBatch() {
+    console.log(this.products.filter(x => x.stockQty != x.quantity))
+    this.Auth.Updatestockbatch(this.products.filter(x => x.stockQty != x.quantity)).subscribe(data1 => {
+      console.log(data1)
+      this.sync.sync()
+      this.Auth.updatestockbatchdb(data1['stockBatch']).subscribe(data => {
+        this.getproducts()
+        this.notification.success("Stock Added", "Stock Added Successfully")
+      })
     })
   }
 
@@ -77,7 +112,7 @@ export class StockComponent implements OnInit {
   filteredvalues = [];
   filtersearch(): void {
     this.prod = this.term
-      ? this.prod.filter(x => x.product.toLowerCase().includes(this.term.toLowerCase()))
+      ? this.prod.filter(x => x.name.toLowerCase().includes(this.term.toLowerCase()))
       : this.prod;
     console.log(this.prod)
   }
@@ -278,4 +313,8 @@ export class StockComponent implements OnInit {
       this.printservice.print(printtemplate, [this.printersettings.receiptprinter])
   }
 
+
+
 }
+
+

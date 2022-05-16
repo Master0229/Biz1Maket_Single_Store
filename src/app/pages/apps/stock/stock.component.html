@@ -1,6 +1,6 @@
 <div>
   <div class="cui__utils__heading">
-    <strong>Stocks</strong>
+    <strong>Purchase Products</strong>
   </div>
   <div class="card">
     <div class="card-header card-header-flex">
@@ -12,38 +12,48 @@
           <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
         </ng-template>
       </div>
+      <div class="col-xl-4" style="margin-top: 25px;">
+        <nz-range-picker style="width: inherit;" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)">
+        </nz-range-picker>
+      </div>
       <div class="form-group row py-3 mr-5">
         <strong class="p-2" style="font-size: medium;">Show Quantity 0 - 5 :</strong>
         <input type="checkbox" style=" width: 18px; height: calc(1.5em + 0.75rem + 2px);"
           (change)="changefilter($event.target.checked)">
       </div>
       <button class="btn btn-primary" (click)="electronPrint()"
-        style="height: fit-content;margin-top: 19px;">Print</button>
+        style="height: fit-content;margin-top: 19px;margin-right: 31px;">Print</button>
+
+      <button class="btn btn-success" (click)="saveBatch()"
+        style="height: fit-content;margin-top: 19px;margin-left: 5px;">save</button>
 
     </div>
-    <!-- <div class="card-body"> -->
     <nz-table #basicTable class="kit__utils__table mb-4" nzSize="small" [nzData]="prod">
       <thead>
         <tr>
-          <th>
+          <th style="text-align: center;">
             <strong>
               Name
             </strong>
           </th>
-          <th>
+          <th style="text-align: center;">
             <strong>
-              Quantity
+              Entry Date
             </strong>
           </th>
-          <th>
+
+          <th style="text-align: center;">
             <strong>
               Price
             </strong>
           </th>
-          <th>
+          <th style="text-align: center;">
+            <strong> Stock Qty</strong>
+          </th>
+          <th style="text-align: center;">
             <strong> Bar Code</strong>
           </th>
-          <th>
+          <th style="text-align: center;">
             <strong>Expairy Date</strong>
           </th>
         </tr>
@@ -51,14 +61,26 @@
       <tbody>
         <tr *ngFor="let product of basicTable.data">
           <td>
-            {{product.product}}
+            {{product.name}}
+
           </td>
           <td>
-            {{product.quantity}}
+            {{product.entryDateTime | date: 'MMM d, h:mm a'}}
+
           </td>
+
           <td>
             &#8377; {{product.price}}
           </td>
+
+          <td style="width: 0px">
+
+            <input type="number" class="form-control" style="width: 74px;" [(ngModel)]="product.quantity">
+
+          </td>
+
+
+
           <td>
             {{product.barCode}}
           </td>
@@ -66,14 +88,8 @@
             {{product.expiaryDate | date: 'MMM d, y'}}
           </td>
 
-          <!-- <td>
-              <a class="px-10">
-                <input type="checkbox" [(ngModel)]="product.isactive" (click)="active(product.id,!product.isactive)">
-              </a>
-            </td> -->
         </tr>
       </tbody>
     </nz-table>
   </div>
 </div>
-
