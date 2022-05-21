@@ -106,7 +106,7 @@ export class PurchasemaintComponent implements OnInit {
     this.getStoreList()
     this.getpurchaseData('All')
     this.getBankAccts()
-    this.getproducts()
+    // this.getproducts()
     this.getvenderlist()
     this.getcategory()
   }
@@ -400,12 +400,12 @@ export class PurchasemaintComponent implements OnInit {
     })
   }
 
-  getproducts() {
-    this.Auth.getProduct(this.id, (this.companyId = 1)).subscribe(data => {
-      this.products = data['products']
-      console.log(this.products)
-    })
-  }
+  // getproducts() {
+  //   this.Auth.getProduct(this.id, this.loginfo.companyId, this.strdate, this.enddate,).subscribe(data => {
+  //     this.products = data['products']
+  //     console.log(this.products)
+  //   })
+  // }
 
   getvenderlist() {
     this.Auth.getvendors((this.companyId = 1)).subscribe(data => {

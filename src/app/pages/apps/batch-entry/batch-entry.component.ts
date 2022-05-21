@@ -82,6 +82,7 @@ export class BatchEntryComponent implements OnInit {
       this.batchentry.code = this.batchentry.barCode
       this.batchentry.barCode = null
       this.batchentry.entrydatetime = moment(this.batchdate).format('YYYY-MM-DD HH:MM A');
+      this.batchentry.expiarydate = this.batchentry.expiarydate == '' ? null : this.batchentry.expiarydate
       this.batches.push(this.batchentry);
       this.batchentry = { barCode:null, code: '',barcodeId: null, quantity: null, price: null, expiarydate: "", companyid: this.loginfo.companyId, storeid: this.loginfo.storeId, productId: 0, product: null, batchno: 0, entrydatetime: "" }
       this.inputValue = '';
