@@ -28,6 +28,8 @@ export class OrderModule {
   DeliveryDateTime: string
   DispatchStatus: number
   DifferentPercent: number
+  datastatus: string
+  status: string
   events: Array<any>
   Id: number
   InvoiceNo: string
@@ -97,6 +99,8 @@ export class OrderModule {
     this.CustomerId = 0
     this.CompanyId = 0
     this.CustomerDetails = new CustomerModule()
+    this.datastatus = 'new_order'
+    this.status = 'P'
     this.DiscPercent = 0
     this.DiscAmount = 0
     this.DeliveryDateTime = ''
@@ -145,7 +149,7 @@ export class OrderModule {
     this.WipStatus = ''
   }
 
-  addproduct(product,showname) {
+  addproduct(product, showname) {
     console.log(product)
     this.Items.push(new OrderItemModule(product, showname))
     this.setbillamount()
@@ -191,26 +195,32 @@ export class OrderModule {
       this.DiscAmount += item.DiscAmount
     })
 
-    this.BillAmount = this.Subtotal + this.Tax1 + this.Tax2 + this.Tax3 - this.DiscAmount
+    this.additionalchargearray.forEach(charge => {
+      console.log(charge.Description, charge.selected)
+      if (charge.selected) {
+        if (charge.ChargeType == 2) {
+          charge.Amount = Number((this.BillAmount / 100) * charge.ChargeValue)
+        } else {
+          charge.Amount = Number(charge.ChargeValue)
+        }
+        extracharge += charge.Amount
+        this.Charges += charge.Amount
+      }
+    })
+
+
+    this.BillAmount = this.Subtotal + this.Tax1 + this.Tax2 + this.Tax3 + this.Charges - this.DiscAmount
+
+    // this.BillAmount += this.TaxAmount + this.Charges - this.OrderTotDisc
+
     this.BillAmount = +(+this.BillAmount.toFixed(0)).toFixed(2)
 
-    // this.additionalchargearray.forEach(charge => {
-    //   // console.log(charge.Description, charge.selected)
-    //   if (charge.selected) {
-    //     if (charge.ChargeType == 2) {
-    //       charge.Amount = Number((this.BillAmount / 100) * charge.ChargeValue)
-    //     } else {
-    //       charge.Amount = Number(charge.ChargeValue)
-    //     }
-    //     extracharge += charge.Amount
-    //     this.Charges += charge.Amount
-    //   }
-    // })
+
   }
 }
 
 export class Transaction {
-  // Id: number
+  Id: number
   Amount: number
   CustomerId: number
   CompanyId: number
@@ -228,18 +238,21 @@ export class Transaction {
   UserId: number
   Remaining: number
 
-  constructor(amount = 0, spt = 0) {
+  constructor(amount = 0, spt = 0, storeid = 0, companyid = 0, invoiceno = '', sptname = '', transtype = 1) {
+    this.Id = 0
     this.Amount = amount
-    this.CompanyId = 0
+    this.CompanyId = companyid
     this.CustomerId = 0
-    this.InvoiceNo = ''
+    this.InvoiceNo = invoiceno
     this.OrderId = 0
     this.PaymentStatusId = 0
     this.PaymentTypeId = 6
     this.StorePaymentTypeId = spt
-    this.StoreId = 0
-    this.StorePaymentTypeName = ''
-    this.TranstypeId = 0
+    this.StoreId = storeid
+    this.StorePaymentTypeName = sptname
+    this.TranstypeId = transtype
+    this.TransDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    this.TransDate = moment().format('YYYY-MM-DD HH:mm:ss')
   }
 }
 
@@ -446,12 +459,12 @@ export class AdditionalCharge {
   TaxGroupId: number
   selected: boolean
   constructor(charge) {
-    this.Id = charge.Id
+    this.Id = charge.id
     this.Amount = 0
-    this.ChargeType = charge.ChargeType
-    this.ChargeValue = charge.ChargeValue
-    this.Description = charge.Description
-    this.TaxGroupId = charge.TaxGroupId
+    this.ChargeType = charge.chargeType
+    this.ChargeValue = charge.chargeValue
+    this.Description = charge.description
+    this.TaxGroupId = charge.taxGroupId
     this.selected = charge.selected
   }
 }

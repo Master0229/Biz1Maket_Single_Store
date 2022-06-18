@@ -27,10 +27,13 @@ export class ProductwiseSalesComponent implements OnInit {
       this.CompanyId = this.loginfo.companyId
       this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
+      this.strdate = moment().format('YYYY-MM-DD')
+      this.enddate = moment().format('YYYY-MM-DD')
+      this.getprodwise()
     })
-    this.strdate = moment().format('YYYY-MM-DD')
-    this.enddate = moment().format('YYYY-MM-DD')
-    this.getprodwise()
+    // this.strdate = moment().format('YYYY-MM-DD')
+    // this.enddate = moment().format('YYYY-MM-DD')
+    // this.getprodwise()
   }
 
   ProdWise:any

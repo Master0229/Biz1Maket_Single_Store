@@ -35,12 +35,13 @@ export class DaywiseSaleComponent implements OnInit {
       this.CompanyId = this.loginfo.companyId
       this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
+      this.strdate = moment().format('YYYY-MM-DD')
+      this.enddate = moment().format('YYYY-MM-DD')
+      this.daywisesale()
+      this.getmonthwise()
     })
 
-    this.strdate = moment().format('YYYY-MM-DD')
-    this.enddate = moment().format('YYYY-MM-DD')
-    this.daywisesale()
-    this.getmonthwise()
+
   }
 
   daywisesale() {

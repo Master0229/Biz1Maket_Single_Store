@@ -9,7 +9,7 @@ import { throwError } from 'rxjs'
 })
 export class AuthService {
   base_url = 'https://localhost:44315/api/'
-  base_url1 = 'http://biz1retail.azurewebsites.net/api/'
+  base_url1 = 'https://biz1retail.azurewebsites.net/api/'
   server_ip = 'http://localhost'
   dburl = 'http://localhost:8081/'
   constructor(private http: HttpClient) {

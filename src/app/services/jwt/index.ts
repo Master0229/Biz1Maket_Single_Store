@@ -6,7 +6,7 @@ import store from 'store'
 @Injectable()
 export class jwtAuthService {
   base_url1 = "https://localhost:44383/api/";
-  base_url = "http://biz1retail.azurewebsites.net/api/";
+  base_url = "https://biz1retail.azurewebsites.net/api/";
 
   constructor(private http: HttpClient) { }
 

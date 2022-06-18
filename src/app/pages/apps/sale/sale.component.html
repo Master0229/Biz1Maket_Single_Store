@@ -13,7 +13,7 @@
                     </ng-template>
                     <input #productautocomplete id="typeahead-template" onfocus="this.select()"
                       [ngClass]="{'is-invalid':submitted && !temporaryItem.productId}" style="height: 84%;"
-                      #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model"
+                      #instance="ngbTypeahead" type="text" class="form-control" [(ngModel)]="model" ngDefaultControl
                       placeholder="Search Product..." [ngbTypeahead]="search" [resultTemplate]="rt"
                       [inputFormatter]="formatter"
                       (selectItem)="selectedItem(batchproductmodal, $event.item.barcodeId)" />
@@ -26,7 +26,7 @@
                   <div>
                     <input #quantityel type="number"
                       [ngClass]="{'is-invalid':submitted &&temporaryItem.Quantity <= 0 || temporaryItem.Quantity > temporaryItem.quantity}"
-                      [(ngModel)]="temporaryItem.Quantity" onfocus="this.select()" placeholder="Qty"
+                      [(ngModel)]="temporaryItem.Quantity" ngDefaultControl onfocus="this.select()" placeholder="Qty"
                       class="form-control" (keyup.enter)="addItem('user')" min="1" />
                   </div>
                 </td>
@@ -53,8 +53,8 @@
       <div class="mb-4 ">
         <div class=" col-lg">
           <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input type="text" [(ngModel)]="order.CustomerDetails.PhoneNo" nz-input placeholder="Customer PhoneNo"
-              (keyup.enter)="getCustomer()" />
+            <input type="text" [(ngModel)]="order.CustomerDetails.PhoneNo" ngDefaultControl nz-input
+              placeholder="Customer PhoneNo" (keyup.enter)="getCustomer()" />
           </nz-input-group>
           <ng-template #suffixIconButton>
             <button *ngIf="order.CustomerDetails.datastatus == 'new'" nz-button nzType="primary" nzSearch
@@ -67,7 +67,8 @@
         </div>
         <div *ngIf="order.CustomerDetails.datastatus == 'old'" class="col-lg">
           <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input disabled type="text" [(ngModel)]="order.CustomerDetails.Name" nz-input placeholder="Name" />
+            <input disabled type="text" [(ngModel)]="order.CustomerDetails.Name" ngDefaultControl nz-input
+              placeholder="Name" />
           </nz-input-group>
           <ng-template #suffixIconButton>
             <button (click)="openCustomClass(vertical)" nz-button nzType="primary" nzSearch><i nz-icon
@@ -81,14 +82,67 @@
         (click)="order.StorePaymentTypeId = spt.id;order.PaidAmount = order.BillAmount" class="btn btn-outline-success">
         {{spt.name}}
       </button>
-      <button class="btn btn-warning ml-3" [disabled]="order&&order.Items.length == 0" (click)="draftOrder()">
-        <i class="fa fa-save"></i>
-        Draft
-      </button>
       <!-- <button type="button" [class.active]="order.StorePaymentTypeId == 0"
                 (click)="order.StorePaymentTypeId = 0;order.PaidAmount = 0" class="btn btn-squared">
                 Unpaid
             </button> -->
+
+      <button nz-button class="btn btn-outline-success" style="height: auto" (click)="showModal()">
+        <span>Split payment</span>
+      </button>
+
+
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Split Payment" (nzOnCancel)="handleCancel()">
+        <div *ngIf="order">
+
+          <div class="col-lg-12">
+            <strong>Bill Amount: </strong> <span>{{order.BillAmount}}</span>
+            <strong style="margin-left: 110px;">Total Split Amount: </strong> <span>{{splitpaymenttotal}}</span>
+          </div><br>
+          <!-- <input type="number"  nz-input placeholder="Cash"> <br> <br>
+          <input type="number"  nz-input placeholder="Online Payment"> <br> <br> -->
+          <div class="col-lg-12 row" *ngFor="let transaxn of storePaymentTypes" style="align-items: center;">
+            <div class="col-lg-6 pl-0">
+              <label [style.color]="transaxn.Amount>0 ? '#48a6b6' : 'black'" class="form-check-lable">{{transaxn.name}}
+              </label>
+            </div>
+            <div class="col-lg-6 row" style="align-items: center;">
+              <span>₹</span>
+              <input id="{{transaxn.id}}" name="{{transaxn.name}}" type="number" (input)="calculatesplitpaymenttotal()"
+                class="form-control " style="width: 182px;" [(ngModel)]="transaxn.Amount" ngDefaultControl>
+            </div>
+          </div>
+
+          <span class="text-danger" *ngIf="splitpaymenttotal > order.BillAmount"
+            style="font-size: 10px; position: absolute;">* Total Amount EXCEEDING the Ammount
+            Payable</span>
+          <span class="text-danger" *ngIf="splitpaymenttotal == 0" style="font-size: 10px; position: absolute;">*
+            Amount can't be ZERO or LESSER</span>
+
+          <div *nzModalFooter>
+            <button nz-button nzType="danger" (click)="resetsplitpayment()">Reset</button>
+            <button nz-button nzType="default" (click)="cancelsplitpayment()">Back</button>
+            <button nz-button nzType="primary"
+              [disabled]="splitpaymenttotal == 0 || splitpaymenttotal > order.BillAmount"
+              (click)="confirmsplitpayment()">Ok</button>
+
+          </div>
+
+        </div>
+
+      </nz-modal>
+
+
+      <!-- <nz-modal [(nzVisible)]="isVisible" nzTitle="Split Payment" (nzOnReset)="handleReset()" (nzOnOk)="handleOk()"
+        [nzOkLoading]="isOkLoading">
+       
+      </nz-modal> -->
+
+      <button class="btn btn-warning ml-3" [disabled]="order&&order.Items.length == 0" (click)="draftOrder()">
+        <i class="fa fa-save"></i>
+        Draft
+      </button>
+
     </div>
     <div *ngIf="order&&order.Items.length" class="text-right font-size-18 text-dark p-4 rounded bg-light">
       <div>
@@ -99,8 +153,8 @@
       </div>
       <div>
         Discount: <span class="font-weight-bold">&#8377;
-          <input #discel [(ngModel)]="order.DiscAmount" (input)="order.setbillamount()" placeholder="DiscAmount..."
-            type="number" style="border: none;width: 25%;" /></span>
+          <input #discel [(ngModel)]="order.DiscAmount" (input)="order.setbillamount()" ngDefaultControl
+            placeholder="DiscAmount..." type="number" style="border: none;width: 25%;" /></span>
       </div>
       <div>
         Grand Total: <span class="font-weight-bold font-size-24">&#8377; {{order.BillAmount }}</span>
@@ -128,7 +182,7 @@
               <nz-form-item>
                 <nz-form-label nzFor="name">Name</nz-form-label>
                 <nz-form-control class="ml-2">
-                  <input nz-input [(ngModel)]="order.CustomerDetails.Name" placeholder="Name">
+                  <input nz-input [(ngModel)]="order.CustomerDetails.Name" placeholder="Name" ngDefaultControl>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -136,7 +190,8 @@
               <nz-form-item>
                 <nz-form-label nzFor="phone">Phone</nz-form-label>
                 <nz-form-control class="ml-2">
-                  <input nz-input [(ngModel)]="order.CustomerDetails.PhoneNo" placeholder="Phone Number">
+                  <input nz-input [(ngModel)]="order.CustomerDetails.PhoneNo" placeholder="Phone Number"
+                    ngDefaultControl>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -144,7 +199,7 @@
               <nz-form-item>
                 <nz-form-label>Address</nz-form-label>
                 <nz-form-control class="ml-1">
-                  <input nz-input [(ngModel)]="order.CustomerDetails.Address" placeholder="Address">
+                  <input nz-input [(ngModel)]="order.CustomerDetails.Address" placeholder="Address" ngDefaultControl>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -215,7 +270,7 @@
               <th>Name</th>
               <th>AvailableQty</th>
               <th>Price</th>
-              <th>BatchDate</th>
+              <th>ExpiaryDate</th>
             </tr>
           </thead>
           <tbody>
@@ -224,7 +279,7 @@
               <td>{{ product.product }}</td>
               <td>{{ product.quantity }}</td>
               <td>&#8377; {{ product.price }}</td>
-              <td>{{ product.createdDate | date: 'MMM d, y' }}</td>
+              <td>{{ product.expiaryDate | date: 'MMM d, y' }}</td>
             </tr>
           </tbody>
         </nz-table>
@@ -240,10 +295,10 @@
           <div class="row">
             <strong for="fname" style="margin-top: 10px;">Order No :</strong><br>
             <h4 class="text-success" style="margin-left: 3px; font-weight: 900;margin-top: 7px;"
-              [(ngModel)]="orderkey.orderno ">
+              [(ngModel)]="orderkey.orderno " ngDefaultControl>
               {{orderkey.orderno}}</h4>
-
             <button class="btn btn-link"><i class="fa fa-qrcode" style="font-size: xx-large;"></i></button>
+
             <div *ngFor="let dorder of draftOrders" class="btn-group">
               <ul class="list-group">
                 <a style="height: 35px;" href="javascript:void(0);" (click)="loadDraftOrder(dorder)"
@@ -257,11 +312,25 @@
         <div class="d-flex flex-column justify-content-center ">
           <!-- <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker> -->
         </div>
-        <div class="d-flex flex-column justify-content-center ">
+        <!-- <div class="d-flex flex-column justify-content-center ">
           <a class="btn btn-link pull-right border" (click)="clearallorders()">
             <i class="fe fe-trash-2"></i> Clear List
           </a>
+        </div> -->
+
+        <div class="d-flex flex-row-reverse" style="padding-left:20%;">
+          <div class="row pl-4 pt-1">
+
+            <!-- <a style="margin: auto;" (click)="openCustomClass(Additioncharge)">
+              &nbsp; Addition Charge |
+            </a> -->
+            <a style="margin: auto;" class="btn btn-link pull-right border" (click)="clearallorders()"><i
+                class="fe fe-trash-2"></i>
+              &nbsp; Clear Order
+            </a>
+          </div>
         </div>
+
       </div>
       <div>
         <nz-table #cartTable nzSize="middle" [nzShowPagination]="false" [nzData]="products"
@@ -286,8 +355,9 @@
               </td>
               <td>
 
-                <input type="number" nz-input [(ngModel)]="item.OrderQuantity" (keyup)="quantitychange(item,$event);"
-                  (change)="quantitychange(item,$event);" class="w-50" onfocus="this.select()">
+                <input type="number" nz-input [(ngModel)]="item.OrderQuantity" ngDefaultControl
+                  (keyup)="quantitychange(item,$event);" (change)="quantitychange(item,$event);" class="w-50"
+                  onfocus="this.select()">
                 <span class="font-x-large">/</span>
                 <span class="font-x-large">{{item.maxQty - item.OrderQuantity}}</span>
               </td>
@@ -313,3 +383,33 @@
     </div>
   </div>
 </div>
+
+<!-- Addition Charges Modal-->
+<ng-template #Additioncharge let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Additional Charge
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngFor="let charge of order.additionalchargearray">
+      <label style="color: black;"><b>{{charge.Description}} {{charge.ChargeType == 1 ? '' : '%'}}</b></label>
+      <br>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input [(ngModel)]="charge.selected" type="checkbox" aria-label="Checkbox for following text input"
+              ngDefaultControl>
+          </div>
+        </div>
+        <input type="number" [(ngModel)]="charge.ChargeValue" class="form-control" ngDefaultControl>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="order.setbillamount();modal.close('Save click')">Save
+      Changes</button>
+  </div>
+</ng-template>

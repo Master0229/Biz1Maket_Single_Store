@@ -46,8 +46,8 @@ export class SaleComponent implements OnInit {
   charges = []
   deliverydate
   deliverytime
-  transactionlist: Array<Transaction> = null
-  issplitpayment: boolean = false
+  transactionlist: Array<Transaction> = []
+
   name: any
   phoneNo: any
   city: any
@@ -77,6 +77,7 @@ export class SaleComponent implements OnInit {
       this.setproductbybarcode(data)
     }
     console.log(this.isuppercase)
+
   }
   scrollContainer: any
   products: any
@@ -164,14 +165,13 @@ export class SaleComponent implements OnInit {
 
   orderkey = { orderno: 1, timestamp: 0, GSTno: '' }
 
+
+
   ngOnInit(): void {
     this.getData()
-    // this.orderkey = localStorage.getItem('orderkey')
-    //   ? JSON.parse(localStorage.getItem('orderkey'))
-    //   : { orderno: 1, timestamp: 0, GSTno: '' }
     this.Auth.getloginfo().subscribe(data => {
       this.loginfo = data
-      this.order = new OrderModule(6)
+      this.createOrder()
       this.sync.sync()
       this.products = []
       this.getproducts()
@@ -193,14 +193,39 @@ export class SaleComponent implements OnInit {
         companyId: this.CompanyId,
         datastatus: '',
       }
+
       if (localStorage.getItem('draftOrders')) {
         this.draftOrders = JSON.parse(localStorage.getItem('draftOrders'))
       } else {
         localStorage.setItem('draftOrders', '[]')
       }
     })
-  }
 
+    this.store.pipe(select(Reducers.getSettings)).subscribe(state => {
+      this.getData()
+    })
+
+  }
+  getData() {
+    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb', 'additionalchargesdb']).subscribe(data => {
+      this.loginfo = data['loginfo'][0]
+      this.printersettings = data['printersettings'][0]
+      this.orderkey = data["orderkeydb"][0]
+      this.charges = data["additionalchargesdb"]
+      localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
+      this.CompanyId = this.loginfo.companyId
+      this.StoreId = this.loginfo.storeId
+      this.orderkeyValidation()
+      console.log(this.loginfo)
+    })
+  }
+  createOrder() {
+    this.order = new OrderModule(6)
+    this.charges.forEach(charge => {
+      this.order.additionalchargearray.push(new AdditionalCharge(charge))
+    })
+    console.log(this.order.additionalchargearray, this.charges)
+  }
   updateorderno() {
     this.orderkey.orderno++
     localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
@@ -234,51 +259,10 @@ export class SaleComponent implements OnInit {
 
       console.log(data)
     })
-
-    this.store.pipe(select(Reducers.getSettings)).subscribe(state => {
-      // if(this.stockchnageid != state.stockchnageid) {
-      this.getData()
-      // }
-    })
-
-  }
-  getData() {
-    this.Auth.getdbdata(['loginfo', 'printersettings', 'orderkeydb', 'additionalchargesdb']).subscribe(data => {
-      this.loginfo = data['loginfo'][0]
-      this.printersettings = data['printersettings'][0]
-      this.orderkey = data["orderkeydb"][0]
-      this.charges = data["additionalchargesdb"]
-      localStorage.setItem('orderkey', JSON.stringify(this.orderkey))
-      this.CompanyId = this.loginfo.companyId
-      this.StoreId = this.loginfo.storeId
-      this.orderkeyValidation()
-      console.log(this.loginfo)
-    })
-
-  }
-
-  createorder(ordertypeid) {
-    this.order = new OrderModule(ordertypeid)
-    this.order.createdtimestamp = new Date().getTime()
-    this.charges.forEach(charge => {
-      this.order.additionalchargearray.push(new AdditionalCharge(charge))
-    })
-    if (![2, 3, 4].includes(this.order.OrderTypeId)) {
-      this.order.additionalchargearray.forEach(charge => {
-        charge.selected = false
-      })
-    }
-    this.order.StoreId = this.loginfo.storeId
-    this.orderlogging('create_order')
-    this.show = false
-    this.sectionid = 2
-    if (this.order.IsAdvanceOrder || this.order.OrderTypeId == 2) {
-      this.deliverydate = moment().format('YYYY-MM-DD')
-      this.deliverytime = moment().format('HH:MM')
-    }
   }
 
   groupProduct() {
+    console.log("group products")
     var helper = {}
     this.groupedProducts = this.products.reduce((r, o) => {
       var key = o.barcodeId + '-'
@@ -342,11 +326,6 @@ export class SaleComponent implements OnInit {
     })
     this.Auth.addCustomerdb(this.customerdetails).subscribe(
       data => {
-        // this.notification.success(
-        //   'Customer Added!',
-        //   `${this.order.CustomerDetails.Name} added successfully.`,
-        // )
-        // this.order.CustomerDetails.datastatus = 'old'
       },
       error => { },
       () => {
@@ -401,6 +380,7 @@ export class SaleComponent implements OnInit {
     this.submitted = true
     this.barcodeMode = false
     if (this.validation()) {
+      console.log("add item")
       if (this.order.Items.some(x => x.stockBatchId == this.temporaryItem['stockBatchId'])) {
         this.order.Items.filter(x => x.stockBatchId == this.temporaryItem['stockBatchId'],)[0].OrderQuantity += this.temporaryItem.Quantity
         this.order.setbillamount()
@@ -412,7 +392,6 @@ export class SaleComponent implements OnInit {
           product.quantity -= this.temporaryItem.Quantity
           Object.keys(product).forEach(key => {
             this.temporaryItem[key] = product[key]
-
           })
         }
       })
@@ -427,7 +406,6 @@ export class SaleComponent implements OnInit {
       this.groupProduct()
       return
     }
-
   }
 
   getcustomerdetails(compid) {
@@ -490,8 +468,8 @@ export class SaleComponent implements OnInit {
     this.order.setbillamount()
   }
   clearallorders() {
-    this.order = new OrderModule(6)
     this.clearDraftOrder()
+    this.createOrder()
   }
   clearDraftOrder() {
     if (this.selectedDraftIndex > -1) {
@@ -531,22 +509,102 @@ export class SaleComponent implements OnInit {
     this.isVisible = true
   }
 
-  handleOk(): void {
-    this.isVisible = false
-  }
+  // handleOk(): void {
+  //   this.isVisible = false
+  // }
 
   handleCancel(): void {
     this.isVisible = false
   }
+
+  // handleReset(): void {
+  //   this.isVisible = false
+
+  // }
+
+
   openCustomClass(content) {
     this.modalService.open(content, { centered: true })
   }
   opensplit(content) {
     this.modalService.open(content, { centered: true })
   }
-  ////////////////////////////////////////dfgdfhsfhgj?//////////////////////////////////
+
+  splitpaymenttotal = 0
+
+  resetsplitpayment() {
+    console.log(this.paymentTypes)
+    this.transactionlist = []
+    this.paymentTypes.forEach(pt => {
+      var transaction = new Transaction()
+      transaction = new Transaction()
+      transaction.Remaining = this.order.BillAmount
+      transaction.Amount = 0
+      transaction.OrderId = this.order.OrderId
+      transaction.StoreId = this.loginfo.StoreId
+      transaction.TransDate = moment().format('YYYY-MM-DD')
+      transaction.TransDateTime = moment().format('YYYY-MM-DD HH:mm')
+      transaction.TranstypeId = 1
+      transaction.UserId = this.order.UserId
+      transaction.CompanyId = this.order.CompanyId
+      transaction.CustomerId = this.order.CustomerDetails.Id
+      transaction.StorePaymentTypeName = pt.Description
+      transaction.StorePaymentTypeName = this.storePaymentTypes.filter(
+        x => x.id == transaction.StorePaymentTypeId,
+      )[0].name
+      transaction.StorePaymentTypeId = pt.Id
+      this.transactionlist.push(transaction)
+    })
+  }
+
+  cancelsplitpayment() {
+    this.order.PaidAmount = 0
+    this.order.StorePaymentTypeId = 0
+    this.transactionlist = []
+    this.calculatesplitpaymenttotal()
+  }
+
+  calculatesplitpaymenttotal() {
+    this.splitpaymenttotal = 0
+    console.log(this.order.Transactions)
+    this.storePaymentTypes.forEach(trxn => {
+      this.splitpaymenttotal += trxn.Amount ? trxn.Amount : 0
+    })
+    console.log(this.splitpaymenttotal, this.storePaymentTypes)
+  }
+
+  confirmsplitpayment() {
+    console.log(this.order.PaidAmount, this.splitpaymenttotal)
+    this.order.PaidAmount = this.splitpaymenttotal
+
+    this.isVisible = false
+  }
+
+  // makesplitpayment() {
+  //   var transactionarray = this.transactionlist.filter(x => x.Amount > 0)
+  //   this.Auth.getpreorderby_id(this.temporder['_id']).subscribe(data => {
+  //     this.temporder.status = 'P'
+  //     this.temporder.OrderId = data['OrderId']
+  //     if (this.temporder.OrderId > 0) {
+  //       this.temporder.datastatus = 'edit_order'
+  //     } else {
+  //       this.temporder.datastatus = 'new_order'
+  //     }
+  //     transactionarray.forEach(tr => {
+  //       if (tr.TranstypeId == 1) this.temporder.PaidAmount += tr.Amount
+  //       else if (tr.TranstypeId == 2) this.temporder.PaidAmount -= tr.Amount
+  //       tr.OrderId = this.temporder.OrderId
+  //       tr.InvoiceNo = this.temporder.InvoiceNo
+  //     })
+
+  //     this.modalService.dismissAll()
+  //   })
+  // }
+  ////////////////////////////////////////vijay//////////////////////////////////
   batchproduct: any = []
+
   selectedItem(batchproduct, barcodeId) {
+    console.log(this.batchproduct, this.products)
     this.batchproduct = this.products.filter(x => x.barcodeId == barcodeId && x.quantity > 0)
     if (this.batchproduct.length > 1) {
       this.modalService.open(batchproduct, { centered: true })
@@ -554,7 +612,7 @@ export class SaleComponent implements OnInit {
       this.selectedproduct(this.batchproduct[0])
     }
     this.quantityel['nativeElement'].focus()
-
+    console.log(this.batchproduct, this.products)
   }
   selectedproduct(product) {
     console.log(product)
@@ -562,7 +620,7 @@ export class SaleComponent implements OnInit {
       this.temporaryItem[key] = product[key]
     })
     this.modalService.dismissAll()
-    // this.addItem()
+
   }
   validation() {
     var isvalid = true
@@ -583,7 +641,6 @@ export class SaleComponent implements OnInit {
       orderkey_obj = this.orderkey
     }
     if (new Date(orderkey_obj.timestamp).getDate() != todate) {
-      // orderkey_obj.kotno = 1
       orderkey_obj.orderno = 1
     }
     orderkey_obj.timestamp = new Date().getTime()
@@ -596,27 +653,6 @@ export class SaleComponent implements OnInit {
   transaction: Transaction
   currentitem: OrderItemModule = null
 
-  // splitpayment() {
-  //   this.transactionlist = []
-  //   this.issplitpayment = true
-  //   this.paymentTypes.forEach(pt => {
-  //     var transaction = new Transaction()
-  //     transaction = new Transaction()
-  //     transaction.Remaining = this.temporder.BillAmount - this.temporder.PaidAmount
-  //     transaction.Amount = 0
-  //     transaction.OrderId = this.temporder.OrderId
-  //     transaction.StoreId = this.loginfo.storeId
-  //     transaction.TransDate = moment().format('YYYY-MM-DD')
-  //     transaction.TransDateTime = moment().format('YYYY-MM-DD HH:mm')
-  //     transaction.TranstypeId = 1
-  //     transaction.UserId = this.temporder.UserId
-  //     transaction.CompanyId = this.temporder.CompanyId
-  //     transaction.CustomerId = this.temporder.CustomerDetails.Id
-  //     transaction.StorePaymentTypeName = pt.Description
-  //     transaction.StorePaymentTypeId = pt.Id
-  //     this.transactionlist.push(transaction)
-  //   })
-  // }
 
   // saveOrder
   saveOrder() {
@@ -642,7 +678,10 @@ export class SaleComponent implements OnInit {
     this.order.SuppliedById = 12
     this.order.UserId = this.user.id
     if (this.order.PaidAmount > 0) {
-      if (this.order.StorePaymentTypeId != -1) {
+      console.log(this.order.StorePaymentTypeId);
+      // return
+      console.log(transaction)
+      if (this.order.StorePaymentTypeId > 0) {
         var transaction = new Transaction(this.order.PaidAmount, this.order.StorePaymentTypeId)
         transaction.StorePaymentTypeId = this.order.StorePaymentTypeId
         transaction.OrderId = this.order.OrderId
@@ -661,15 +700,14 @@ export class SaleComponent implements OnInit {
         )[0].name
         this.transaction = transaction
         this.order.Transactions.push(this.transaction)
-      } else if (this.order.StorePaymentTypeId == -1) {
-        this.transactionlist = this.transactionlist.filter(x => x.Amount > 0)
-        this.transactionlist.forEach(trxn => {
-          trxn.InvoiceNo = this.order.InvoiceNo
-          trxn.CompanyId = this.order.CompanyId
-          trxn.StoreId = this.loginfo.storeId
-          trxn.saved = true
-          this.order.Transactions.push(trxn)
-        })
+      } else if (this.order.StorePaymentTypeId == 0) {
+        this.storePaymentTypes.forEach(spt => {
+          if (spt.Amount && spt.Amount > 0)
+            this.transactionlist.push(new Transaction(spt.Amount, spt.id, this.order.StoreId, this.order.CompanyId, this.order.InvoiceNo, spt.name, 1))
+        });
+        console.log(this.transactionlist);
+        this.order.Transactions = this.transactionlist
+     
       }
       this.order.StorePaymentTypeName = this.order.Transactions[0].StorePaymentTypeName
       this.printreceipt()
@@ -679,11 +717,11 @@ export class SaleComponent implements OnInit {
     this.Auth.saveordertonedb(this.order).subscribe(data => {
       console.log(data)
       this.sync.sync()
-      this.order = new OrderModule(6)
-
+      this.createOrder()
     })
     this.addcustomer()
     this.notification.success('Ordered Saved successfully!', `Ordered Saved successfully.`)
+
     this.clearallorders()
   }
   syncDB() {
@@ -699,6 +737,7 @@ export class SaleComponent implements OnInit {
     this.filteredvalues = []
     this.submitted = false
   }
+
   selectedDraftIndex: number = -1
   draftOrders = []
 
@@ -888,16 +927,16 @@ export class SaleComponent implements OnInit {
         +((this.order.OrderTotDisc + this.order.AllItemTotalDisc) / 2).toFixed(0)
       ).toFixed(2)}</td>
     </tr>`
-    // this.order.additionalchargearray.forEach(charge => {
-    //   if (charge.selected) {
-    //     printtemplate += `
-    //     <tr class="nb">
-    //         <td class="text-left"><strong>${charge.Description}</strong></td>
-    //         <td colspan="2"></td>
-    //         <td class="text-right">${charge.ChargeValue}</td>
-    //     </tr>`
-    //   }
-    // })
+    this.order.additionalchargearray.forEach(charge => {
+      if (charge.selected) {
+        printtemplate += `
+        <tr class="nb">
+            <td class="text-left"><strong>${charge.Description}</strong></td>
+            <td colspan="2"></td>
+            <td class="text-right">${charge.ChargeValue}</td>
+        </tr>`
+      }
+    })
     printtemplate += `
           <tr class="nb" ${extra > 0 ? '' : 'hidden'}>
               <td class="text-left"><strong>Extra</strong></td>

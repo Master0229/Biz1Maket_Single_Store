@@ -24,10 +24,13 @@ export class CatawiseSaleComponent implements OnInit {
       this.CompanyId = this.loginfo.companyId
       this.StoreId = this.loginfo.storeId
       console.log(this.loginfo)
+      this.strdate = moment().format('YYYY-MM-DD')
+      this.enddate = moment().format('YYYY-MM-DD')
+      this.GetCataWiseRpt()
     })
-    this.strdate = moment().format('YYYY-MM-DD')
-    this.enddate = moment().format('YYYY-MM-DD')
-    this.GetCataWiseRpt()
+    // this.strdate = moment().format('YYYY-MM-DD')
+    // this.enddate = moment().format('YYYY-MM-DD')
+    // this.GetCataWiseRpt()
   }
 
   getcategory : any
