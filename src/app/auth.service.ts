@@ -847,5 +847,9 @@ export class AuthService {
       this.base_url1 +
       'Product/getstockbatch?Storeid=' + Storeid + '&fromdate=' + fromdate + '&todate=' + todate + '&Companyid=' + Companyid)
   }
+  // 18-06-2022
+  savetransaction(transaction) {
+    return this.http.post(this.base_url1 + `Receipt/saveTransaction`, transaction)
+  }
 
 }

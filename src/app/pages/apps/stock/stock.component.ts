@@ -103,7 +103,7 @@ export class StockComponent implements OnInit {
     if (bool) {
       this.prod = this.products.filter(x => x.quantity < 6)
     } else {
-      this.prod = this.products.filter(x => x.quantity)
+      this.prod = this.products.filter(x => x.quantity > 0)
 
     }
     console.log(this.prod.length)

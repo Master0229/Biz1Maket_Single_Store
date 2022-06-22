@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth.service'
 import * as moment from 'moment'
 import { PrintService } from 'src/app/services/print/print.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+
 
 
 @Component({
@@ -11,7 +13,7 @@ import { PrintService } from 'src/app/services/print/print.service'
 })
 export class PaymenttypesComponent implements OnInit {
 
-  constructor(private Auth: AuthService,private printservice: PrintService,) { }
+  constructor(private Auth: AuthService, private printservice: PrintService, private modalService: NgbModal,) { }
   trans: any
   strdate: string
   enddate: string
@@ -25,8 +27,10 @@ export class PaymenttypesComponent implements OnInit {
   transpayment: any = [];
   paymenttype: any = [];
 
+
+
   ngOnInit(): void {
-    this.Auth.getdbdata(['loginfo','printersettings']).subscribe(data => {
+    this.Auth.getdbdata(['loginfo', 'printersettings']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
       this.printersettings = data['printersettings'][0]
       this.CompanyId = this.loginfo.companyId
@@ -40,27 +44,67 @@ export class PaymenttypesComponent implements OnInit {
 
   }
 
+  isVisible = false;
+  isConfirmLoading = false;
+
+  showModal2(transaction): void {
+    this.isVisible = true;
+    this.transaction = transaction
+  }
+
+  handleOk(): void {
+    this.isConfirmLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isConfirmLoading = false;
+    }, 3000);
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
   gettransrpt() {
     this.Auth.GetTrans(this.strdate, this.enddate, this.loginfo.storeId, this.loginfo.companyId).subscribe(data => {
       this.trans = data
       this.storepayment = data['transactions'];
       this.transpayment = [];
-      console.log(this.trans);
-      console.log(this.transpayment)
+
+      console.log(this.storepayment)
+
     })
   }
+  transp: any
 
   gettranstype(sourceid, ptypeid, transaction) {
     this.transaction = transaction
     console.log(sourceid, ptypeid, transaction)
     this.Auth.GetTransType(this.strdate, this.enddate, this.loginfo.storeId, this.loginfo.companyId, ptypeid, sourceid).subscribe(data => {
       this.transpayment = data['transactions'];
+      this.transp = this.transpayment
       this.paymenttype = data["paymenttypes"]
+      console.log(this.paymenttype)
       console.log(this.transaction);
-
       console.log(this.transpayment)
 
     })
+  }
+
+  term: string = '';
+  filteredvalues = [];
+  filtersearch(): void {
+    this.transp = this.term
+      ? this.transpayment.filter(x => x.invoiceNo.toLowerCase().includes(this.term.toLowerCase()))
+      : this.transpayment;
+    console.log(this.transpayment)
+  }
+
+  updatetransaction() {
+    this.Auth.savetransaction(this.transaction).subscribe(data => {
+      this.gettransrpt();
+      this.isVisible = false;
+    })
+    
   }
 
   onChange(result: Date): void {
