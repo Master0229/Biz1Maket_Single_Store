@@ -126,21 +126,21 @@ export const getMenuData: any[] = [
       },
 
       {
-        title: 'ProductwiseSales',
+        title: 'Productwise Sales',
         key: 'appsSetting',
         icon: 'fa fa-product-hunt',
         url: '/apps/ProductwiseSales',
       },
 
       {
-        title: 'CategorywiseSales',
+        title: 'Categorywise Sales',
         key: 'appsSetting',
         icon: 'fa fa-sitemap',
         url: '/apps/CatawiseSales',
       },
 
       {
-        title: 'Paymenttypes',
+        title: 'Payment Types',
         key: 'appsSetting',
         icon: 'fa fa-money',
         url: '/apps/Paymenttypes',

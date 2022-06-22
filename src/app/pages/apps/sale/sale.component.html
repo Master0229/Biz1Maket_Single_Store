@@ -152,10 +152,16 @@
         Tax: <span class="font-weight-bold">&#8377; {{order.TaxAmount}}</span>
       </div>
       <div>
+        <a (click)="openCustomClass(bulkdiscount)">
+          <i class="fa fa-percent "> Discount </i>
+          <span class="font-weight-bold font-size-24">:&#8377; {{order.DiscAmount}}</span>
+        </a>
+      </div>
+      <!-- <div>
         Discount: <span class="font-weight-bold">&#8377;
           <input #discel [(ngModel)]="order.DiscAmount" (input)="order.setbillamount()" ngDefaultControl
             placeholder="DiscAmount..." type="number" style="border: none;width: 25%;" /></span>
-      </div>
+      </div> -->
       <div>
         Grand Total: <span class="font-weight-bold font-size-24">&#8377; {{order.BillAmount }}</span>
       </div>
@@ -411,5 +417,48 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="order.setbillamount();modal.close('Save click')">Save
       Changes</button>
+  </div>
+</ng-template>
+
+<!-- Discount -->
+<!-- 22-06-2022 -->
+
+<ng-template #bulkdiscount let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title"> Discount
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label *ngIf="order.DiscType == 1" style="color: black;"><b>CASH DISCOUNT</b></label>
+    <label *ngIf="order.DiscType == 2" style="color: black;"><b>PERCENTAGE DISCOUNT</b></label>
+    <br>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="radio" aria-label="Radio button for following text input" #bulkcashdiscount
+            (change)="$event.target.checked" name="discount" [(ngModel)]="order.DiscType" [value]="1" id="discount1"
+            checked>
+        </div>
+      </div>
+      <input [disabled]=!bulkcashdiscount.checked [(ngModel)]="order.DiscAmount" type="number" class="form-control"
+        placeholder="CASH">
+    </div>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="radio" aria-label="Radio button for following text input" #bulkpercentdiscount
+            (change)="$event.target.checked" name="discount" [(ngModel)]="order.DiscType" [value]="2" id="discount2">
+        </div>
+      </div>
+      <input [disabled]=!bulkpercentdiscount.checked [(ngModel)]="order.DiscPercent" type="number" class="form-control"
+        placeholder="PERCENTAGE">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary"
+      (click)="order.setbillamount();modal.close('Save click')">Apply</button>
   </div>
 </ng-template>

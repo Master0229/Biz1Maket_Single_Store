@@ -183,7 +183,6 @@ export class OrderModule {
 
       if (item.DiscPercent > 0)
         item.DiscAmount = (this.DiscAmount * 100) / (this.BillAmount + this.TaxAmount)
-
       console.log(item.DiscPercent, item.DiscAmount)
       console.log(this.BillAmount)
       this.BillAmount += item.TotalAmount
@@ -207,6 +206,12 @@ export class OrderModule {
         this.Charges += charge.Amount
       }
     })
+    // Discount
+    if (this.DiscPercent && this.DiscPercent > 0) {
+      console.log(this.DiscPercent)
+      this.DiscAmount = (this.Subtotal + this.Tax1 + this.Tax2 + this.Tax3) * this.DiscPercent / 100
+      console.log(this.BillAmount, this.DiscPercent, this.DiscAmount)
+    }
 
 
     this.BillAmount = this.Subtotal + this.Tax1 + this.Tax2 + this.Tax3 + this.Charges - this.DiscAmount

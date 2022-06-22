@@ -112,8 +112,8 @@ export class StockComponent implements OnInit {
   filteredvalues = [];
   filtersearch(): void {
     this.prod = this.term
-      ? this.prod.filter(x => x.name.toLowerCase().includes(this.term.toLowerCase()))
-      : this.prod;
+      ? this.products.filter(x => x.name.toLowerCase().includes(this.term.toLowerCase()))
+      : this.products;
     console.log(this.prod)
   }
 
