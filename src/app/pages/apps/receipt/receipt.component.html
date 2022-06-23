@@ -116,12 +116,14 @@
                   <td>{{orders.paidAmount}}</td>
                   <td>
                     <span *ngIf="orders.orderStatusId != -1 && orders.billAmount == orders.paidAmount"
-                      class="badge badge-success mr-10">Paid</span>
+                      class="badge badge-success mr-10">Paid </span>
+
                     <span *ngIf="orders.orderStatusId != -1 && orders.billAmount > orders.paidAmount"
                       class="badge badge-warning mr-10">Pending</span>
                     <span *ngIf="orders.orderStatusId == -1" class="badge badge-danger mr-10">Cancelled</span>
                     <span *ngIf="orders.orderStatusId != -1 && orders.billAmount < orders.paidAmount"
                       class="badge badge-danger mr-10">Refundable</span>
+                    -/ {{orders.paymentName}}
                   </td>
                   <!-- <td><span *ngIf="orders.OrderStatusId == 5">Completed</span>
                     <span *ngIf="orders.OrderStatusId != -1 && orders.OrderStatusId != 5">Pending</span>
