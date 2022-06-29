@@ -87,9 +87,11 @@
                 Unpaid
             </button> -->
 
-      <button nz-button class="btn btn-outline-success" style="height: auto" (click)="showModal()">
+      <button nz-button class="btn btn-outline-success" style="height: auto" [class.active]="splitpaymenttotal > 0"
+        (click)="showModal()">
         <span>Split payment</span>
       </button>
+
 
 
       <nz-modal [(nzVisible)]="isVisible" nzTitle="Split Payment" (nzOnCancel)="handleCancel()">
@@ -116,14 +118,14 @@
           <span class="text-danger" *ngIf="splitpaymenttotal > order.BillAmount"
             style="font-size: 10px; position: absolute;">* Total Amount EXCEEDING the Ammount
             Payable</span>
-          <span class="text-danger" *ngIf="splitpaymenttotal == 0" style="font-size: 10px; position: absolute;">*
+          <span class="text-danger" *ngIf="splitpaymenttotal == -1" style="font-size: 10px; position: absolute;">*
             Amount can't be ZERO or LESSER</span>
 
           <div *nzModalFooter>
             <button nz-button nzType="danger" (click)="resetsplitpayment()">Reset</button>
-            <button nz-button nzType="default" (click)="cancelsplitpayment()">Back</button>
+            <!-- <button nz-button nzType="default" (click)="cancelsplitpayment()">Back</button> -->
             <button nz-button nzType="primary"
-              [disabled]="splitpaymenttotal == 0 || splitpaymenttotal > order.BillAmount"
+              [disabled]="splitpaymenttotal == -1 || splitpaymenttotal > order.BillAmount"
               (click)="confirmsplitpayment()">Ok</button>
 
           </div>
@@ -166,9 +168,10 @@
         Grand Total: <span class="font-weight-bold font-size-24">&#8377; {{order.BillAmount }}</span>
       </div>
 
-      <a href="javascript: void(0);" class="btn btn-success mt-3" (click)="saveOrder()">
-        Recieve (₹ {{order.PaidAmount}} /-)
-      </a>
+      <button class="btn btn-success mt-3" (click)="saveOrder()"
+        [disabled]="!order.StorePaymentTypeId && splitpaymenttotal != 0">
+        Recieve (₹ {{order.PaidAmount}} /- )
+      </button>
     </div>
     <ng-template #vertical let-modal>
       <div class="modal-header">

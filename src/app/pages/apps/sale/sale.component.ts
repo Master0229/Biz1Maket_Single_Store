@@ -506,6 +506,10 @@ export class SaleComponent implements OnInit {
     console.log(e, moment(e), this.date)
   }
   showModal(): void {
+    if (this.order.StorePaymentTypeId != -1) {
+      this.order.StorePaymentTypeId = -1
+      
+    }
     this.isVisible = true
   }
 
@@ -530,7 +534,7 @@ export class SaleComponent implements OnInit {
     this.modalService.open(content, { centered: true })
   }
 
-  splitpaymenttotal = 0
+  splitpaymenttotal : any
 
   resetsplitpayment() {
     console.log(this.paymentTypes)
@@ -681,7 +685,7 @@ export class SaleComponent implements OnInit {
       console.log(this.order.StorePaymentTypeId);
       // return
       console.log(transaction)
-      if (this.order.StorePaymentTypeId > 0) {
+      if (this.order.StorePaymentTypeId != -1) {
         var transaction = new Transaction(this.order.PaidAmount, this.order.StorePaymentTypeId)
         transaction.StorePaymentTypeId = this.order.StorePaymentTypeId
         transaction.OrderId = this.order.OrderId
@@ -700,14 +704,14 @@ export class SaleComponent implements OnInit {
         )[0].name
         this.transaction = transaction
         this.order.Transactions.push(this.transaction)
-      } else if (this.order.StorePaymentTypeId == 0) {
+      } else if (this.order.StorePaymentTypeId == -1) {
         this.storePaymentTypes.forEach(spt => {
           if (spt.Amount && spt.Amount > 0)
             this.transactionlist.push(new Transaction(spt.Amount, spt.id, this.order.StoreId, this.order.CompanyId, this.order.InvoiceNo, spt.name, 1))
         });
         console.log(this.transactionlist);
         this.order.Transactions = this.transactionlist
-     
+
       }
       this.order.StorePaymentTypeName = this.order.Transactions[0].StorePaymentTypeName
       this.printreceipt()
